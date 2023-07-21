@@ -1,0 +1,6 @@
+.env
+node_modules/
+local_Brandings/
+local_Resumes/
+migrations/
+local_Forms/

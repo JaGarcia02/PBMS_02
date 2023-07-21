@@ -1,0 +1,2517 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta name="generator" content="Aspose.Words for .NET 23.3.0" />
+    <title></title>
+    <style type="text/css">
+      body {
+        line-height: 108%;
+        font-family: Calibri;
+        font-size: 11pt;
+      }
+      p {
+        margin: 0pt 0pt 8pt;
+      }
+      table {
+        margin-top: 0pt;
+        margin-bottom: 8pt;
+      }
+      .Footer {
+        margin-bottom: 0pt;
+        line-height: normal;
+        font-size: 11pt;
+      }
+      .Header {
+        margin-bottom: 0pt;
+        line-height: normal;
+        font-family: Calibri;
+        font-size: 12pt;
+      }
+      span.HeaderChar {
+        font-family: Calibri;
+        font-size: 12pt;
+      }
+      .TableGrid {
+      }
+    </style>
+  </head>
+  <script>
+    function isEmpty(value) {
+      return (
+        value == null ||
+        (typeof value === "string" && value.trim().length === 0)
+      );
+    }
+    fetch("http://192.168.100.83:3001/api/admin/getOfficers")
+      .then((response) => response.json())
+      .then((data) => {
+        const president = data.filter(
+          (filter) => filter.Position == "President"
+        )[0]?.Name;
+
+        const VicePresident = data.filter(
+          (filter) => filter.Position == "Senior Vice President"
+        )[0]?.Name;
+
+        const ViceData = isEmpty(VicePresident) ? "" : VicePresident;
+        const PresData = isEmpty(president) ? "" : president;
+
+        document
+          .querySelector("#president")
+          .insertAdjacentHTML("beforeend", `<span>${president}</span>`);
+
+        document
+          .querySelector("#VicePresident")
+          .insertAdjacentHTML("beforeend", `<span>${ViceData}</span>`);
+      });
+
+    fetch("http://localhost:3001/api/request/get-request")
+      .then((response) => response.json())
+      .then((data) => {
+        const requestor = data.slice(-1)[0]?.Requestor;
+        const referenceNum = data.slice(-1)[0]?.Reference_number;
+
+        document
+          .querySelector("#requestor")
+          .insertAdjacentHTML("beforeend", `<span>${requestor}</span>`);
+        document
+          .querySelector("#refNum")
+          .insertAdjacentHTML("beforeend", `<span>${referenceNum}</span>`);
+      });
+  </script>
+  <body>
+    <div>
+      <table
+        cellspacing="0"
+        cellpadding="0"
+        class="TableGrid"
+        style="
+          margin-bottom: 0pt;
+          border: 0.75pt solid #000000;
+          -aw-border: 0.5pt single;
+          -aw-border-insideh: 0.5pt single #000000;
+          -aw-border-insidev: 0.5pt single #000000;
+          border-collapse: collapse;
+        "
+      >
+        <tr style="height: 53.5pt">
+          <td
+            style="
+              width: 57.7pt;
+              border-right-style: solid;
+              border-right-width: 0.75pt;
+              border-bottom-style: solid;
+              border-bottom-width: 0.75pt;
+              padding-right: 5.03pt;
+              padding-left: 5.03pt;
+              vertical-align: top;
+              -aw-border-bottom: 0.5pt single;
+              -aw-border-right: 0.5pt single;
+            "
+          >
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span
+                style="
+                  height: 0pt;
+                  display: block;
+                  position: absolute;
+                  z-index: -1;
+                "
+                ><img
+                  src="http://localhost:3001/local_Brandings/2b0d4c4c8fc656435aa9d310a7a79566.png"
+                  width="78"
+                  height="68"
+                  alt=""
+                  style="
+                    margin-top: 2.7pt;
+                    margin-left: -4.15pt;
+                    -aw-left-pos: -4.15pt;
+                    -aw-rel-hpos: column;
+                    -aw-rel-vpos: paragraph;
+                    -aw-top-pos: 2.7pt;
+                    -aw-wrap-type: none;
+                    position: absolute;
+                  " /></span
+              ><span style="-aw-import: ignore">&#xa0;</span>
+            </p>
+          </td>
+          <td
+            style="
+              width: 442.45pt;
+              border-left-style: solid;
+              border-left-width: 0.75pt;
+              border-bottom-style: solid;
+              border-bottom-width: 0.75pt;
+              padding-right: 5.03pt;
+              padding-left: 5.03pt;
+              vertical-align: top;
+              -aw-border-bottom: 0.5pt single;
+              -aw-border-left: 0.5pt single;
+            "
+          >
+            <p class="Header" style="text-align: justify; font-size: 14pt">
+              <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                >HR-FS-004-00 PERSONNEL REQUISITION ADVICE</span
+              ><span style="font-family: 'Arial Narrow'; font-size: 11pt">
+              </span
+              ><span style="font-family: 'Arial Narrow'; font-size: 9pt"
+                >(PRA) </span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                "
+                >*</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-weight: bold;
+                  font-style: italic;
+                "
+                >NEW CLIENT</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                "
+              >
+                – to be filled out by Sales Department then submit to Talent
+                Acquisition for processing </span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-weight: bold;
+                  font-style: italic;
+                "
+                >EXISTING CLIENT- ADDITIONAL OR REPLACEMENT</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                "
+              >
+                – to be filled out by Client Relations and reviewed by
+                Operations Manager then submit to Talent Acquisition for
+                processing and PBMS PRE-HIRING</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                  -aw-import: spaces;
+                "
+                >&#xa0;&#xa0; </span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                "
+                >*</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-weight: bold;
+                  font-style: italic;
+                "
+                >INTERNAL</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  font-style: italic;
+                "
+              >
+                – to be filled out by requesting Department Manager, reviewed by
+                HR Manager and routed to Execomm for approval.</span
+              >
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td
+            colspan="2"
+            style="
+              width: 510.95pt;
+              border-top-style: solid;
+              border-top-width: 0.75pt;
+              padding-right: 5.03pt;
+              padding-left: 5.03pt;
+              vertical-align: top;
+              -aw-border-top: 0.5pt single;
+            "
+          >
+            <p style="margin-bottom: 0pt; font-size: 18pt">
+              <span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 14pt;
+                  font-weight: bold;
+                "
+                >PERSONNEL REQUISITION ADVICE (PRA)</span
+              ><span
+                style="
+                  width: 6.42pt;
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  display: inline-block;
+                "
+                >&#xa0;</span
+              ><span
+                style="
+                  width: 36pt;
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  display: inline-block;
+                "
+                >&#xa0;</span
+              ><span
+                style="
+                  width: 36pt;
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  display: inline-block;
+                "
+                >&#xa0;</span
+              ><span
+                style="
+                  width: 36pt;
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  display: inline-block;
+                "
+                >&#xa0;</span
+              ><span
+                style="
+                  width: 36pt;
+                  font-family: 'Arial Narrow';
+                  font-size: 9pt;
+                  display: inline-block;
+                "
+                >&#xa0;</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-weight: bold;
+                  text-decoration: underline;
+                  color: #ff0000;
+                "
+                id="refNum"
+              ></span>
+            </p>
+            <table
+              cellspacing="0"
+              cellpadding="0"
+              style="
+                width: 507.5pt;
+                margin-bottom: 0pt;
+                -aw-border-insideh: 0.5pt single #000000;
+                -aw-border-insidev: 0.5pt single #000000;
+                border-collapse: collapse;
+              "
+            >
+              <tr style="height: 25.3pt">
+                <td
+                  style="
+                    width: 140.75pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >□ NEW </span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                      >Client</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;&#xa0; </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >□ EXISTING Client</span
+                    ><span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Client Name</span
+                    ><span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;&#xa0;&#xa0; </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >_________________</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >□ Internal
+                    </span>
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 132.55pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >DT RECEIVED
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >REQUEST RECEIVED BY</span
+                    >
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 201.05pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >MODE OF REQUEST</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">□</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                    >
+                    </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                    >
+                      email</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'">□ </span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                      >text</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'">□ </span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                      >call</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 11.75pt">
+                <td
+                  style="
+                    width: 140.75pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >EMPLOYMENT STATUS</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ On Call /Reliever
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ Probationary</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ Special Project</span
+                    >
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 132.55pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >REQUISITION TYPE</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">□ External</span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">□ Internal </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 201.05pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >REASON</span
+                    ><span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >NO. OF VACANCIES</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >□ </span
+                    ><span style="font-family: 'Arial Narrow'">Replacement</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ Additional</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ New position</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 30.25pt">
+                <td
+                  rowspan="2"
+                  style="
+                    width: 140.75pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <a name="_Hlk32323319"
+                      ><span
+                        style="font-family: 'Arial Narrow'; font-weight: bold"
+                        >JOB LEVEL</span
+                      ></a
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ Rank and File</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'"
+                      >□ Supervisory</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">□ Skilled </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'"
+                      >□ Specialist </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">□ Managerial</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;&#xa0; </span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'">□ Executive</span
+                    ><span style="-aw-bookmark-end: _Hlk32323319"></span>
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 80.65pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >POSITION</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        color: #ff0000;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 103.25pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >REPORTING DATE
+                    </span>
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        color: #ff0000;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 138.9pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 21.1pt">
+                <td
+                  style="
+                    width: 80.65pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >SALARY RANGE</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        color: #ff0000;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  colspan="2"
+                  style="
+                    width: 103.25pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >WORK SCHEDULE</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        color: #ff0000;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 138.9pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 0pt">
+                <td style="width: 151.55pt"></td>
+                <td style="width: 91.45pt"></td>
+                <td style="width: 51.9pt"></td>
+                <td style="width: 62.15pt"></td>
+                <td style="width: 149.7pt"></td>
+              </tr>
+            </table>
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                >&#xa0;</span
+              >
+            </p>
+            <table
+              cellspacing="0"
+              cellpadding="0"
+              style="
+                width: 507.5pt;
+                margin-bottom: 0pt;
+                -aw-border-insideh: 0.5pt single #000000;
+                -aw-border-insidev: 0.5pt single #000000;
+                border-collapse: collapse;
+              "
+            >
+              <tr>
+                <td
+                  colspan="4"
+                  style="
+                    width: 495.95pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >JOB DESCRIPTION</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="4"
+                  style="
+                    width: 495.95pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >JOB QUALIFICATION</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      text-align: justify;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="4"
+                  style="
+                    width: 495.95pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >JOB SPECIFICIATION AND WORK EXPERIENCE</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="4"
+                  style="
+                    width: 495.95pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >PROFESSIONAL QUALIFICATION AND LICENSE</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 10pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 66.45pt">
+                <td
+                  style="
+                    width: 112.4pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >REQUESTING DEPARTMENT</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 106.85pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p
+                          style="
+                            margin-bottom: 0pt;
+                            font-size: 8pt;
+                            margin-left: -4px;
+                            font-size: 12px;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            id="requestor"
+                          ></span>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; font-style: italic"
+                      >Requesting Employee</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >APPROVED BY</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 106.85pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; font-style: italic"
+                      >Department Manager</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 116.75pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >RECEIVED AND REVIEWED
+                    </span>
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Human Resources Manager</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; font-style: italic"
+                      >(internal)</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Talent Acquisition Manager</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="font-family: 'Arial Narrow'; font-style: italic"
+                      >(exnternal)</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 102.6pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >For EXTERNAL
+                    </span>
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >RECEIVED AND REVIEWED
+                    </span>
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Client Relations</span
+                    ><span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;
+                    </span>
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >APPROVED BY</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Operations Manager
+                    </span>
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 131.8pt;
+                    border-style: solid;
+                    border-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border: 0.5pt single;
+                  "
+                >
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >for INTERNAL</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >RECEIVED AND REVIEWED
+                    </span>
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+                        <p
+                          style="
+                            margin-bottom: 0pt;
+                            font-size: 8pt;
+                            margin-left: -4px;
+                            font-size: 12px;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            id="VicePresident"
+                          ></span>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Senior Vice President and Chief Strategy Officer
+                    </span>
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >APPROVED BY</span
+                    >
+                  </p>
+                  <table
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="
+                      margin-bottom: 0pt;
+                      border: 0.75pt solid #000000;
+                      -aw-border: 0.5pt single;
+                      -aw-border-insideh: 0.5pt single #000000;
+                      -aw-border-insidev: 0.5pt single #000000;
+                      border-collapse: collapse;
+                    "
+                  >
+                    <tr style="height: 22.8pt">
+                      <td
+                        style="
+                          width: 89.45pt;
+                          padding-right: 5.03pt;
+                          padding-left: 5.03pt;
+                          vertical-align: top;
+                        "
+                      >
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+
+                        <p style="margin-bottom: 0pt; font-size: 8pt">
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            >&#xa0;</span
+                          >
+                        </p>
+
+                        <p
+                          style="
+                            margin-bottom: 0pt;
+                            font-size: 8pt;
+                            margin-left: -4px;
+                            font-size: 12px;
+                          "
+                        >
+                          <span
+                            style="
+                              font-family: 'Arial Narrow';
+                              font-weight: bold;
+                              -aw-import: ignore;
+                            "
+                            id="president"
+                          ></span>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >President and COO</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+            </table>
+            <p
+              style="
+                margin-bottom: 0pt;
+                text-align: justify;
+                font-size: 14pt;
+                background-color: #000000;
+              "
+            >
+              <span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-size: 11pt;
+                  font-weight: bold;
+                  font-style: italic;
+                  color: #ffffff;
+                "
+                >This portion should be filled out by</span
+              ><span
+                style="
+                  font-family: 'Arial Narrow';
+                  font-weight: bold;
+                  font-style: italic;
+                  color: #ffffff;
+                "
+              >
+                Human Resources or Talent Acquisition</span
+              >
+            </p>
+            <table
+              cellspacing="0"
+              cellpadding="0"
+              style="
+                width: 507.5pt;
+                margin-bottom: 0pt;
+                border: 0.75pt solid #000000;
+                -aw-border: 0.5pt single;
+                -aw-border-insideh: 0.5pt single #000000;
+                -aw-border-insidev: 0.5pt single #000000;
+                border-collapse: collapse;
+              "
+            >
+              <tr style="height: 17.2pt">
+                <td
+                  style="
+                    width: 242.35pt;
+                    border-right-style: solid;
+                    border-right-width: 0.75pt;
+                    border-bottom-style: solid;
+                    border-bottom-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border-bottom: 0.5pt single;
+                    -aw-border-right: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 242.8pt;
+                    border-left-style: solid;
+                    border-left-width: 0.75pt;
+                    border-bottom-style: solid;
+                    border-bottom-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border-bottom: 0.5pt single;
+                    -aw-border-left: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >DATE COMPLETED</span
+                    >
+                  </p>
+                </td>
+              </tr>
+              <tr style="height: 18.2pt">
+                <td
+                  style="
+                    width: 242.35pt;
+                    border-top-style: solid;
+                    border-top-width: 0.75pt;
+                    border-right-style: solid;
+                    border-right-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border-right: 0.5pt single;
+                    -aw-border-top: 0.5pt single;
+                  "
+                >
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'">S</span
+                    ><span
+                      style="
+                        line-height: 108%;
+                        font-family: 'Arial Narrow';
+                        font-size: 8pt;
+                        font-weight: bold;
+                      "
+                      >TATUS OF PRA</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >DT filled in /Date closed /Date completed</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >____________________________________</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >Closed by: Employee full name , DT</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >____________________________________</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+                <td
+                  style="
+                    width: 242.8pt;
+                    border-top-style: solid;
+                    border-top-width: 0.75pt;
+                    border-left-style: solid;
+                    border-left-width: 0.75pt;
+                    padding-right: 5.03pt;
+                    padding-left: 5.03pt;
+                    vertical-align: top;
+                    -aw-border-left: 0.5pt single;
+                    -aw-border-top: 0.5pt single;
+                  "
+                >
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span style="font-family: 'Arial Narrow'; font-weight: bold"
+                      >PBMS ENCODING</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ TA Pre-Hire</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'"
+                      >DT ____________________________________</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span style="font-family: 'Arial Narrow'"
+                      >□ HR Placement</span
+                    ><span
+                      style="font-family: 'Arial Narrow'; -aw-import: spaces"
+                      >&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span
+                    ><span style="font-family: 'Arial Narrow'"
+                      >DT ____________________________________</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 9pt;
+                    "
+                  >
+                    <span
+                      style="font-family: 'Arial Narrow'; -aw-import: ignore"
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p style="margin-bottom: 0pt; font-size: 8pt">
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: spaces;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                  <p
+                    style="
+                      margin-bottom: 0pt;
+                      line-height: 108%;
+                      font-size: 8pt;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: 'Arial Narrow';
+                        font-weight: bold;
+                        -aw-import: ignore;
+                      "
+                      >&#xa0;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+            </table>
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span style="-aw-import: ignore">&#xa0;</span>
+            </p>
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span style="-aw-import: ignore">&#xa0;</span>
+            </p>
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span style="-aw-import: ignore">&#xa0;</span>
+            </p>
+            <p style="margin-bottom: 0pt; font-size: 11pt">
+              <span style="-aw-import: ignore">&#xa0;</span>
+            </p>
+          </td>
+        </tr>
+      </table>
+      <p><span style="-aw-import: ignore">&#xa0;</span></p>
+      <div style="-aw-headerfooter-type: footer-primary; clear: both">
+        <p class="Footer" style="text-align: center; font-size: 10pt">
+          <span style="font-family: 'Arial Narrow'; font-style: italic"
+            >HR-FS-004-00</span
+          ><span
+            style="
+              width: 168.98pt;
+              font-family: 'Arial Narrow';
+              font-style: italic;
+              display: inline-block;
+              -aw-tabstop-align: center;
+              -aw-tabstop-pos: 234pt;
+            "
+            >&#xa0;</span
+          ><span
+            style="
+              width: 108.93pt;
+              font-family: 'Arial Narrow';
+              font-style: italic;
+              display: inline-block;
+              -aw-tabstop-align: right;
+              -aw-tabstop-pos: 468pt;
+            "
+            >&#xa0;</span
+          ><span style="font-family: 'Arial Narrow'; font-style: italic">
+            Effectivity Date: 10/19/2022</span
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

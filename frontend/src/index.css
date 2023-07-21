@@ -1,0 +1,502 @@
+@layer utilities {
+  /* This is for fucking recruitement portal*/
+  .new-applied {
+    background-color: #b5ead7;
+    border-color: #b5ead7;
+    border-style: solid;
+  }
+  .initial-interview {
+    background-color: #ffff6d;
+    border-color: #ffff6d;
+    border-style: solid;
+  }
+  .exam-interview {
+    background-color: #c7ceea;
+    border-color: #c7ceea;
+    border-style: solid;
+  }
+  .final-interview {
+    background-color: #ffcaaf;
+    border-color: #ffcaaf;
+    border-style: solid;
+  }
+  .queueing-interview {
+    background-color: #b5e51b;
+    border-color: #b5e51b;
+    border-style: solid;
+  }
+  .prehired-interview {
+    background-color: #dab894;
+    border-color: #dab894;
+    border-style: solid;
+  }
+
+  .placement-interview {
+    background-color: #c6e2e9;
+    border-color: #c6e2e9;
+    border-style: solid;
+  }
+  .pooling-interview {
+    background-color: #ff9aa2;
+    border-style: solid;
+    border-color: #ff9aa2;
+  }
+  /* end here*/
+
+  /* icons and for the circle colors in HrApplicantResume.jsx */
+  .bg-headerapplicationform {
+    background-color: #b7b7b7;
+  }
+  .new-appliedIcon {
+    color: #b5ead7;
+  }
+  .initial-interviewIcon {
+    color: #ffff6d;
+  }
+
+  .exam-icon {
+    color: #c7ceea;
+  }
+  .final-interviewIcon {
+    color: #ffcaaf;
+  }
+  .queueing-Icons {
+    color: #b5e51b;
+  }
+  .prehired-interviewIcon {
+    color: #dab894;
+  }
+  .placement-Icon {
+    color: #c6e2e9;
+  }
+  .pooling-Icon {
+    color: #ff9aa2;
+  }
+  /* employee management colors*/
+  .empmanage-border {
+    border-style: solid;
+    border-color: #327379;
+    background-color: #327379;
+  }
+  .emptext-color {
+    color: #707070;
+  }
+  .button-plus-fambg {
+    color: #327379;
+  }
+  .textempmanages {
+    color: #327379;
+    font-family: "Arial Narrow Bold";
+    font-size: 16.5px;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-skip-ink: none;
+  }
+  .textempmanage:hover {
+    color: #327379;
+    font-family: "Arial Narrow Bold";
+    font-size: 17px;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-skip-ink: none;
+  }
+  /* icons and for the circle colors in HrApplicantResume.jsx */
+
+  .try-custom {
+    @apply flex items-center mr-2 mt-2 justify-center text-[16px] rounded-sm w-22 h-8 shadow-sm border-[2.5px]  active:scale-1 active:duration-75 transition-all ease-in-out transition py-1 disabled:cursor-not-allowed;
+    border-color: #1e1d33;
+  }
+
+  .try-custom:hover {
+    border-color: #1e1d33;
+  }
+
+  .bg-icon {
+    background: transparent url("/imgs/arrowDown.png") no-repeat right center;
+    background-size: 20px;
+    cursor: pointer;
+  }
+
+  .bg-icon2 {
+    background: white url("/imgs/arrowDown.png") no-repeat right center;
+    background-size: 20px;
+    cursor: pointer;
+    color: black;
+  }
+
+  .border-spacing-4 {
+    border-spacing: 0 10px;
+  }
+  .border-spacing-5 {
+    border-spacing: 0 8px;
+  }
+  .prdc-color {
+    background-color: #1e1d33;
+  }
+  .prdc-color-hover {
+    border-color: #1e1d33;
+  }
+  .prdc-colors:hover {
+    background-color: #1e1d33;
+  }
+  .prdc-border {
+    border-color: #1e1d33;
+  }
+  .modal-pooling {
+    background-color: #e53935;
+  }
+  .modal-poolingtext {
+    color: #e53935;
+  }
+  .back-button {
+    background-color: #ab0000;
+  }
+  .backbutton-text {
+    color: #ab0000;
+  }
+  .border-pooled {
+    border-color: #e53935;
+  }
+  .borderFambackground {
+    background-color: #b7b7b7;
+  }
+  .modal-successappform {
+    background-color: #43a047;
+    color: #43a047;
+  }
+  .modal-successapptext {
+    color: #43a047;
+  }
+  .border-success {
+    border-color: #43a047;
+  }
+  .prdc-text {
+    color: #1e1d33;
+    border-color: #1e1d33;
+  }
+  .prdc-color-boarder {
+    border-color: #4d1e04;
+  }
+  .shadow-prdc-500 {
+    --tw-shadow-color: rgba(175, 93, 56, 255);
+    --tw-shadow: var(--tw-shadow-colored);
+  }
+  .backg-color-prdc {
+    background-color: #fffafa;
+  }
+
+  .bg-color-notification {
+    background-color: #af5d38;
+  }
+  .bg-color-prdc {
+    background-color: #e2d7bf;
+  }
+  .bg-pdf-color {
+    background-color: rgba(50, 54, 57, 1);
+  }
+  .gray-scale-image {
+    filter: grayscale(1);
+  }
+  .color-scale-image {
+    filter: none;
+  }
+  .navbar-menu-responsive {
+    @apply text-white items-center flex font-Roboto cursor-pointer transition-all duration-300 text-xl my-2 hover:(bg-red-500);
+  }
+  .pointer-clip-path {
+    clip-path: polygon(50% 0%, 3% 58%, 100% 59%);
+  }
+  .clip-path-disconnected {
+    clip-path: polygon(
+      19% 7%,
+      0% 20%,
+      14% 43%,
+      0% 80%,
+      15% 93%,
+      44% 95%,
+      82% 94%,
+      98% 74%,
+      93% 36%,
+      94% 22%,
+      78% 8%,
+      58% 12%
+    );
+  }
+  .color-1 {
+    background-color: #28b39e;
+  }
+  .color-black-alter {
+    background-color: #8ab2f1;
+  }
+  .arial-narrow {
+    font-family: "Arial Narrow";
+  }
+  .arial-narrow-bold {
+    font-family: "Arial Narrow Bold";
+  }
+  .arial-narrow-italic {
+    font-family: "Arial Narrow Italic";
+  }
+  .grid-column {
+    grid-template-columns: 330px auto;
+  }
+  .grid-row {
+    grid-template-rows: auto 180px;
+  }
+  .admin-sidebar-items {
+    @apply text-white mr-8 arial-narrow cursor-pointer hover:(text-yellow-400);
+  }
+  .admin-sidebar-icons {
+    @apply mr-3 text-[25px] hidden;
+  }
+  .user-reset-alignment {
+    @apply w-full flex text-black mt-2 px-4 justify-between font-Roboto dark:(text-white);
+  }
+  .user-reset-desc {
+    @apply inline-block w-[8rem];
+  }
+  /* ---------------------------------------------------------- */
+  .user-reset-item {
+    @apply w-60 border border-gray-500 rounded-md;
+  }
+  /* ---------------------------------------------------------- */
+  .admin-owner-div {
+    @apply flex my-3 h-8 relative;
+  }
+  .admin-owner-span {
+    @apply inline-block ml-3 w-[12rem] arial-narrow text-black;
+  }
+  .admin-owner-input {
+    @apply w-80 border h-7 border-black rounded-md bg-white focus:(outline-none);
+  }
+  .admin-owner-error-message {
+    @apply text-red-600 text-[12px] absolute right-0 -bottom-3 arial-narrow;
+  }
+  .admin-owner-button-submit {
+    @apply mt-10 bg-green-400 w-30 h-10 rounded-sm shadow-md text-slate-900 arial-narrow-bold text-[20px] shadow-gray-500 hover:(bg-green-600 border border-green-600) focus:(outline-none);
+  }
+  .admin-key-officer-header {
+    @apply arial-narrow-bold text-black text-[18px];
+  }
+  .admin-key-officer-text {
+    @apply arial-narrow text-[15px] mt-4 h-6 flex items-center;
+  }
+  .admin-officer-container {
+    @apply w-full flex flex-col;
+  }
+  .addUser-div {
+    @apply flex my-1;
+  }
+  .addUser-span {
+    @apply inline-block w-[10rem] text-[12px] arial-narrow-bold text-black;
+  }
+  .addUser-input {
+    @apply w-45 border h-5 border-black  bg-white focus:(outline-none);
+  }
+  .admin-dashboard-status-list {
+    @apply flex flex-col h-full overflow-auto p-2;
+  }
+  .admin-dashboard-status-container {
+    @apply border flex border-gray-700 flex-col;
+  }
+  .admin-dashboard-status-h1 {
+    @apply h-20 flex text-[20px] arial-narrow-bold border-b border-b-gray-700 w-full p-1 text-black;
+  }
+  .admin-dashboard-status-suspended {
+    @apply h-20 flex text-[20px] arial-narrow-bold border-b border-b-gray-700 w-full bg-black text-white p-1;
+  }
+  .admin-dashboard-chart-container {
+    @apply w-full h-50 p-2 flex border-gray-400 rounded-md border items-center justify-center;
+  }
+  .admin-navbar-container {
+    @apply h-15 w-screen prdc-color flex fixed z-50;
+  }
+  .admin-navbar-wrapper {
+    @apply h-full flex items-center justify-center w-full;
+  }
+  .admin-navbar-first-list {
+    @apply h-full flex items-center flex-2 justify-center;
+  }
+  .admin-navbar-second-list {
+    @apply flex-1 items-center justify-end w-full flex px-4;
+  }
+  .admin-navbar-mail-icon {
+    @apply text-[25px] cursor-pointer text-white hover:(text-yellow-400) <md:(text-[25px] mr-5);
+  }
+  .admin-navbar-notification-icon {
+    @apply mr-6 text-[25px] cursor-pointer text-white hover:(text-yellow-400) <md:(text-[25px] mr-2);
+  }
+  .admin-navbar-timestamp {
+    @apply w-30 text-left mr-5 ml-2 arial-narrow text-white;
+  }
+  .admin-navbar-user-icon {
+    @apply bg-yellow-500 text-black flex items-center justify-center text-center h-9 w-9 p-1 rounded-full cursor-pointer font-Roboto text-[25px] text-gray-700;
+  }
+  .admin-hover-container {
+    @apply bg-gray-600 w-35 overflow-auto rounded-md absolute right-4 top-12 flex flex-col text-center <md:(hidden);
+  }
+  .admin-account-setting-item {
+    @apply border-b text-white w-full border-black h-10 flex items-center justify-center cursor-pointer hover:(bg-gray-400 text-black);
+  }
+  .admin-logout-item {
+    @apply h-10 flex text-white items-center justify-center cursor-pointer hover:(bg-gray-400 text-black );
+  }
+  .admin-navbar-iconlist-2 {
+    @apply text-white text-[20px] mr-14 flex-col flex rounded-md items-center h-8 w-8 cursor-pointer justify-center hover:( text-yellow-400);
+  }
+  .admin-navbar-iconlist-1 {
+    @apply text-white text-[20px] mr-14 ml-5 flex-col flex h-8 w-8 rounded-md items-center cursor-pointer justify-center hover:( text-yellow-400);
+  }
+  .inter-word {
+    text-justify: inter-word;
+  }
+}
+
+/*CSS for LOGIN AND REGISTRATION ADMIN !!! */
+@layer utilities {
+  .admin-create-admin-container {
+    @apply bg-white h-screen flex items-center justify-center;
+  }
+  .admin-create-form-1 {
+    @apply shadow-lg shadow-gray-800 rounded-sm h-[380px] w-90 flex flex-col items-center  justify-center relative;
+  }
+  .admin-create-form-1-wrapper {
+    @apply flex flex-col  items-center justify-center relative;
+  }
+  .admin-create-form-1-input {
+    @apply h-7 border border-gray-600 w-60 my-3 outline-none rounded-sm focus:(outline-none);
+  }
+  .admin-create-form-1-button {
+    @apply bg-gray-900 text-white w-25 h-6 text-center arial-narrow-bold font-Roboto border-none rounded-sm mt-8 mr-15 outline-none focus:(outline-none);
+  }
+  .admin-create-form-2 {
+    @apply shadow-lg shadow-gray-800 rounded-sm h-[475px] w-100 flex flex-col items-center justify-center;
+  }
+  .admin-create-form-2-wrapper {
+    @apply flex flex-col relative items-center justify-center w-full h-full;
+  }
+  .admin-create-form-2-input-container {
+    @apply w-[70%] flex flex-col mb-3 relative;
+  }
+  .admin-create-form-2-input {
+    @apply border border-gray-500 arial-narrow rounded-md focus:(outline-none);
+  }
+  .admin-create-form-3-input-container {
+    @apply flex flex-col w-[70%] mb-4 relative;
+  }
+  .admin-create-form-3-input {
+    @apply border border-gray-700 rounded-md arial-narrow focus:(outline-none);
+  }
+}
+
+@font-face {
+  font-family: "Arial Narrow";
+  src: url(/public/fonts/ARIALN.TTF);
+}
+@font-face {
+  font-family: "Arial Narrow Bold";
+  src: url(/public/fonts/ARIALNB.TTF);
+}
+@font-face {
+  font-family: "Arial Narrow Italic";
+  src: url(/public/fonts/ARIALNI.TTF);
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fffdfd;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(172, 172, 173);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(172, 172, 173);
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+/* TRY KO CSS*/
+.img-svg {
+  filter: grayscale(100%) sepia(6%) hue-rotate(206deg) invert(10%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
