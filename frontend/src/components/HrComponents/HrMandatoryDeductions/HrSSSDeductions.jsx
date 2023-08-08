@@ -67,7 +67,11 @@ const HrSSSDeductions = () => {
           <span className="arial-narrow-bold text-black text-[30px] ">
             SOCIAL SECURITY SYSTEM
           </span>
-          <input type="file" onChange={handleFile} className="ml-5 absolute" />
+          <input
+            type="file"
+            onChange={handleFile}
+            className="ml-5 relative top-[-5px]"
+          />
         </div>
       </div>
 

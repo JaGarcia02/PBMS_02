@@ -28,13 +28,12 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
     designation: "",
     contract: "",
     companyAssigned: "",
+    companyDesignation: "",
     branch: "",
     salary: "",
     schedule: "",
-    biometricID: "",
   });
   const [incrementalvalue, setIncrementalValue] = useState(0);
-
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const [dateStart, setDateStart] = useState(null);
   const [dateHired, setDateHired] = useState(null);
@@ -70,40 +69,33 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
       .catch((err) => console.log(err));
   }, []);
 
+  console.log(dateHired);
   const saveData = () => {
     if (
+      applicantData.companyAssigned.trim() == "" ||
+      applicantData.branch.trim() == "" ||
       applicantData.department == "" ||
       applicantData.position == "" ||
-      applicantData.data.designation == "" ||
+      applicantData.designation == "" ||
+      applicantData.salary.trim() == "" ||
+      dateStart == "" ||
+      dateHired == "" ||
+      applicantData.schedule == "" ||
       applicantData.contract == "" ||
-      applicantData.companyAssigned == "" ||
-      applicantData.branch == "" ||
-      applicantData.salary == ""
+      applicantData.companyDesignation == ""
     ) {
       setIsEmpty(true);
-      alert(
-        "PBMS Sytem:\nAll input fields are empty, please fill the required fields below!"
-      );
+      console.log(dateHired);
     } else {
-      Logs(
-        "ADD",
-        `Emplacement of new Employee: (${
-          applicantInfo.firstname +
-          " " +
-          applicantInfo.middlename +
-          " " +
-          applicantInfo.lastname
-        })`
-      );
       axios
         .post(API_URL_HR + "hire-applicant", {
           Employee_LastName: applicantInfo.lastname,
           Employee_FirstName: applicantInfo.firstname,
           Employee_MiddleName: applicantInfo.middlename,
-          Employee_Company: "peso",
-          Employee_CompBranch: "peso",
+          Employee_Company: applicantData.companyAssigned,
+          Employee_CompBranch: applicantData.branch,
           Employee_email: applicantInfo.email,
-          Employee_Status: "Employed",
+          Employee_Status: applicantData.contract,
           Employee_address: applicantInfo.address,
           Employee_region: applicantInfo.region,
           Employee_province: applicantInfo.province,
@@ -120,8 +112,11 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
           Employee_Department: applicantData.department,
           Employee_JobDesc: applicantInfo.position,
           Employee_TypeContract: applicantData.contract,
-          Employee_Designation:
-            applicantData.designation == "IN" ? "Internal" : "External",
+          Employee_Designation: applicantData.companyDesignation,
+          Employee_Salary: applicantData.salary,
+          Employee_DateStart: dateStart,
+          Employee_DateHired: dateHired,
+          Employee_Schedule: applicantData.schedule,
         })
         .then((res) => {
           setShowModalSuccess(true);
@@ -133,8 +128,61 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
         })
         .catch((err) => console.log(err));
     }
+
+    // if (
+    //   applicantData.department == "" ||
+    //   applicantData.position == "" ||
+    //   applicantData.data.designation == "" ||
+    //   applicantData.contract == "" ||
+    //   applicantData.companyAssigned == "" ||
+    //   applicantData.branch == "" ||
+    //   applicantData.salary == ""
+    // ) {
+    //   setIsEmpty(true);
+    //   alert(
+    //     "PBMS Sytem:\nAll input fields are empty, please fill the required fields below!"
+    //   );
+    // } else {
+    // }
+    // Logs(
+    //   "ADD",
+    //   `Emplacement of new Employee: (${
+    //     applicantInfo.firstname +
+    //     " " +
+    //     applicantInfo.middlename +
+    //     " " +
+    //     applicantInfo.lastname
+    //   })`
+    // );
+    // axios
+    //   .post(API_URL_HR + "hire-applicant", {
+    //     Employee_LastName: applicantInfo.lastname,
+    //     Employee_FirstName: applicantInfo.firstname,
+    //     Employee_MiddleName: applicantInfo.middlename,
+    //     Employee_Company: "peso",
+    //     Employee_CompBranch: "peso",
+    //     Employee_email: applicantInfo.email,
+    //     Employee_Status: "Employed",
+    //     Employee_address: applicantInfo.address,
+    //     Employee_region: applicantInfo.region,
+    //     Employee_province: applicantInfo.province,
+    //     Employee_city: applicantInfo.city,
+    //     Employee_barangay: applicantInfo.barangay,
+    //     Employee_BirthDate: applicantInfo.birthdate,
+    //     Employee_ContactNum: applicantInfo.contactnum,
+    //     applicant_ID: applicantInfo.ID,
+    //     Employee_hasPbms: 0,
+    //     Employee_Suffix: applicantInfo.suffix,
+    //     Employee_Gender: applicantInfo.Gender,
+    //     Employee_Picture: applicantInfo.picture,
+    //     Employee_Position: applicantData.position,
+    //     Employee_Department: applicantData.department,
+    //     Employee_JobDesc: applicantInfo.position,
+    //     Employee_TypeContract: applicantData.contract,
+    //     Employee_Designation:
+    //       applicantData.designation == "IN" ? "Internal" : "External",
+    //   })
   };
-  console.log(applicantInfo);
   const SuccessModal = () => {
     return (
       <motion.div className="w-screen h-screen fixed flex items-center justify-center bg-black/50 top-0 left-0">
@@ -258,7 +306,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                           jobDesc: e.target.value,
                         })
                       }
-                      className="w-55 border border-black text-[14px] arial-narrow focus:outline-none"
+                      className="w-55 border border-gray-500 text-[14px] arial-narrow focus:outline-none"
                       id="jobdesig"
                     >
                       <option value={applicantInfo.position} selected hidden>
@@ -277,15 +325,16 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                   {/* Company Assigned */}
                   <div className="flex mb-2">
                     <input
-                      id="companyAssigned"
                       type="text"
+                      id="companyAssigned"
+                      placeholder="Company name"
                       onChange={(e) =>
                         setApplicantData({
                           ...applicantData,
                           companyAssigned: e.target.value,
                         })
                       }
-                      className={`border border-black h-6 w-55 text-[14px] px-2 rounded-sm arial-narrow focus:outline-none ${
+                      className={`border border-black w-55 text-[14px] arial-narrow h-6 px-1 focus:outline-none mr-2 ${
                         applicantData.companyAssigned == "" && isEmpty
                           ? "border-red-500"
                           : "border-gray-500"
@@ -298,13 +347,14 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                     <input
                       type="text"
                       id="branch"
+                      placeholder="Company branch"
                       onChange={(e) =>
                         setApplicantData({
                           ...applicantData,
                           branch: e.target.value,
                         })
                       }
-                      className={`border border-black text-[14px] px-2 h-6 w-55 focus:outline-none ${
+                      className={`border border-black text-[14px] px-1 h-6 w-55 focus:outline-none arial-narrow ${
                         applicantData.branch == "" && isEmpty
                           ? "border-red-500"
                           : "border-gray-500"
@@ -429,9 +479,14 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                     Schedule:
                   </span>
                 </div>
-                <div className="flex">
+                <div className="flex mb-3.5">
                   <span className="text-[18px] arial-narrow-bold">
                     Employement Status:
+                  </span>
+                </div>
+                <div className="flex">
+                  <span className="text-[18px] arial-narrow-bold">
+                    Company Designation:
                   </span>
                 </div>
               </div>
@@ -443,13 +498,14 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                   <input
                     type="number"
                     id="salary"
+                    placeholder="Employee salary"
                     onChange={(e) =>
                       setApplicantData({
                         ...applicantData,
                         salary: e.target.value,
                       })
                     }
-                    className={`border border-black w-55 text-[14px] arial-narrow h-6 px-2 focus:outline-none ${
+                    className={`border border-black w-55 text-[14px] arial-narrow h-6 px-1 focus:outline-none ${
                       applicantData.salary == "" && isEmpty
                         ? "border-red-500"
                         : "border-gray-500"
@@ -462,7 +518,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                   <input
                     id="dateHired"
                     type="date"
-                    className={`border px-2 border-black h-6 w-55 arial-narrow text-[15px] focus:outline-none ${
+                    className={`border px-1 border-black h-6 w-55 arial-narrow text-[14px] focus:outline-none ${
                       dateHired == null && isEmpty
                         ? "border-red-500"
                         : "border-gray-500"
@@ -477,7 +533,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                   <input
                     id="dateStart"
                     type="date"
-                    className={`border px-2 border-black h-6 w-55 arial-narrow text-[15px] focus:outline-none ${
+                    className={`border px-1 border-black h-6 w-55 arial-narrow text-[14px] focus:outline-none ${
                       dateStart == null && isEmpty
                         ? "border-red-500"
                         : "border-gray-500"
@@ -497,11 +553,31 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                         ? "border-red-500"
                         : "border-gray-500"
                     }`}
+                    onChange={(e) =>
+                      setApplicantData({
+                        ...applicantData,
+                        schedule: e.target.value,
+                      })
+                    }
                   >
                     <option value="">Select Schedule</option>
                     {schedule.map((data) => {
                       return (
-                        <option value={data.schedule_type}>
+                        <option
+                          value={
+                            data.schedule_type +
+                            " : " +
+                            data.schedule_workdayFrom +
+                            " - " +
+                            data.schedule_workdayTo +
+                            " | " +
+                            data.schedule_timeFrom +
+                            " - " +
+                            data.schedule_timeTo +
+                            " | " +
+                            data.schedule_restday
+                          }
+                        >
                           {data.schedule_type +
                             " : " +
                             data.schedule_workdayFrom +
@@ -535,7 +611,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                 </div>
                 {/* Schedule */}
                 {/* Emp Status */}
-                <div className="flex">
+                <div className="flex mb-2">
                   <select
                     id="empStatus"
                     onChange={(e) =>
@@ -565,6 +641,31 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                   </select>
                 </div>
                 {/* Emp Status */}
+
+                {/* Company Designation */}
+                <div className="flex">
+                  <select
+                    id="companyDesignation"
+                    className={`border border-black h-6 w-55 text-[14px]rounded-sm arial-narrow focus:outline-none ${
+                      applicantData.companyDesignation == "" && isEmpty
+                        ? "border-red-500"
+                        : "border-gray-500"
+                    }`}
+                    onChange={(e) =>
+                      setApplicantData({
+                        ...applicantData,
+                        companyDesignation: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="" hidden selected>
+                      Choose Company Designation
+                    </option>
+                    <option value="Internal">Internal</option>
+                    <option value="External">External</option>
+                  </select>
+                </div>
+                {/* Company Designation */}
               </div>
               {/* Input Fields */}
             </div>

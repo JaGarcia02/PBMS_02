@@ -24,8 +24,7 @@ const {
   getContractCategory,
   deleteContractCategory,
   updateContractCategory,
-  saveCutOff,
-  getCutOff,
+  save_summary,
   createSchedule,
   updateSchedule,
   deleteSchedule,
@@ -36,6 +35,11 @@ const {
   viewAllEmployeeStatus,
   viewByIdEmployeeStatus,
   deleteEmployeeStatus,
+  getTimeKeepingrecord,
+  create_cutoff,
+  delete_cuttOff,
+  view_cutoff_category,
+  save_timerecord,
 } = require("../Controller/HumanResource");
 const { route } = require("./AdminRoute");
 const { protect } = require("../Middleware/AdminMiddleware");
@@ -79,8 +83,13 @@ router.put("/update-employment-category/:ID", updateContractCategory);
 router.delete("/delete-employment-category/:ID", deleteContractCategory);
 
 //TIMEKEEPING
-router.post("/save-cutoff", saveCutOff);
-router.get("/get-cutdata", getCutOff);
+router.post("/save-cutoff", save_summary);
+router.get("/get-timekeepingrecord", getTimeKeepingrecord);
+router.post("/create-cutoff", create_cutoff);
+router.delete("/delete-cutoff/:ID", delete_cuttOff);
+router.get("/view-cutoff-category", view_cutoff_category);
+router.post("/create-timerecord", save_timerecord);
+
 //Employee SCHEDULE
 router.get("/view-all-schedule", getSchedule);
 router.get("/view-byID-schedule/:ID", getByIdSchedule);

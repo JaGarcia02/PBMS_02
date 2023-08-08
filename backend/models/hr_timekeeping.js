@@ -11,6 +11,38 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
+      OT: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      UT: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      ND: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      LWP: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      REGNS: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      OTNS: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      OTND: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      LATES: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
       ABSENT: {
         type: DataTypes.FLOAT,
         allowNull: true,

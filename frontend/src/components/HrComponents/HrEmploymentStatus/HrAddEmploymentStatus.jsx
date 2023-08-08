@@ -126,3 +126,10 @@ const HrAddEmploymentStatus = ({ setAddStatus, setDataStatus }) => {
 };
 
 export default HrAddEmploymentStatus;
+
+/*
+Validate button 285
+
+Payroll button  381
+className="mt-auto mx-auto w-28 bg-gray-800 rounded-none mb-2 text-white arial-narrow-bold"
+*/

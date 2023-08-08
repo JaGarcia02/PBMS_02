@@ -8,12 +8,13 @@ const {
   hr_timekeeping,
   hr_schedule,
   hr_employeeStatus,
+  hr_dtr,
+  hr_cutoffCategory,
 } = require("../models");
 const fs = require("fs");
 const { Op, where, QueryTypes } = require("sequelize");
 const db = require("../models/index");
 const uniqid = require("uniqid");
-const { create } = require("domain");
 
 //APPLICATION FORM
 const applyApplicants = async (req, res) => {
@@ -182,6 +183,9 @@ const hireApplicant = async (req, res) => {
     Employee_Department,
     Employee_JobDesc,
     Employee_TypeContract,
+    Employee_Schedule,
+    Employee_DateStart,
+    Employee_DateHired,
   } = req.body;
 
   try {
@@ -209,6 +213,9 @@ const hireApplicant = async (req, res) => {
       Employee_JobDesc,
       Employee_TypeContract,
       Employee_Designation,
+      Employee_Schedule,
+      Employee_DateStart,
+      Employee_DateHired,
     });
 
     await hr_employees.update(
@@ -630,17 +637,6 @@ const updateContractCategory = async (req, res) => {
   }
 };
 
-//TIMEKEEPING
-const saveCutOff = async (req, res) => {
-  const { timeKeepingData } = req.body;
-  try {
-    const cutOffData = await hr_timekeeping.bulkCreate(timeKeepingData);
-
-    return res.status(200).json(cutOffData);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
 // ********************* Employee Schedule ********************* //
 
 // Create Function
@@ -668,16 +664,6 @@ const createSchedule = async (req, res) => {
     });
     const updated_schedule = await hr_schedule.findAll({});
     return res.status(200).json(updated_schedule);
-  } catch (error) {
-    return res.status(500).json(error);
-  }
-};
-
-const getCutOff = async (req, res) => {
-  try {
-    const cut_data = await hr_timekeeping.findAll();
-
-    return res.status(200).json(cut_data);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -819,6 +805,74 @@ const deleteEmployeeStatus = async (req, res) => {
   }
 };
 
+// ********************* TIMEKEEPING ********************* //
+const save_summary = async (req, res) => {
+  // cutoff creation
+  const { timeKeepingData } = req.body;
+  try {
+    await hr_timekeeping.bulkCreate(timeKeepingData);
+    const createdCutOff = await hr_timekeeping.findAll({});
+    return res.status(200).json(createdCutOff);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+const save_timerecord = async (req, res) => {
+  try {
+    const { dtr } = req.body;
+    await hr_dtr.bulkCreate(dtr);
+    const data_timerecord = await hr_dtr.findAll({});
+    return res.status(200).json(data_timerecord);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+const getTimeKeepingrecord = async (req, res) => {
+  try {
+    const dtr = await hr_dtr.findAll();
+    const summary = await hr_timekeeping.findAll();
+
+    const obj = { data: { summary: summary, dtr: dtr } };
+
+    return res.status(200).json(obj);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+const view_cutoff_category = async (req, res) => {
+  try {
+    const created_cutOff = await hr_cutoffCategory.findAll({});
+    return res.status(200).json(created_cutOff);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+const create_cutoff = async (req, res) => {
+  try {
+    const { cutOff } = req.body;
+    await hr_cutoffCategory.create({ cutOff: cutOff });
+    const created_cutOff = await hr_cutoffCategory.findAll({});
+    return res.status(200).json(created_cutOff);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
+const delete_cuttOff = async (req, res) => {
+  try {
+    const { ID } = req.params;
+    await hr_cutoffCategory.destroy({ where: { ID: ID } });
+    const get_cutOff = await hr_cutoffCategory.findAll({});
+    return res.status(200).json(get_cutOff);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 module.exports = {
   applyApplicants,
   getApplicants,
@@ -841,8 +895,7 @@ module.exports = {
   getContractCategory,
   deleteContractCategory,
   updateContractCategory,
-  saveCutOff,
-  getCutOff,
+  save_summary,
   createSchedule,
   updateSchedule,
   deleteSchedule,
@@ -853,4 +906,9 @@ module.exports = {
   viewAllEmployeeStatus,
   viewByIdEmployeeStatus,
   deleteEmployeeStatus,
+  getTimeKeepingrecord,
+  create_cutoff,
+  delete_cuttOff,
+  view_cutoff_category,
+  save_timerecord,
 };

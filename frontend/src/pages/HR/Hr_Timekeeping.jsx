@@ -6,8 +6,16 @@ import { OutTable, ExcelRenderer } from "react-excel-renderer";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { MdAddCircle } from "react-icons/md";
+import { BsSearch, BsSave2Fill } from "react-icons/bs";
+import { AiFillSave, AiFillFileExcel, AiFillFileAdd } from "react-icons/ai";
 import HrTimeRecord from "../../components/HrComponents/HrTimekeeping/HrTimeRecord";
 import HrSummary from "../../components/HrComponents/HrTimekeeping/HrSummary";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import HrAddCutOff from "../../components/HrComponents/HrTimekeeping/HrAddCutOff";
+import HrAdjustment from "../../components/HrComponents/HrTimekeeping/HrAdjustment";
+import HrImportTimeRecord from "../../components/HrComponents/HrTimekeeping/HrImportTimeRecord";
+import HrImportSummary from "../../components/HrComponents/HrTimekeeping/HrImportSummary";
 
 const Hr_Timekeeping = () => {
   const { branding } = useSelector((state) => state.branding);
@@ -21,11 +29,18 @@ const Hr_Timekeeping = () => {
     ID: "",
     employee_data: [],
   });
+  const [addCutOffModal, setAddCutOffModal] = useState(false);
   const [dtr, setDtr] = useState([]);
   const [cutOffId, setCutOffId] = useState({
     dateStart: "",
     dateEnd: "",
   });
+  // import time record
+  const [openImportTR, setOpenImportTR] = useState(false);
+  // import summary
+  const [openImportSummary, setOpenImportSummary] = useState(false);
+
+  console.log(ObjFilter);
 
   useEffect(() => {
     axios
@@ -34,7 +49,7 @@ const Hr_Timekeeping = () => {
       .catch((err) => console.log(err));
 
     axios
-      .get(API_URL_HR + "get-cutdata")
+      .get(API_URL_HR + "get-timekeepingrecord")
       .then((res) => {
         setCutOff(res.data);
       })
@@ -57,70 +72,7 @@ const Hr_Timekeeping = () => {
     getRange(split[0], split[1], "days");
   }, [chosenDate]);
 
-  const handleFile = (e) => {
-    const file = e.target.files[0];
-    ExcelRenderer(file, (err, res) => {
-      if (err) {
-        console.log(err);
-      } else {
-        let newRows = [];
-        res.rows.slice(1).map((row, index) => {
-          if (row && row !== "undefined!") {
-            newRows.push({
-              Employee_ID: row[1],
-              REG: row[2],
-              LATES: row[3],
-              OT: row[4],
-            });
-          }
-        });
-
-        setExcelData(newRows);
-      }
-    });
-  };
-
-  const handleDTR = (e) => {
-    const file = e.target.files[0];
-    ExcelRenderer(file, (err, res) => {
-      if (err) {
-        console.log(err);
-      } else {
-        let newRows = [];
-        res.rows.slice(1).map((row, index) => {
-          if (row && row !== "undefined!") {
-            newRows.push({
-              Time: row[0],
-              Employee: row[1],
-            });
-          }
-        });
-
-        setDtr(newRows);
-      }
-    });
-  };
-
-  const SaveButton = () => {
-    const timeKeepingData = hrEmployee.map((data) => {
-      return {
-        cutOffID: cutOffId.dateStart + "_" + cutOffId.dateEnd,
-        REG: ExcelData.filter((fil) => fil.Employee_ID == data.Employee_ID)[0]
-          ?.REG,
-        ABSENT: ExcelData.filter(
-          (fil) => fil.Employee_ID == data.Employee_ID
-        )[0]?.ABSENT,
-        Employee_ID: ExcelData.filter(
-          (fil) => fil.Employee_ID == data.Employee_ID
-        )[0]?.Employee_ID,
-      };
-    });
-
-    axios
-      .post(API_URL_HR + "save-cutoff", { timeKeepingData })
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  };
+  // This is for the exel data to render
 
   const handleChange = (event, objectname, ID) => {
     let ObjIndex = ExcelData.findIndex((obj) => obj.Employee_ID == ID);
@@ -132,12 +84,11 @@ const Hr_Timekeeping = () => {
     setExcelData([...ExcelData]);
   };
 
-  console.log(ObjFilter);
-
   return (
     <div className="flex flex-col h-screen w-screen">
       <Navbar />
       <div className="flex h-full w-full flex-col mt-15 p-4 items-center max-h-[2000px] justify-center">
+        <ToastContainer />
         <div className="grid grid-cols-4 grid-rows-[75px,1fr] w-full h-full max-w-[2000px] gap-3">
           <div className="flex-[0.3] text-center flex flex-col border h-20 border-gray-700 justify-center text-black border-t-gray-700 border-t-4">
             <span className="arial-narrow-bold text-[25px]">Timekeeping</span>
@@ -155,19 +106,25 @@ const Hr_Timekeeping = () => {
               </div>
               <div className="flex items-center">
                 <span className="arial-narrow-bold text-black text-[15px] text-[15px] inline-block w-25">
-                  BRANCH:{" "}
+                  BRANCH:
                 </span>
                 <p className="text-[15px] arial-narrow text-black">Internal</p>
               </div>
             </div>
             <div className="flex-1 flex flex-col justify-center">
               <div className="flex items-center mb-3">
-                <span className=" arial-narrow-bold text-black text-[15px] inline-block w-25">
+                <button
+                  className="  arial-narrow-bold  text-black text-[14px] w-[100%] justify-center border-[2.5px] border-black rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none) active:duration-75 transition-all ease-in-out rounded-sm hover:(text-green-500 border-black)"
+                  onClick={() => setAddCutOffModal(true)}
+                >
+                  Create Cut-off
+                </button>
+                {/* <span className=" arial-narrow-bold text-black text-[15px] inline-block w-25">
                   ADD CUT-OFF:
                 </span>
                 <input
                   type="date"
-                  className="border border-gray-700 mr-2 h-4 text-[12px] arial-narrow"
+                  className="border border-gray-700 mr-2 h-5 w-22.1 text-[14px] arial-narrow px-1"
                   onChange={(e) =>
                     setCutOffId({
                       ...cutOffId,
@@ -178,7 +135,7 @@ const Hr_Timekeeping = () => {
                 {" - "}
                 <input
                   type="date"
-                  className="border border-gray-700 h-4 text-[12px] arial-narrow ml-2"
+                  className="border border-gray-700 h-5 w-22.1 text-[14px] arial-narrow ml-2 px-1"
                   onChange={(e) =>
                     setCutOffId({
                       ...cutOffId,
@@ -186,7 +143,10 @@ const Hr_Timekeeping = () => {
                     })
                   }
                 />
-                <MdAddCircle className="ml-2 text-gray-700 cursor-pointer" />
+                <MdAddCircle
+                  className="ml-2 text-gray-700 cursor-pointer hover:text-green-500"
+                  onClick={SaveButton}
+                /> */}
               </div>
               <div className="flex items-center">
                 <span className="arial-narrow-bold text-black text-[15px] inline-block w-25">
@@ -194,39 +154,79 @@ const Hr_Timekeeping = () => {
                 </span>
                 <select
                   onChange={(e) => setChosenDate(e.target.value)}
-                  className="text-[12px] w-50 arial-narrow h-4 border border-gray-700"
+                  className="text-[12px] w-50 arial-narrow h-5 border border-gray-700"
                 >
-                  {[...new Set(CutOff.map((item) => item.cutOffID))].map(
-                    (data) => (
-                      <option>{data}</option>
-                    )
-                  )}
+                  {[
+                    ...new Set(
+                      CutOff.data?.summary?.map((item) => item.cutOffID)
+                    ),
+                    <option selected hidden>
+                      Choose Cut off
+                    </option>,
+                  ].map((data) => (
+                    <option>{data}</option>
+                  ))}
                 </select>
               </div>
             </div>
             <div className="flex-1 flex flex-col">
-              <div className="flex flex-col justify-end items-end h-full">
+              <div className="flex justify-end items-center h-full">
+                {/* <label
+                  for="dtr-upload"
+                  className="w-[50%] bg-gray-700 text-white mr-2 arial-narrow cursor-pointer text-center mb-2"
+                >
+                  ADD TIME RECORD
+                </label>
                 <label
                   for="EmpSum"
                   className="w-[50%] bg-gray-700 text-white mr-2 arial-narrow cursor-pointer text-center mb-2"
                 >
                   IMPORT SUMMARY
                 </label>
-                <button className="w-[50%] bg-gray-700 rounded-none text-white mr-2 arial-narrow cursor-pointer text-center mb-2">
-                  PRINT
-                </button>
                 <input
                   id="EmpSum"
                   type="file"
                   className="hidden"
                   onChange={handleFile}
                 />
+                <input
+                  id="dtr-upload"
+                  type="file"
+                  onChange={handleDTR}
+                  className="hidden"
+                /> */}
+                <div className="flex flex-col justify-center items-center mr-2">
+                  <button
+                    className="prdc-color text-white arial-narrow-bold w-50 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
+                    onClick={() => setOpenImportTR(true)}
+                  >
+                    <AiFillFileAdd className="mr-2" />
+                    Import Time Record
+                  </button>
+                  <button
+                    className="prdc-color text-white arial-narrow-bold w-50 flex justify-center items-center focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
+                    onClick={() => setOpenImportSummary(true)}
+                  >
+                    <AiFillFileAdd className="mr-2" />
+                    Import Summary
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="border flex flex-col border-black h-full max-h-[1000px] overflow-auto border-b-4 border-b-gray-700">
             {/* TABLE FOR LIST OF EMPLOYEE */}
+            <div className="flex mt-1.5 ml-1 justify-start">
+              <span className="prdc-color text-white flex justify-center items-center w-8">
+                <BsSearch />
+              </span>
+              <input
+                type="text"
+                placeholder="Search. . ."
+                className="border border-black px-1 arial-narrow w-35 h-7 focus:outline-none text-[14px]"
+              />
+            </div>
             <table className="w-[100%] h-[10%] border-separate border-spacing-4 border-transparent -mt-2 overflow-hidden">
               <thead>
                 <tr className="shadow-sm shadow-gray-800  items-center justify-center prdc-color h-10 dark:(bg-blue-500) <md:(hidden)">
@@ -281,8 +281,8 @@ const Hr_Timekeeping = () => {
             </table>
             <div className="mt-auto flex items-center justify-center h-12 w-full">
               <button className="rounded-none w-[35%] bg-gray-800 text-white arial-narrow-bold">
-                VALIDATE
-              </button>{" "}
+                PAYROLL
+              </button>
             </div>
           </div>
           {/* TABLE FOR LIST OF DATES ACCORDING TO CUT OFF CHOSEN */}
@@ -291,7 +291,15 @@ const Hr_Timekeeping = () => {
               <HrTimeRecord
                 cutList={cutList}
                 dtr={dtr}
-                handleDTR={handleDTR}
+                CutOff={CutOff}
+                ObjFilter={ObjFilter}
+                setToggle={setToggle}
+              />
+            ) : toggle == 2 ? (
+              <HrAdjustment
+                cutList={cutList}
+                dtr={dtr}
+                CutOff={CutOff}
                 ObjFilter={ObjFilter}
                 setToggle={setToggle}
               />
@@ -301,6 +309,7 @@ const Hr_Timekeeping = () => {
                 ExcelData={ExcelData}
                 ObjFilter={ObjFilter}
                 chosenDate={chosenDate}
+                CutOff={CutOff}
               />
             ) : (
               ""
@@ -312,11 +321,13 @@ const Hr_Timekeeping = () => {
                 EMPLOYEE'S INFORMATION
               </span>
             </div>
+
+            {/* Name */}
             <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
                 NAME:
               </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
+              <p className="text-[15px] arial-narrow-bold text-black ml-6">
                 {ObjFilter.ID !== ""
                   ? ObjFilter.employee_data.Employee_LastName +
                     ", " +
@@ -327,28 +338,34 @@ const Hr_Timekeeping = () => {
                   : " "}
               </p>
             </div>
+
+            {/* Position */}
             <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
                 POSITION:
               </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
+              <p className="text-[15px] arial-narrow-bold text-black ml-6">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_JobDesc
                   : " "}
               </p>
             </div>
+
+            {/* Contract */}
             <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
                 CONTRACT:
               </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
+              <p className="text-[15px] arial-narrow-bold text-black ml-6">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_TypeContract
                   : " "}
               </p>
             </div>
+
+            {/* Schedule Type */}
             <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+              <span className=" arial-narrow text-black text-[15px] inline-block w-27">
                 SCHEDULE TYPE:
               </span>
               <p className="text-[15px] arial-narrow-bold text-black">
@@ -357,79 +374,65 @@ const Hr_Timekeeping = () => {
                   : " "}
               </p>
             </div>
-            <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+
+            {/* Schedule */}
+            <div className="flex items-center justify-between p-4">
+              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
                 SCHEDULE:
               </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
+              <p className="text-[12px] arial-narrow-bold text-black w-50 text-center">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_Schedule
                   : " "}
               </p>
             </div>
+
+            {/* Basic Pay */}
             <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-25">
+              <span className="arial-narrow text-black text-[15px] inline-block w-20">
                 BASIC PAY:
               </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
+              <p className="text-[15px] arial-narrow-bold text-black ml-6">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_Salary
                   : " "}
               </p>
             </div>
-            <button className="mt-auto mx-auto w-28 bg-gray-800 rounded-none mb-2 text-white arial-narrow-bold">
-              PAYROLL
-            </button>
+
+            {/* Buttons */}
+            <div className="flex mt-auto mx-auto justify-center items-center">
+              <button className="w-28 bg-gray-800 rounded-none mb-2 text-white arial-narrow-bold mr-2">
+                PRINT
+              </button>
+
+              <button className="w-28 bg-gray-800 rounded-none mb-2 text-white arial-narrow-bold">
+                VALIDATE
+              </button>
+            </div>
           </div>
         </div>
-
-        {/*ExcelData.filter((fil) => fil.Employee_ID == ObjFilter).map((dat) => (
-          <>
-            <p>{dat.Employee_LastName}</p>
-            <input
-              className=""
-              value={dat.REG}
-              onChange={(e) =>
-                handleChange(e.target.value, "REG", dat.Employee_ID)
-              }
-            />
-          </>
-            ))*/}
-        {/* <button onClick={SaveButton}>Save</button>
-        <table>
-          <tr>
-            <th>Dates</th>
-            <th>In</th>
-            <th>Out</th>
-            <th>In</th>
-            <th>Out</th>
-          </tr>
-          {cutList.map((dates) => (
-            <tr>
-              <td>{moment(dates).format("MMM-DD-YYYY, ddd")}</td>
-              {dtr
-                .sort((before, after) =>
-                  moment(before.Time).diff(moment(after.Time))
-                )
-                .filter(
-                  (fil, index, self) =>
-                    moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
-                      moment(dates).format("MMM-DD-YYYY, ddd") &&
-                    fil.Employee == ObjFilter &&
-                    index ==
-                      self.findIndex(
-                        (t) =>
-                          moment(fil.Time).diff(moment(t.Time), "minutes") <=
-                            5 && fil.Employee == t.Employee
-                      )
-                )
-                .map((time) => (
-                  <td>{moment(time.Time).format("hh:mm a")}</td>
-                ))}
-            </tr>
-          ))}
-        </table> */}
       </div>
+      {addCutOffModal && <HrAddCutOff setAddCutOffModal={setAddCutOffModal} />}
+      {openImportTR && (
+        <HrImportTimeRecord
+          setOpenImportTR={setOpenImportTR}
+          setHrEmployee={setHrEmployee}
+          setCutOff={setCutOff}
+          setDtr={setDtr}
+          dtr={dtr}
+          cutList={cutList}
+        />
+      )}
+      {openImportSummary && (
+        <HrImportSummary
+          setOpenImportSummary={setOpenImportSummary}
+          setCutOff={setCutOff}
+          hrEmployee={hrEmployee}
+          setHrEmployee={setHrEmployee}
+          ExcelData={ExcelData}
+          setExcelData={setExcelData}
+        />
+      )}
     </div>
   );
 };

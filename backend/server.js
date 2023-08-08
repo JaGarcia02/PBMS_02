@@ -26,7 +26,6 @@ app.use("/api/admin", AdminRoute);
 app.use("/api/users", UserRoutes);
 app.use("/api/hr", HRroutes);
 app.use("/api/form", SystemForms);
-
 app.use("/api/system", SystemRouter);
 
 app.use("/local_resumes", express.static("local_Resumes"));

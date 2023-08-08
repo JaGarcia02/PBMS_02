@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import FormValidation from "../../components/AdminDeptComponents/FormValidation";
 import Forms from "../../components/AdminDeptComponents/Forms";
 import HrUserManagement from "../../components/HrComponents/HrUserManagement";
+import HrResetUser from "../../components/HrComponents/HrUserManagement/HrResetUser";
 
 const Hr_ViewValidate = () => {
   const [validateModal, setValidateModal] = useState(false);

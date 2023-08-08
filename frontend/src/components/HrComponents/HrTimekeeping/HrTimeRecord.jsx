@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const HrTimeRecord = ({ cutList, dtr, handleDTR, ObjFilter, setToggle }) => {
+const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
   return (
     <>
       <div className="grid w-full grid-cols-7 p-1">
@@ -26,6 +26,7 @@ const HrTimeRecord = ({ cutList, dtr, handleDTR, ObjFilter, setToggle }) => {
             className="w-30 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
           >
             <option value={1}>BIOMETRICS</option>
+            <option value={2}>ADJUSTMENT</option>
             <option value={3}>SUMMARY</option>
           </select>
         </div>
@@ -37,20 +38,20 @@ const HrTimeRecord = ({ cutList, dtr, handleDTR, ObjFilter, setToggle }) => {
                   {moment(dates).format("MM-DD-YYYY, ddd")}
                 </p>
 
-                {dtr
-                  .sort((before, after) =>
+                {CutOff.data?.dtr
+                  ?.sort((before, after) =>
                     moment(before.Time).diff(moment(after.Time))
                   )
                   .filter(
                     (fil, index, self) =>
                       moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
                         moment(dates).format("MMM-DD-YYYY, ddd") &&
-                      fil.Employee == ObjFilter.ID &&
+                      fil.BioID == ObjFilter.ID &&
                       index ==
                         self.findIndex(
                           (t) =>
                             moment(fil.Time).diff(moment(t.Time), "minutes") <=
-                              5 && fil.Employee == t.Employee
+                              5 && fil.BioID == t.BioID
                         )
                   )
                   .map((time) => (
@@ -63,19 +64,6 @@ const HrTimeRecord = ({ cutList, dtr, handleDTR, ObjFilter, setToggle }) => {
           ))}
         </div>
       </div>
-
-      <label
-        for="dtr-upload"
-        className="w-[27%] mt-auto ml-auto mr-3 bg-gray-800 text-white arial-narrow-bold cursor-pointer mb-3 h-7 text-center flex items-center justify-center"
-      >
-        ADD TIME RECORD
-      </label>
-      <input
-        id="dtr-upload"
-        type="file"
-        onChange={handleDTR}
-        className="hidden"
-      />
     </>
   );
 };

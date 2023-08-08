@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      Employee_DateHired: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       Employee_CompanyEmail: {
         type: DataTypes.STRING,
         allowNull: true,
