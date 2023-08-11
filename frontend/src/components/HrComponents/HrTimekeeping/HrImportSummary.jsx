@@ -133,11 +133,16 @@ const HrImportSummary = ({
     axios
       .post(API_URL_HR + "save-cutoff", { timeKeepingData })
       .then((res) => {
-        console.log(res.data);
+        axios
+          .get(API_URL_HR + "get-timekeepingrecord")
+          .then((res) => {
+            setCutOff(res.data);
+          })
+          .catch((err) => console.log(err));
         Success_Notification();
-        setTimeout(() => {
-          window.location.reload();
-        }, 2500);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2500);
       })
       .catch((err) => console.log(err));
   };

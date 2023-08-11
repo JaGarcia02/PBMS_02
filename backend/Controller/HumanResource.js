@@ -807,7 +807,6 @@ const deleteEmployeeStatus = async (req, res) => {
 
 // ********************* TIMEKEEPING ********************* //
 const save_summary = async (req, res) => {
-  // cutoff creation
   const { timeKeepingData } = req.body;
   try {
     await hr_timekeeping.bulkCreate(timeKeepingData);

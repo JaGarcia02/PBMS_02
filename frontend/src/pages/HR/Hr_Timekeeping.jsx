@@ -6,7 +6,7 @@ import { OutTable, ExcelRenderer } from "react-excel-renderer";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { MdAddCircle } from "react-icons/md";
-import { BsSearch, BsSave2Fill } from "react-icons/bs";
+import { BsSearch, BsSave2Fill, BsFillCalendarPlusFill } from "react-icons/bs";
 import { AiFillSave, AiFillFileExcel, AiFillFileAdd } from "react-icons/ai";
 import HrTimeRecord from "../../components/HrComponents/HrTimekeeping/HrTimeRecord";
 import HrSummary from "../../components/HrComponents/HrTimekeeping/HrSummary";
@@ -31,16 +31,16 @@ const Hr_Timekeeping = () => {
   });
   const [addCutOffModal, setAddCutOffModal] = useState(false);
   const [dtr, setDtr] = useState([]);
-  const [cutOffId, setCutOffId] = useState({
-    dateStart: "",
-    dateEnd: "",
-  });
+  // const [cutOffId, setCutOffId] = useState({
+  //   dateStart: "",
+  //   dateEnd: "",
+  // });
   // import time record
   const [openImportTR, setOpenImportTR] = useState(false);
   // import summary
   const [openImportSummary, setOpenImportSummary] = useState(false);
 
-  console.log(ObjFilter);
+  console.log(cutList);
 
   useEffect(() => {
     axios
@@ -114,9 +114,10 @@ const Hr_Timekeeping = () => {
             <div className="flex-1 flex flex-col justify-center">
               <div className="flex items-center mb-3">
                 <button
-                  className="  arial-narrow-bold  text-black text-[14px] w-[100%] justify-center border-[2.5px] border-black rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none) active:duration-75 transition-all ease-in-out rounded-sm hover:(text-green-500 border-black)"
+                  className="  arial-narrow-bold prdc-color  text-white text-[14px] w-[100%] justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
                   onClick={() => setAddCutOffModal(true)}
                 >
+                  <BsFillCalendarPlusFill className="mr-2" />
                   Create Cut-off
                 </button>
                 {/* <span className=" arial-narrow-bold text-black text-[15px] inline-block w-25">
@@ -157,9 +158,7 @@ const Hr_Timekeeping = () => {
                   className="text-[12px] w-50 arial-narrow h-5 border border-gray-700"
                 >
                   {[
-                    ...new Set(
-                      CutOff.data?.summary?.map((item) => item.cutOffID)
-                    ),
+                    ...new Set(CutOff.data?.dtr?.map((item) => item.cutOffID)),
                     <option selected hidden>
                       Choose Cut off
                     </option>,
@@ -195,21 +194,21 @@ const Hr_Timekeeping = () => {
                   onChange={handleDTR}
                   className="hidden"
                 /> */}
-                <div className="flex flex-col justify-center items-center mr-2">
+                <div className="flex flex-col justify-center items-center mr-2 h-[100%]">
                   <button
-                    className="prdc-color text-white arial-narrow-bold w-50 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
+                    className="prdc-color text-white arial-narrow-bold h-7 w-50 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
                     onClick={() => setOpenImportTR(true)}
                   >
                     <AiFillFileAdd className="mr-2" />
                     Import Time Record
                   </button>
-                  <button
-                    className="prdc-color text-white arial-narrow-bold w-50 flex justify-center items-center focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
+                  {/* <button
+                    className="prdc-color text-white arial-narrow-bold h-7 w-50 flex justify-center items-center focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
                     onClick={() => setOpenImportSummary(true)}
                   >
                     <AiFillFileAdd className="mr-2" />
                     Import Summary
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -310,6 +309,7 @@ const Hr_Timekeeping = () => {
                 ObjFilter={ObjFilter}
                 chosenDate={chosenDate}
                 CutOff={CutOff}
+                cutList={cutList}
               />
             ) : (
               ""
@@ -416,11 +416,14 @@ const Hr_Timekeeping = () => {
       {openImportTR && (
         <HrImportTimeRecord
           setOpenImportTR={setOpenImportTR}
+          hrEmployee={hrEmployee}
           setHrEmployee={setHrEmployee}
+          CutOff={CutOff}
           setCutOff={setCutOff}
           setDtr={setDtr}
           dtr={dtr}
           cutList={cutList}
+          ObjFilter={ObjFilter}
         />
       )}
       {openImportSummary && (

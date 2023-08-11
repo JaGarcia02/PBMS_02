@@ -45,6 +45,15 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
       theme: "colored",
     });
   };
+  const notify_createCutoff = () => {
+    toast.success(" Cut-off Created!", {
+      position: "bottom-right",
+      hideProgressBar: true,
+      autoClose: 5000,
+      pauseOnHover: false,
+      theme: "colored",
+    });
+  };
 
   const Add_CutOff = (e) => {
     e.preventDefault();
@@ -57,7 +66,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
       })
       .then((res) => {
         setCutOffData(res.data);
-        alert("Cutoff Created!");
+        notify_createCutoff();
       })
       .catch((err) => console.log(err));
   };

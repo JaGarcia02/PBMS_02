@@ -10,7 +10,7 @@ import {
   BsFillTrashFill,
 } from "react-icons/bs";
 import { FaSearch, FaTimes } from "react-icons/fa";
-import { BiSave } from "react-icons/bi";
+import { BiSave, BiEdit } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -26,10 +26,86 @@ const HrImportTimeRecord = ({
   setCutOff,
   setDtr,
   dtr,
+  hrEmployee,
+  CutOff,
   cutList,
+  ObjFilter,
 }) => {
+  const [cutOffDate, setCutOffDate] = useState([]);
+  const [cutoffId, setCutOffId] = useState("");
+  const [chosenDate, setChosenDate] = useState("");
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
+
+  function getRange(startDate, endDate, type) {
+    let fromDate = moment(startDate);
+    let toDate = moment(endDate);
+    let diff = toDate.diff(fromDate, type);
+    let range = [];
+    for (let i = 0; i <= diff; i++) {
+      range.push(moment(startDate).add(i, type));
+    }
+    setCutOffId(range.map((item) => item._d));
+  }
+
+  useEffect(() => {
+    const split = chosenDate.split("_");
+    getRange(split[0], split[1], "days");
+  }, [chosenDate]);
+
+  console.log(cutList);
+
+  // const dtr_data = dtr
+  //   ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+  //   .filter(
+  //     (fil, index, self) =>
+  //       moment(fil.Time).format("MMM-DD-YYYY, ddd") &&
+  //       fil.BioID &&
+  //       index ==
+  //         self.findIndex(
+  //           (t) =>
+  //             moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+  //             fil.BioID == t.BioID
+  //         )
+  //   )
+  //   .map((time) => time.Time);
+
+  // // console.log(dtr_data);
+  // console.log(cutList);
+
+  // console.log(
+  //   dtr
+  //     ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+  //     .filter(
+  //       (fil, index, self) =>
+  //         moment(fil.Time).format("MMM-DD-YYYY") &&
+  //         fil.BioID &&
+  //         index ==
+  //           self.findIndex(
+  //             (t) =>
+  //               moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+  //               fil.BioID == t.BioID
+  //           )
+  //     )
+  //     .map((time) => moment(time.Time).format("MM-DD-YYYY, HH:mm"))
+  // );
+
+  // console.log(
+  //   CutOff.data?.dtr
+  //     ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+  //     .filter(
+  //       (fil, index, self) =>
+  //         moment(fil.Time).format("MMM-DD-YYYY, ddd") &&
+  //         fil.BioID == ObjFilter.employee_data.Employee_BioID &&
+  //         index ==
+  //           self.findIndex(
+  //             (t) =>
+  //               moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+  //               fil.BioID == t.BioID
+  //           )
+  //     )
+  //     .map((time) => moment(time.Time).format("HH:mm"))
+  // );
 
   useEffect(() => {
     axios
@@ -43,6 +119,16 @@ const HrImportTimeRecord = ({
         setCutOff(res.data);
       })
       .catch((err) => console.log(err));
+
+    axios
+      .get(API_URL_HR + "view-cutoff-category")
+      .then((res) => {
+        setCutOffDate(res.data);
+        console.log(cutOffDate);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const Import_TimeRecord = (e) => {
@@ -68,9 +154,24 @@ const HrImportTimeRecord = ({
 
   const TR_save = (e) => {
     e.preventDefault();
+
+    const dtr_data = dtr.map((data) => {
+      return {
+        cutOffID: cutoffId,
+        Time: data.Time,
+        BioID: data.BioID,
+      };
+    });
+
     axios
-      .post(API_URL_HR + "create-timerecord", { dtr: dtr })
+      .post(API_URL_HR + "create-timerecord", { dtr: dtr_data })
       .then((res) => {
+        axios
+          .get(API_URL_HR + "get-timekeepingrecord")
+          .then((res) => {
+            setCutOff(res.data);
+          })
+          .catch((err) => console.log(err));
         notify_removeCutoff();
         document.getElementById("importTR").value = "";
       })
@@ -133,7 +234,22 @@ const HrImportTimeRecord = ({
 
             <div>
               <form action="" onSubmit={TR_save}>
-                <div className="w-[100%]">
+                <div className="w-[100%] flex ">
+                  <select
+                    name=""
+                    id=""
+                    required
+                    onChange={(e) => setCutOffId(e.target.value)}
+                    className="border border-black ml-1 focus:(outline-none) arial-narrow px-1"
+                  >
+                    <option value="" selected disabled>
+                      Select Cutoff Date
+                    </option>
+                    {cutOffDate.map((data) => {
+                      return <option value={data.cutOff}>{data.cutOff}</option>;
+                    })}
+                  </select>
+
                   <input
                     id="importTR"
                     type="file"
@@ -155,14 +271,50 @@ const HrImportTimeRecord = ({
             </div>
 
             <div className="flex justify-center items-center">
-              <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
+              <div className="grid w-full grid-cols-7 p-1">
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+                  Date
+                </div>
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+                  IN
+                </div>
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+                  OUT
+                </div>
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+                  IN
+                </div>
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+                  OUT
+                </div>
+                <div className="prdc-color text-white arial-narrow-bold text-[12px] pr-2 h-[2.6rem] flex items-center justify-end shadow-sm shadow-gray-900 col-span-2">
+                  {/* <select
+                    onChange={(e) => setToggle(e.target.value)}
+                    className="w-30 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
+                  >
+                    <option value={1}>BIOMETRICS</option>
+                    <option value={2}>ADJUSTMENT</option>
+                    <option value={3}>SUMMARY</option>
+                  </select> */}
+                </div>
+                <div className="col-span-full my-2">
+                  {cutOffDate.map((dates) => (
+                    <>
+                      <div>
+                        <p>{moment(dates.cutOff).format("MM-DD-YYYY, ddd")}</p>
+                      </div>
+                    </>
+                  ))}
+                </div>
+              </div>
+              {/* <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
                 <thead>
                   <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center">
                     <th className="w-[50%] text-white">
                       <span>Time</span>
                     </th>
                     <th className="w-[50%] text-white">
-                      <span>BoiId</span>
+                      <span>Bio Id</span>
                     </th>
                   </tr>
                 </thead>
@@ -185,7 +337,7 @@ const HrImportTimeRecord = ({
                     })}
                   </div>
                 </tbody>
-              </table>
+              </table> */}
             </div>
           </div>
 

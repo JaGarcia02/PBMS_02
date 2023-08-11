@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
+import HrEditSummary from "./HrEditSummary";
+import { BiSave, BiEdit } from "react-icons/bi";
 
-const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff }) => {
+const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff, cutList }) => {
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+
   return (
     <>
       <div className="flex flex-col w-full  p-1 items-center">
@@ -19,6 +23,20 @@ const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff }) => {
           </select>
         </div>
         <div className="w-[90%] flex flex-col mt-4">
+          {/* Button Edit */}
+          <div className="flex w-[100%] mb-5 mt-2">
+            {cutList != "" ? (
+              <button
+                className="w-35 h-7 prdc-color text-white flex justify-center items-center arial-narrow-bold transition ease-in-out duration-[0.5s] hover:(bg-white text-black border-[2px] border-black)"
+                onClick={() => setOpenModalEdit(true)}
+              >
+                <BiEdit className="mr-1" />
+                Edit Summary
+              </button>
+            ) : (
+              ""
+            )}
+          </div>
           <span className="text-[15px] ml-1 arial-narrow-bold text-black">
             REGULAR
           </span>
@@ -420,6 +438,13 @@ const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff }) => {
               ))}
           </table>
         </div>
+        {openModalEdit && (
+          <HrEditSummary
+            setOpenModalEdit={setOpenModalEdit}
+            ObjFilter={ObjFilter}
+            CutOff={CutOff}
+          />
+        )}
       </div>
     </>
   );

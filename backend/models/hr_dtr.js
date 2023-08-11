@@ -3,6 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "hr_dtr",
     {
       ID: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      cutOffID: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       Time: { type: DataTypes.STRING, allowNull: true },
       BioID: { type: DataTypes.STRING, allowNull: true },
     },

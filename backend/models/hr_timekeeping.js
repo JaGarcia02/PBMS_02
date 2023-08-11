@@ -47,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
+      BioID: { type: DataTypes.STRING, allowNull: true },
       Employee_ID: {
         type: DataTypes.STRING,
         allowNull: false,

@@ -46,7 +46,7 @@ const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
                     (fil, index, self) =>
                       moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
                         moment(dates).format("MMM-DD-YYYY, ddd") &&
-                      fil.BioID == ObjFilter.ID &&
+                      fil.BioID == ObjFilter.employee_data.Employee_BioID &&
                       index ==
                         self.findIndex(
                           (t) =>
@@ -54,11 +54,15 @@ const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
                               5 && fil.BioID == t.BioID
                         )
                   )
-                  .map((time) => (
-                    <p className="arial-narrow text-[12px] w-[15%] text-black">
-                      {moment(time.Time).format("HH:mm")}
-                    </p>
-                  ))}
+                  .map((time) => {
+                    return (
+                      <>
+                        <p className="arial-narrow text-[12px] w-[15%] text-black">
+                          {moment(time.Time).format("HH:mm")}
+                        </p>
+                      </>
+                    );
+                  })}
               </div>
             </>
           ))}
