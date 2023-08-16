@@ -31,16 +31,14 @@ const Hr_Timekeeping = () => {
   });
   const [addCutOffModal, setAddCutOffModal] = useState(false);
   const [dtr, setDtr] = useState([]);
-  // const [cutOffId, setCutOffId] = useState({
-  //   dateStart: "",
-  //   dateEnd: "",
-  // });
+  const [cutOffId, setCutOffId] = useState({
+    dateStart: "",
+    dateEnd: "",
+  });
   // import time record
   const [openImportTR, setOpenImportTR] = useState(false);
   // import summary
   const [openImportSummary, setOpenImportSummary] = useState(false);
-
-  console.log(cutList);
 
   useEffect(() => {
     axios
@@ -133,7 +131,6 @@ const Hr_Timekeeping = () => {
                     })
                   }
                 />
-                {" - "}
                 <input
                   type="date"
                   className="border border-gray-700 h-5 w-22.1 text-[14px] arial-narrow ml-2 px-1"
@@ -146,7 +143,7 @@ const Hr_Timekeeping = () => {
                 />
                 <MdAddCircle
                   className="ml-2 text-gray-700 cursor-pointer hover:text-green-500"
-                  onClick={SaveButton}
+                  // onClick={SaveButton}
                 /> */}
               </div>
               <div className="flex items-center">
@@ -172,11 +169,18 @@ const Hr_Timekeeping = () => {
               <div className="flex justify-end items-center h-full">
                 {/* <label
                   for="dtr-upload"
-                  className="w-[50%] bg-gray-700 text-white mr-2 arial-narrow cursor-pointer text-center mb-2"
+                  className="w-[75%] bg-gray-700 mr-8 text-white arial-narrow-bold cursor-pointer text-center mb-2"
                 >
                   ADD TIME RECORD
                 </label>
-                <label
+                <input
+                  id="dtr-upload"
+                  type="file"
+                  // onChange={handleDTR}
+                  className="hidden"
+                /> */}
+
+                {/* <label
                   for="EmpSum"
                   className="w-[50%] bg-gray-700 text-white mr-2 arial-narrow cursor-pointer text-center mb-2"
                 >
@@ -186,14 +190,9 @@ const Hr_Timekeeping = () => {
                   id="EmpSum"
                   type="file"
                   className="hidden"
-                  onChange={handleFile}
-                />
-                <input
-                  id="dtr-upload"
-                  type="file"
-                  onChange={handleDTR}
-                  className="hidden"
+                  // onChange={handleFile}
                 /> */}
+
                 <div className="flex flex-col justify-center items-center mr-2 h-[100%]">
                   <button
                     className="prdc-color text-white arial-narrow-bold h-7 w-50 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"

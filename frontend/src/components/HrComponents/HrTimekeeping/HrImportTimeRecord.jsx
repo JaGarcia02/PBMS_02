@@ -32,10 +32,32 @@ const HrImportTimeRecord = ({
   ObjFilter,
 }) => {
   const [cutOffDate, setCutOffDate] = useState([]);
-  const [cutoffId, setCutOffId] = useState("");
   const [chosenDate, setChosenDate] = useState("");
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    axios
+      .get(API_URL_HR + `get-employee-list/?q=`)
+      .then((res) => setHrEmployee(res.data))
+      .catch((err) => console.log(err));
+
+    axios
+      .get(API_URL_HR + "get-timekeepingrecord")
+      .then((res) => {
+        setCutOff(res.data);
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .get(API_URL_HR + "view-cutoff-category")
+      .then((res) => {
+        setCutOffDate(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function getRange(startDate, endDate, type) {
     let fromDate = moment(startDate);
@@ -45,7 +67,7 @@ const HrImportTimeRecord = ({
     for (let i = 0; i <= diff; i++) {
       range.push(moment(startDate).add(i, type));
     }
-    setCutOffId(range.map((item) => item._d));
+    // setCutOffDate(range.map((item) => item._d));
   }
 
   useEffect(() => {
@@ -53,7 +75,48 @@ const HrImportTimeRecord = ({
     getRange(split[0], split[1], "days");
   }, [chosenDate]);
 
-  console.log(cutList);
+  const TimeRecord = dtr
+    .sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+    .filter(
+      (fil, index, self) =>
+        moment(fil.Time).format("MM-DD-YYYY,ddd") &&
+        index ==
+          self.findIndex(
+            (t) =>
+              moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+              fil.BioID == t.BioID
+          )
+    )
+    .map((data) => data);
+
+  // console.log(
+  //   moment(TimeRecord[0].Time).diff(moment(TimeRecord[3].Time), "hours")
+  // );
+
+  // Getting the Time record sorted
+  // const TimeRecord = dtr
+  //   .sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+  //   .filter(
+  //     (fil, index, self) =>
+  //       moment(fil.Time).format("MM-DD-YYYY,ddd") ==
+  //         moment(chosenDate).format("MM-DD-YYYY,ddd") &&
+  //       index ==
+  //         self.findIndex(
+  //           (t) =>
+  //             moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+  //             fil.BioID == t.BioID
+  //         )
+  //   );
+
+  // const Regular_Hours = moment(TimeRecord[3]?.Time).diff(
+  //   moment(TimeRecord[0]?.Time),
+  //   "hours"
+  // );
+
+  // console.log(TimeRecord[0]);
+
+  // console.log(chosenDate);
+  // console.log(cutoffId);
 
   // const dtr_data = dtr
   //   ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
@@ -107,30 +170,6 @@ const HrImportTimeRecord = ({
   //     .map((time) => moment(time.Time).format("HH:mm"))
   // );
 
-  useEffect(() => {
-    axios
-      .get(API_URL_HR + `get-employee-list/?q=`)
-      .then((res) => setHrEmployee(res.data))
-      .catch((err) => console.log(err));
-
-    axios
-      .get(API_URL_HR + "get-timekeepingrecord")
-      .then((res) => {
-        setCutOff(res.data);
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .get(API_URL_HR + "view-cutoff-category")
-      .then((res) => {
-        setCutOffDate(res.data);
-        console.log(cutOffDate);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const Import_TimeRecord = (e) => {
     const file = e.target.files[0];
 
@@ -157,7 +196,7 @@ const HrImportTimeRecord = ({
 
     const dtr_data = dtr.map((data) => {
       return {
-        cutOffID: cutoffId,
+        cutOffID: chosenDate,
         Time: data.Time,
         BioID: data.BioID,
       };
@@ -239,7 +278,7 @@ const HrImportTimeRecord = ({
                     name=""
                     id=""
                     required
-                    onChange={(e) => setCutOffId(e.target.value)}
+                    onChange={(e) => setChosenDate(e.target.value)}
                     className="border border-black ml-1 focus:(outline-none) arial-narrow px-1"
                   >
                     <option value="" selected disabled>
@@ -271,7 +310,7 @@ const HrImportTimeRecord = ({
             </div>
 
             <div className="flex justify-center items-center">
-              <div className="grid w-full grid-cols-7 p-1">
+              {/* <div className="grid w-full grid-cols-7 p-1 overflow-auto">
                 <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
                   Date
                 </div>
@@ -288,26 +327,18 @@ const HrImportTimeRecord = ({
                   OUT
                 </div>
                 <div className="prdc-color text-white arial-narrow-bold text-[12px] pr-2 h-[2.6rem] flex items-center justify-end shadow-sm shadow-gray-900 col-span-2">
-                  {/* <select
+                  <select
                     onChange={(e) => setToggle(e.target.value)}
                     className="w-30 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
                   >
                     <option value={1}>BIOMETRICS</option>
                     <option value={2}>ADJUSTMENT</option>
                     <option value={3}>SUMMARY</option>
-                  </select> */}
+                  </select>
                 </div>
-                <div className="col-span-full my-2">
-                  {cutOffDate.map((dates) => (
-                    <>
-                      <div>
-                        <p>{moment(dates.cutOff).format("MM-DD-YYYY, ddd")}</p>
-                      </div>
-                    </>
-                  ))}
-                </div>
-              </div>
-              {/* <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
+                <div className="col-span-full my-2 overflow-auto"></div>
+              </div> */}
+              <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
                 <thead>
                   <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center">
                     <th className="w-[50%] text-white">
@@ -337,7 +368,7 @@ const HrImportTimeRecord = ({
                     })}
                   </div>
                 </tbody>
-              </table> */}
+              </table>
             </div>
           </div>
 
