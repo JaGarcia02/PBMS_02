@@ -216,7 +216,7 @@ const Navbar = forwardRef(({ open, setOpen }, ref) => {
                     <>
                       <a className="" href="/depadmin">
                         <span className="border-b text-white w-full border-black text-[13px]  h-10 flex items-center pl-3 cursor-pointer hover:(bg-gray-400 text-black)">
-                          Department Admin
+                          Department Manager
                         </span>
                       </a>
                     </>

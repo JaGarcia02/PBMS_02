@@ -2,50 +2,31 @@ import React from "react";
 import moment from "moment";
 
 const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
-  // console.log(cutList.map((dates) => moment(dates).format("MM-DD-YYYY,ddd")));
-
-  console.log(cutList);
-  const getTime = (indexNum) => {
-    return cutList.map((dates) => {
-      CutOff.data?.dtr
-        ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
-        .filter(
-          (fil, index, self) =>
-            moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
-              moment(dates).format("MMM-DD-YYYY, ddd") &&
-            fil.BioID == ObjFilter.employee_data.Employee_BioID &&
-            index ==
-              self.findIndex(
-                (t) =>
-                  moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
-                  fil.BioID == t.BioID
-              )
-        )[indexNum]?.Time;
-    });
-  };
-
   return (
     <>
-      <div className="grid w-full grid-cols-7 p-1">
-        <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+      <div className="grid w-full grid-cols-8 p-1">
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
           Date
         </div>
-        <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] pl-8 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
           IN
         </div>
-        <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] pl-8 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
           OUT
         </div>
-        <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] pl-8 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
           IN
         </div>
-        <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] pl-8 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
           OUT
+        </div>
+        <div className="prdc-color text-white arial-narrow-bold text-[14px] h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
+          Working Hours
         </div>
         <div className="prdc-color text-white arial-narrow-bold text-[12px] pr-2 h-[2.6rem] flex items-center justify-end shadow-sm shadow-gray-900 col-span-2">
           <select
             onChange={(e) => setToggle(e.target.value)}
-            className="w-30 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
+            className="w-25 h-6.5 outline-none appearance-none rounded-sm px-1 text-[12px] arial-narrow bg-icon2"
           >
             <option value={1}>BIOMETRICS</option>
             <option value={2}>ADJUSTMENT</option>
@@ -98,13 +79,29 @@ const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
 
                     return (
                       <>
-                        <p className="arial-narrow text-[12px] w-[15%] text-black">
+                        <p className="arial-narrow-bold text-[14px] w-[13%] text-black">
                           {moment(time.Time).format("HH:mm")}
                         </p>
                       </>
                     );
                   })}
-                <p className="arial-narrow text-[12px]">
+
+                {/* 
+
+*
+*
+*
+*
+*
+
+*
+*
+*
+*
+*
+*
+*/}
+                <p className="arial-narrow-bold text-[14px]">
                   {moment(
                     CutOff.data?.dtr
                       ?.sort((before, after) =>
@@ -144,10 +141,234 @@ const HrTimeRecord = ({ cutList, dtr, ObjFilter, setToggle, CutOff }) => {
                                     "minutes"
                                   ) <= 5 && fil.BioID == t.BioID
                               )
-                        )[0]?.Time
+                        )[2]?.Time
                     ),
                     "hours"
-                  )}
+                  ) +
+                    moment(
+                      CutOff.data?.dtr
+                        ?.sort((before, after) =>
+                          moment(before.Time).diff(moment(after.Time))
+                        )
+                        .filter(
+                          (fil, index, self) =>
+                            moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                              moment(dates).format("MMM-DD-YYYY, ddd") &&
+                            fil.BioID ==
+                              ObjFilter.employee_data.Employee_BioID &&
+                            index ==
+                              self.findIndex(
+                                (t) =>
+                                  moment(fil.Time).diff(
+                                    moment(t.Time),
+                                    "minutes"
+                                  ) <= 5 && fil.BioID == t.BioID
+                              )
+                        )[1]?.Time
+                    ).diff(
+                      moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[0]?.Time
+                      ),
+                      "hours"
+                    ) ==
+                  0
+                    ? ""
+                    : moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[3]?.Time
+                      ).diff(
+                        moment(
+                          CutOff.data?.dtr
+                            ?.sort((before, after) =>
+                              moment(before.Time).diff(moment(after.Time))
+                            )
+                            .filter(
+                              (fil, index, self) =>
+                                moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                  moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                fil.BioID ==
+                                  ObjFilter.employee_data.Employee_BioID &&
+                                index ==
+                                  self.findIndex(
+                                    (t) =>
+                                      moment(fil.Time).diff(
+                                        moment(t.Time),
+                                        "minutes"
+                                      ) <= 5 && fil.BioID == t.BioID
+                                  )
+                            )[2]?.Time
+                        ),
+                        "hours"
+                      ) +
+                        moment(
+                          CutOff.data?.dtr
+                            ?.sort((before, after) =>
+                              moment(before.Time).diff(moment(after.Time))
+                            )
+                            .filter(
+                              (fil, index, self) =>
+                                moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                  moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                fil.BioID ==
+                                  ObjFilter.employee_data.Employee_BioID &&
+                                index ==
+                                  self.findIndex(
+                                    (t) =>
+                                      moment(fil.Time).diff(
+                                        moment(t.Time),
+                                        "minutes"
+                                      ) <= 5 && fil.BioID == t.BioID
+                                  )
+                            )[1]?.Time
+                        ).diff(
+                          moment(
+                            CutOff.data?.dtr
+                              ?.sort((before, after) =>
+                                moment(before.Time).diff(moment(after.Time))
+                              )
+                              .filter(
+                                (fil, index, self) =>
+                                  moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                    moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                  fil.BioID ==
+                                    ObjFilter.employee_data.Employee_BioID &&
+                                  index ==
+                                    self.findIndex(
+                                      (t) =>
+                                        moment(fil.Time).diff(
+                                          moment(t.Time),
+                                          "minutes"
+                                        ) <= 5 && fil.BioID == t.BioID
+                                    )
+                              )[0]?.Time
+                          ),
+                          "hours"
+                        ) >
+                      8
+                    ? 8
+                    : moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[3]?.Time
+                      ).diff(
+                        moment(
+                          CutOff.data?.dtr
+                            ?.sort((before, after) =>
+                              moment(before.Time).diff(moment(after.Time))
+                            )
+                            .filter(
+                              (fil, index, self) =>
+                                moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                  moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                fil.BioID ==
+                                  ObjFilter.employee_data.Employee_BioID &&
+                                index ==
+                                  self.findIndex(
+                                    (t) =>
+                                      moment(fil.Time).diff(
+                                        moment(t.Time),
+                                        "minutes"
+                                      ) <= 5 && fil.BioID == t.BioID
+                                  )
+                            )[2]?.Time
+                        ),
+                        "hours"
+                      ) +
+                      moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[1]?.Time
+                      ).diff(
+                        moment(
+                          CutOff.data?.dtr
+                            ?.sort((before, after) =>
+                              moment(before.Time).diff(moment(after.Time))
+                            )
+                            .filter(
+                              (fil, index, self) =>
+                                moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                  moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                fil.BioID ==
+                                  ObjFilter.employee_data.Employee_BioID &&
+                                index ==
+                                  self.findIndex(
+                                    (t) =>
+                                      moment(fil.Time).diff(
+                                        moment(t.Time),
+                                        "minutes"
+                                      ) <= 5 && fil.BioID == t.BioID
+                                  )
+                            )[0]?.Time
+                        ),
+                        "hours"
+                      )}
                 </p>
                 {/* // console.log(
                     //   moment(emp_Time[0].Time).diff(

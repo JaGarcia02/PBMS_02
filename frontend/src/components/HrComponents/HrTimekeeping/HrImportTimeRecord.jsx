@@ -32,6 +32,7 @@ const HrImportTimeRecord = ({
   ObjFilter,
 }) => {
   const [cutOffDate, setCutOffDate] = useState([]);
+  const [selectedCutOff, setSelectedCutOff] = useState([]);
   const [chosenDate, setChosenDate] = useState("");
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
@@ -59,35 +60,7 @@ const HrImportTimeRecord = ({
       });
   }, []);
 
-  function getRange(startDate, endDate, type) {
-    let fromDate = moment(startDate);
-    let toDate = moment(endDate);
-    let diff = toDate.diff(fromDate, type);
-    let range = [];
-    for (let i = 0; i <= diff; i++) {
-      range.push(moment(startDate).add(i, type));
-    }
-    // setCutOffDate(range.map((item) => item._d));
-  }
-
-  useEffect(() => {
-    const split = chosenDate.split("_");
-    getRange(split[0], split[1], "days");
-  }, [chosenDate]);
-
-  const TimeRecord = dtr
-    .sort((before, after) => moment(before.Time).diff(moment(after.Time)))
-    .filter(
-      (fil, index, self) =>
-        moment(fil.Time).format("MM-DD-YYYY,ddd") &&
-        index ==
-          self.findIndex(
-            (t) =>
-              moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
-              fil.BioID == t.BioID
-          )
-    )
-    .map((data) => data);
+  // console.log(chosenDate.split("_"));
 
   // console.log(
   //   moment(TimeRecord[0].Time).diff(moment(TimeRecord[3].Time), "hours")
@@ -219,6 +192,21 @@ const HrImportTimeRecord = ({
       });
   };
 
+  function getRange(startDate, endDate, type) {
+    let fromDate = moment(startDate);
+    let toDate = moment(endDate);
+    let diff = toDate.diff(fromDate, type);
+    let range = [];
+    for (let i = 0; i <= diff; i++) {
+      range.push(moment(startDate).add(i, type));
+    }
+    setSelectedCutOff(range.map((item) => item._d));
+  }
+  useEffect(() => {
+    const split = chosenDate.split("_");
+    getRange(split[0], split[1], "days");
+  }, [chosenDate]);
+
   const notify_removeCutoff = () => {
     toast.success(" Time Record Submited!", {
       position: "bottom-right",
@@ -310,34 +298,6 @@ const HrImportTimeRecord = ({
             </div>
 
             <div className="flex justify-center items-center">
-              {/* <div className="grid w-full grid-cols-7 p-1 overflow-auto">
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
-                  Date
-                </div>
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
-                  IN
-                </div>
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
-                  OUT
-                </div>
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
-                  IN
-                </div>
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pl-2 h-[2.6rem] text-left flex items-center shadow-sm shadow-gray-900 ">
-                  OUT
-                </div>
-                <div className="prdc-color text-white arial-narrow-bold text-[12px] pr-2 h-[2.6rem] flex items-center justify-end shadow-sm shadow-gray-900 col-span-2">
-                  <select
-                    onChange={(e) => setToggle(e.target.value)}
-                    className="w-30 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
-                  >
-                    <option value={1}>BIOMETRICS</option>
-                    <option value={2}>ADJUSTMENT</option>
-                    <option value={3}>SUMMARY</option>
-                  </select>
-                </div>
-                <div className="col-span-full my-2 overflow-auto"></div>
-              </div> */}
               <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
                 <thead>
                   <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center">
@@ -345,13 +305,13 @@ const HrImportTimeRecord = ({
                       <span>Time</span>
                     </th>
                     <th className="w-[50%] text-white">
-                      <span>Bio Id</span>
+                      <span>Biometric Id</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <div className="h-45 w-[100%] overflow-auto">
-                    {dtr.map((data, index) => {
+                    {dtr?.map((data) => {
                       return (
                         <>
                           <tr className="w-[100%] h-10 flex justify-center items-center">
@@ -380,3 +340,45 @@ const HrImportTimeRecord = ({
 };
 
 export default HrImportTimeRecord;
+
+/**
+ * 
+ * 
+ *  {selectedCutOff?.map((dates) => (
+                      // <>
+                      //   <div className="flex border h-8 mb-2 shadow-gray-600 shadow-sm border-gray-400 items-center pl-2">
+                      //     <p className="text-[12px] w-[15%] arial-narrow uppercase text-black">
+                      //       {moment(dates).format("MM-DD-YYYY,ddd")}
+                      //     </p>
+                      //     {dtr
+                      //       ?.sort((before, after) =>
+                      //         moment(before.Time).diff(moment(after.Time))
+                      //       )
+                      //       .filter(
+                      //         (fil, index, self) =>
+                      //           moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                      //             moment(dates).format("MMM-DD-YYYY, ddd") &&
+                      //           index ==
+                      //             self.findIndex(
+                      //               (t) =>
+                      //                 moment(fil.Time).diff(
+                      //                   moment(t.Time),
+                      //                   "minutes"
+                      //                 ) <= 5
+                      //             )
+                      //       )
+                      //       .map((time) => {
+                      //         return (
+                      //           <>
+                      //             <p className="text-[12px] w-[15%] arial-narrow uppercase text-black">
+                      //               {moment(time.Time).format("HH:mm")}
+                      //             </p>
+                      //             {/* <p className="text-[12px] w-[15%] arial-narrow uppercase text-black">
+                      //               {time.BioID}
+                                  </p> */
+//           </>
+//         );
+//       })}
+//   </div>
+// </>
+// ))}

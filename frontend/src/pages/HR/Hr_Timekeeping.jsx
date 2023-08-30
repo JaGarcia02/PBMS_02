@@ -25,8 +25,10 @@ const Hr_Timekeeping = () => {
   const [cutList, setCutList] = useState([]);
   const [toggle, setToggle] = useState(1);
   const [chosenDate, setChosenDate] = useState("");
+  const [searchData, setSearchData] = useState("");
   const [ObjFilter, setObjFilter] = useState({
     ID: "",
+    Bio: "",
     employee_data: [],
   });
   const [addCutOffModal, setAddCutOffModal] = useState(false);
@@ -39,6 +41,9 @@ const Hr_Timekeeping = () => {
   const [openImportTR, setOpenImportTR] = useState(false);
   // import summary
   const [openImportSummary, setOpenImportSummary] = useState(false);
+
+  console.log(hrEmployee);
+  console.log(searchData);
 
   useEffect(() => {
     axios
@@ -110,14 +115,7 @@ const Hr_Timekeeping = () => {
               </div>
             </div>
             <div className="flex-1 flex flex-col justify-center">
-              <div className="flex items-center mb-3">
-                <button
-                  className="  arial-narrow-bold prdc-color  text-white text-[14px] w-[100%] justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
-                  onClick={() => setAddCutOffModal(true)}
-                >
-                  <BsFillCalendarPlusFill className="mr-2" />
-                  Create Cut-off
-                </button>
+              <div className="flex items-center">
                 {/* <span className=" arial-narrow-bold text-black text-[15px] inline-block w-25">
                   ADD CUT-OFF:
                 </span>
@@ -147,12 +145,12 @@ const Hr_Timekeeping = () => {
                 /> */}
               </div>
               <div className="flex items-center">
-                <span className="arial-narrow-bold text-black text-[15px] inline-block w-25">
+                <span className="arial-narrow-bold text-black text-[15px] inline-block mr-2">
                   CUT-OFF:{" "}
                 </span>
                 <select
                   onChange={(e) => setChosenDate(e.target.value)}
-                  className="text-[12px] w-50 arial-narrow h-5 border border-gray-700"
+                  className="text-[14px] px-2 w-56 arial-narrow-bold h-6.5 rounded-sm border-[2px] border-gray-700 hover:cursor-pointer"
                 >
                   {[
                     ...new Set(CutOff.data?.dtr?.map((item) => item.cutOffID)),
@@ -195,7 +193,14 @@ const Hr_Timekeeping = () => {
 
                 <div className="flex flex-col justify-center items-center mr-2 h-[100%]">
                   <button
-                    className="prdc-color text-white arial-narrow-bold h-7 w-50 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
+                    className="  arial-narrow-bold prdc-color mb-2 mt-2 text-white text-[14px] w-55 h-6.5 justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
+                    onClick={() => setAddCutOffModal(true)}
+                  >
+                    <BsFillCalendarPlusFill className="mr-2" />
+                    Create Cut-off
+                  </button>
+                  <button
+                    className="prdc-color text-white arial-narrow-bold rounded-sm h-7 w-55 h-6.5 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
                     onClick={() => setOpenImportTR(true)}
                   >
                     <AiFillFileAdd className="mr-2" />
@@ -222,61 +227,120 @@ const Hr_Timekeeping = () => {
               <input
                 type="text"
                 placeholder="Search. . ."
+                onChange={(e) => setSearchData(e.target.value)}
                 className="border border-black px-1 arial-narrow w-35 h-7 focus:outline-none text-[14px]"
               />
             </div>
-            <table className="w-[100%] h-[10%] border-separate border-spacing-4 border-transparent -mt-2 overflow-hidden">
-              <thead>
-                <tr className="shadow-sm shadow-gray-800  items-center justify-center prdc-color h-10 dark:(bg-blue-500) <md:(hidden)">
+            <div className="w-full h-full flex justify-center pb-5">
+              <div className="w-[100%]">
+                <table className="w-[100%] h-[10%] border-white overflow-hidden justify-evenly border-separate border-spacing-4 arial-narrow-bold">
+                  <thead>
+                    <tr className="shadow-sm shadow-gray-800 prdc-color h-10 text-center w-[100%] flex justify-between items-center">
+                      <th className="w-[20%] text-white text-[12px]">
+                        Employee ID
+                      </th>
+                      <th className="w-[50%] text-white text-[12px]">
+                        Full Name
+                      </th>
+
+                      <th className="w-[15%] text-white text-[12px]">BIO</th>
+                    </tr>
+                    {/* <tr className="shadow-sm shadow-gray-800 prdc-color">
                   <th
-                    className=" text-white  arial-narrow-bold pl-2 text-left cursor-pointer text-[11px] hover:(bg-yellow-900) <md:(hidden) dark:(border-white text-white) "
+                    className="text-white arial-narrow-bold cursor-pointer text-[11px] h-10 flex justify-center items-center"
                     onClick={() => setSort("ID")}
                   >
                     Employee ID
                   </th>
                   <th
-                    className=" text-white pl-2 arial-narrow-bold  text-left cursor-pointer text-[11px] hover:(bg-yellow-900) <md:(hidden) dark:(border-white text-white) "
+                    className="text-white arial-narrow-bold cursor-pointer text-[11px] "
                     onClick={() => setSort("ID")}
                   >
-                    Full Name
+                    Last Name
                   </th>
+                  <th className="text-white text-[11px]">First Name</th>
+                  <th className="text-white text-[11px]">MI</th>
                   <th
-                    className=" text-white pl-2 arial-narrow-bold  text-left cursor-pointer text-[11px] hover:(bg-yellow-900) <md:(hidden) dark:(border-white text-white) "
+                    className=" text-white arial-narrow-bold text-left text-[11px] flex justify-center items-center"
                     onClick={() => setSort("ID")}
                   >
                     BIO
                   </th>
-                </tr>
-              </thead>
-              <tbody>
-                {hrEmployee.map((data) => (
-                  <tr
-                    onClick={() =>
-                      setObjFilter({
-                        ID: data.Employee_ID,
-                        employee_data: data,
+                </tr> */}
+                  </thead>
+                  <tbody>
+                    {hrEmployee
+                      .filter((val) => {
+                        if (
+                          val.Employee_ID.toLowerCase().includes(
+                            searchData.toLocaleLowerCase()
+                          )
+                        ) {
+                          return val;
+                        } else if (
+                          val.Employee_BioID.toLowerCase().includes(
+                            searchData.toLocaleLowerCase()
+                          )
+                        ) {
+                          return val;
+                        }
                       })
-                    }
-                    className="text-black cursor-pointer shadow-sm shadow-gray-600"
-                  >
-                    <td className="text-[12px] arial-narrow w-[30%] text-left  border border-gray-400 border-r-0 pl-2 py-2">
-                      {data.Employee_ID}
-                    </td>
-                    <td className="arial-narrow text-[12px] w-[50%] text-left border border-gray-400 border-l-0 border-r-0 pl-2 py-2">
-                      {data.Employee_LastName +
-                        ", " +
-                        data.Employee_FirstName +
-                        " " +
-                        data.Employee_MiddleName.charAt(0) +
-                        "."}
-                    </td>
-                    <td className="arial-narrow text-[12px] w-[20%] text-left border border-gray-400 border-l-0 pl-2 py-2">
-                      {data.Employee_BioID}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      .map((data) => (
+                        <tr
+                          onClick={() =>
+                            setObjFilter({
+                              ID: data.Employee_ID,
+                              Bio: data.Employee_BioID,
+                              employee_data: data,
+                            })
+                          }
+                          className="w-[100%] h-10 flex justify-center items-center shadow cursor-pointer"
+                        >
+                          <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black arial-narrow text-black">
+                            {data.Employee_ID}
+                          </td>
+                          <td className="flex justify-center items-center text-[12px] w-[65%] h-8 text-center arial-narrow text-black border-b border-t bg-white border-b-black border-t-black border-l-black">
+                            {data.Employee_LastName +
+                              ", " +
+                              data.Employee_FirstName +
+                              " " +
+                              data.Employee_MiddleName.charAt(0) +
+                              "."}
+                          </td>
+
+                          <td className="flex justify-center items-center text-[12px] w-[15%] h-8 text-center arial-narrow text-black border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black">
+                            {data.Employee_BioID}
+                          </td>
+                          {/* <td className="text-[12px] arial-narrow w-[10%] text-left  border border-gray-400 border-r-0 pl-2 py-2">
+                            {data.Employee_ID}
+                          </td>
+                          <td className="arial-narrow text-[12px] w-[10%] text-left border border-gray-400 border-l-0 border-r-0 pl-2 py-2">
+                            {
+                              data.Employee_LastName
+                              // +
+                              //   ", " +
+                              //   data.Employee_FirstName +
+                              //   " " +
+                              //   data.Employee_MiddleName.charAt(0) +
+                              //   "."
+                            }
+                            {","}
+                          </td>
+                          <td className="arial-narrow text-[12px] w-[10%] text-left border border-gray-400 border-l-0 border-r-0 pl-2 py-2">
+                            {data.Employee_FirstName}
+                          </td>
+                          <td className="arial-narrow text-[12px] w-[1%] text-left border border-gray-400 border-l-0 border-r-0 pl-2 py-2">
+                            {data.Employee_MiddleName.charAt(0)}
+                          </td>
+                          <td className="arial-narrow text-[12px] w-[10%] text-left border border-gray-400 border-l-0 pl-2 py-2">
+                            {data.Employee_BioID}
+                          </td> */}
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <div className="mt-auto flex items-center justify-center h-12 w-full">
               <button className="rounded-none w-[35%] bg-gray-800 text-white arial-narrow-bold">
                 PAYROLL
@@ -321,12 +385,9 @@ const Hr_Timekeeping = () => {
               </span>
             </div>
 
-            {/* Name */}
-            <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
-                NAME:
-              </span>
-              <p className="text-[15px] arial-narrow-bold text-black ml-6">
+            <div className="flex w-[100%] items-center justify-start p-2 h-10 mt-2 shadow shadow-gray-500">
+              <span className="text-[18px] arial-narrow-bold mr-2">Name:</span>
+              <p className="text-[16px] arial-narrow">
                 {ObjFilter.ID !== ""
                   ? ObjFilter.employee_data.Employee_LastName +
                     ", " +
@@ -338,62 +399,71 @@ const Hr_Timekeeping = () => {
               </p>
             </div>
 
-            {/* Position */}
-            <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
-                POSITION:
-              </span>
-              <p className="text-[15px] arial-narrow-bold text-black ml-6">
-                {typeof ObjFilter.employee_data !== undefined
-                  ? ObjFilter.employee_data.Employee_JobDesc
-                  : " "}
-              </p>
+            <div className="flex justify-start items-center w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500">
+              {/* Position */}
+              <div className="w-[50%] flex items-center h-10">
+                <span className="text-[18px] arial-narrow-bold mr-2">
+                  Position:
+                </span>
+                <p className="text-[16px] arial-narrow">
+                  {typeof ObjFilter.employee_data !== undefined
+                    ? ObjFilter.employee_data.Employee_JobDesc
+                    : " "}
+                </p>
+              </div>
+            </div>
+            <div className="flex w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500">
+              {/* Basic pay */}
+              <div className="w-[100%] flex items-center">
+                <span className="text-[18px] arial-narrow-bold mr-2">
+                  Basic pay:
+                </span>
+                <p className="text-[16px] arial-narrow">
+                  {typeof ObjFilter.employee_data !== undefined
+                    ? ObjFilter.employee_data.Employee_Salary
+                    : " "}
+                </p>
+              </div>
             </div>
 
-            {/* Contract */}
-            <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
-                CONTRACT:
-              </span>
-              <p className="text-[15px] arial-narrow-bold text-black ml-6">
-                {typeof ObjFilter.employee_data !== undefined
-                  ? ObjFilter.employee_data.Employee_TypeContract
-                  : " "}
-              </p>
+            <div className="flex justify-start items-center w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500">
+              {/* Contract */}
+              <div className="w-[100%] flex items-center h-10">
+                <span className="text-[18px] arial-narrow-bold mr-1">
+                  Contract:
+                </span>
+                <p className="text-[16px] arial-narrow">
+                  {typeof ObjFilter.employee_data !== undefined
+                    ? ObjFilter.employee_data.Employee_TypeContract
+                    : " "}
+                </p>
+              </div>
             </div>
 
-            {/* Schedule Type */}
-            <div className="flex items-center p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-27">
-                SCHEDULE TYPE:
-              </span>
-              <p className="text-[15px] arial-narrow-bold text-black">
-                {typeof ObjFilter.employee_data !== undefined
-                  ? ObjFilter.employee_data.Employee_ScheduleType
-                  : " "}
-              </p>
+            <div className="flex justify-start items-center w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500">
+              {/* Schedule Type */}
+              <div className="w-[100%] flex items-center h-10">
+                <span className="text-[18px] arial-narrow-bold mr-1">
+                  Shedule Type:
+                </span>
+                <p className="text-[16px] arial-narrow">
+                  {typeof ObjFilter.employee_data !== undefined
+                    ? ObjFilter.employee_data.Employee_ScheduleType
+                    : " "}
+                </p>
+              </div>
             </div>
 
             {/* Schedule */}
-            <div className="flex items-center justify-between p-4">
-              <span className=" arial-narrow text-black text-[15px] inline-block w-20">
-                SCHEDULE:
-              </span>
-              <p className="text-[12px] arial-narrow-bold text-black w-50 text-center">
+            <div className="items-center justify-start mt-2 p-2 h-14 shadow shadow-gray-500">
+              <div className="flex">
+                <span className="text-[18px] arial-narrow-bold">
+                  Employee Shcedule:
+                </span>
+              </div>
+              <p className="text-[12px] arial-narrow mt-1">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_Schedule
-                  : " "}
-              </p>
-            </div>
-
-            {/* Basic Pay */}
-            <div className="flex items-center p-4">
-              <span className="arial-narrow text-black text-[15px] inline-block w-20">
-                BASIC PAY:
-              </span>
-              <p className="text-[15px] arial-narrow-bold text-black ml-6">
-                {typeof ObjFilter.employee_data !== undefined
-                  ? ObjFilter.employee_data.Employee_Salary
                   : " "}
               </p>
             </div>

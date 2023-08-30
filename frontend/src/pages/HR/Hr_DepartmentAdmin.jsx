@@ -360,12 +360,6 @@ const Hr_ViewValidate = () => {
                   >
                     Validate Forms
                   </div>
-                  <div
-                    onClick={() => setToggleState(3)}
-                    className={toggleState === 3 ? div_active : div_deactive}
-                  >
-                    User Management
-                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -381,8 +375,6 @@ const Hr_ViewValidate = () => {
               />
             ) : toggleState == 2 ? (
               <FormValidation />
-            ) : toggleState == 3 ? (
-              <HrUserManagement />
             ) : (
               ""
             )}

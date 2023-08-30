@@ -81,6 +81,12 @@ const Hr_DepartmentAdmin = () => {
                   >
                     Personnel Request
                   </div>
+                  <div
+                    onClick={() => toggleTab(6)}
+                    className={toggleState === 6 ? div_active : div_deactive}
+                  >
+                    User Management
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -113,11 +119,7 @@ const Hr_DepartmentAdmin = () => {
           {/* Tabs */}
           <div className="flex-[0.9] bg-gray-100 -h-screen ">
             {toggleState == 1 ? (
-              <HrEmploymentType
-                setReset={setReset}
-                reset={reset}
-                setUserObj={setUserObj}
-              />
+              <HrEmploymentType />
             ) : toggleState == 2 ? (
               <HrSchedule />
             ) : toggleState == 3 ? (
@@ -126,14 +128,27 @@ const Hr_DepartmentAdmin = () => {
               <HrRequest />
             ) : toggleState == 5 ? (
               <HrMandatoryDeductions />
+            ) : toggleState == 6 ? (
+              <HrUserManagement
+                setReset={setReset}
+                reset={reset}
+                setUserObj={setUserObj}
+                userObj={userObj}
+              />
             ) : (
               ""
             )}
           </div>
           {/* Tabs */}
         </div>
+        {reset && (
+          <HrResetUser
+            setReset={setReset}
+            userObj={userObj}
+            setUserObj={setUserObj}
+          />
+        )}
       </div>
-      {reset && <HrResetUser setReset={setReset} userObj={userObj} />}
     </div>
   );
 };

@@ -120,7 +120,7 @@ const HrUpdateEmploymentType = ({
             </div>
             <div className=" w-full flex items-center justify-end ">
               <button
-                className="absolute bottom-8 arial-narrow-bold mr-4 mt-10 text-black text-[14px] h-8 w-25 justify-center border-[2.5px] border-black rounded-sm hover:(rounded-sm border-black) p-1  flex items-center focus:(outline-none) dark:(text-green-500 bg-transparent shadow-none hover:bg-green-400 hover:text-black) active:duration-75 transition-all ease-in-out rounded-sm hover:text-green-500"
+                className="absolute bottom-8 arial-narrow-bold mr-4 mt-10 text-black text-[14px] h-8 w-25 justify-center border-[2.5px] border-black rounded-sm hover:(rounded-sm border-black) p-1  flex items-center focus:(outline-none) dark:(text-yellow-500 bg-transparent shadow-none hover:bg-yellow-400 hover:text-black) active:duration-75 transition-all ease-in-out rounded-sm hover:text-yellow-500"
                 type="submit"
                 disabled={useEdit() ? false : true}
               >

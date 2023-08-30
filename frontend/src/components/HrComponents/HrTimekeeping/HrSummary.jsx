@@ -5,7 +5,29 @@ import { BiSave, BiEdit } from "react-icons/bi";
 
 const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff, cutList }) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
+  const cutoff_date_index_0 = moment(chosenDate.split("_")[0]).format(
+    "MMMM DD"
+  );
+  const cutoff_date =
+    moment(chosenDate.split("_")[0]).format("MMM DD") +
+    "-" +
+    moment(chosenDate.split("_")[1]).format("DD YYYY");
 
+  console.log(
+    CutOff.data?.dtr
+      ?.sort((before, after) => moment(before.Time).diff(moment(after.Time)))
+      .filter(
+        (fil, index, self) =>
+          moment(fil.Time).format("MMM-DD-YYYY, ddd") &&
+          fil.BioID == ObjFilter.employee_data.Employee_BioID &&
+          index ==
+            self.findIndex(
+              (t) =>
+                moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+                fil.BioID == t.BioID
+            )
+      )[0]
+  );
   return (
     <>
       <div className="flex flex-col w-full  p-1 items-center">
@@ -37,7 +59,312 @@ const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff, cutList }) => {
               ""
             )}
           </div>
+
           <span className="text-[15px] ml-1 arial-narrow-bold text-black">
+            Regular
+          </span>
+          {/* <div className="grid w-full grid-cols-11 mt-2">
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                Cut-off
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                REG
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                OT
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                UT
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                ND
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                {" "}
+                LWP
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                REGNS
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                OTNS
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                OTND
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                LATES
+              </span>
+            </div>
+            <div className="prdc-color w-[100%] text-white arial-narrow-bold text-[14px] h-[2.6rem] flex items-center shadow-sm shadow-gray-900 ">
+              <span className="flex justify-center items-center w-full">
+                ABSENT
+              </span>
+            </div> */}
+        </div>
+
+        <table className="w-[100%] h-[10%] border-separate border-spacing-4 border-transparent -mt-2 overflow-hidden">
+          <thead>
+            <tr className="arial-narrow text-black text-[12px] text-center shadow-sm shadow-gray-800  items-center justify-center bg-blue-200 h-10 dark:(bg-blue-500) <md:(hidden)">
+              <th className="w-[20%]">Cut-off</th>
+              <th className="w-[5%]">REG</th>
+              <th className="w-[5%]">OT</th>
+              <th className="w-[5%]">UT</th>
+              <th className="w-[5%]">ND</th>
+              <th className="w-[5%]">LWP</th>
+              <th className="w-[5%]">REGNS</th>
+              <th className="w-[5%]">OTNS</th>
+              <th className="w-[5%]">OTND</th>
+              <th className="w-[5%]">LATES</th>
+              <th className="w-[5%]">ABSENT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {CutOff?.data?.dtr
+              .filter(
+                (fil, index, self) =>
+                  fil.BioID == ObjFilter.Bio &&
+                  fil.cutOffID == chosenDate &&
+                  self.findIndex(
+                    (t) =>
+                      moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+                      fil.BioID == t.BioID
+                  )
+              )
+              .map((data) => {
+                // console.log(
+                //   CutOff?.data?.dtr.filter(
+                //     (fil, index, self) =>
+                //       fil.BioID == ObjFilter.Bio &&
+                //       fil.cutOffID == chosenDate &&
+                //       self.findIndex(
+                //         (t) =>
+                //           moment(fil.Time).diff(moment(t.Time), "minutes") <=
+                //             5 && fil.BioID == t.BioID
+                //       )
+                //   )[0].Time
+                // );
+                const time_data = CutOff?.data?.dtr.filter(
+                  (fil, index, self) =>
+                    fil.BioID == ObjFilter.Bio &&
+                    fil.cutOffID == chosenDate &&
+                    self.findIndex(
+                      (t) =>
+                        moment(fil.Time).diff(moment(t.Time), "minutes") <= 5 &&
+                        fil.BioID == t.BioID
+                    )
+                );
+
+                const time_summary = [time_data];
+                // console.log(time_summary);
+                // for (let i = 0; i < time_summary.length; i++) {
+                //   console.log(time_summary[0][i].Time);
+                // }
+
+                return (
+                  <>
+                    <tr>
+                      <td>{data.ID}</td>
+                      <td>{data.cutOffID}</td>
+                      <td>{moment(time_summary[0].Time).format("HH")}</td>
+                    </tr>
+                  </>
+                );
+              })}
+          </tbody>
+        </table>
+
+        {/* <div className="col-span-full my-2">
+            <div className="flex border h-8 mb-2 shadow-gray-600 shadow-sm border-gray-400 items-center">
+              {CutOff?.data?.dtr
+                .filter(
+                  (fil) => fil.ID == ObjFilter.ID && fil.BioID == ObjFilter.Bio
+                )
+                .map((data) => {
+                  return (
+                    <>
+                      <p className="text-[12px] w-[8.7%] text-center arial-narrow uppercase text-black">
+                        {data.ID}
+                      </p>
+                    </>
+                  );
+                })} */}
+        {/* <p className="text-[12px] w-[8.7%] text-center arial-narrow uppercase text-black">
+                {cutoff_date}
+              </p> */}
+        {/* {cutList.map((dates) => (
+                <>
+                  {CutOff.data?.dtr
+                    ?.sort((before, after) =>
+                      moment(before.Time).diff(moment(after.Time))
+                    )
+                    .filter(
+                      (fil, index, self) =>
+                        moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                          moment(dates).format("MMM-DD-YYYY, ddd") &&
+                        fil.BioID == ObjFilter.employee_data.Employee_BioID &&
+                        index ==
+                          self.findIndex(
+                            (t) =>
+                              moment(fil.Time).diff(
+                                moment(t.Time),
+                                "minutes"
+                              ) <= 5 && fil.BioID == t.BioID
+                          )
+                    )
+                    .map((time) => {
+                      return <></>;
+                    })} */}
+
+        {/* <p>
+                    {moment(
+                      CutOff.data?.dtr
+                        ?.sort((before, after) =>
+                          moment(before.Time).diff(moment(after.Time))
+                        )
+                        .filter(
+                          (fil, index, self) =>
+                            moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                              moment(dates).format("MMM-DD-YYYY, ddd") &&
+                            fil.BioID ==
+                              ObjFilter.employee_data.Employee_BioID &&
+                            index ==
+                              self.findIndex(
+                                (t) =>
+                                  moment(fil.Time).diff(
+                                    moment(t.Time),
+                                    "minutes"
+                                  ) <= 5 && fil.BioID == t.BioID
+                              )
+                        )[3]?.Time
+                    ).diff(
+                      moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[2]?.Time
+                      ),
+                      "hours"
+                    ) +
+                      moment(
+                        CutOff.data?.dtr
+                          ?.sort((before, after) =>
+                            moment(before.Time).diff(moment(after.Time))
+                          )
+                          .filter(
+                            (fil, index, self) =>
+                              moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                moment(dates).format("MMM-DD-YYYY, ddd") &&
+                              fil.BioID ==
+                                ObjFilter.employee_data.Employee_BioID &&
+                              index ==
+                                self.findIndex(
+                                  (t) =>
+                                    moment(fil.Time).diff(
+                                      moment(t.Time),
+                                      "minutes"
+                                    ) <= 5 && fil.BioID == t.BioID
+                                )
+                          )[1]?.Time
+                      ).diff(
+                        moment(
+                          CutOff.data?.dtr
+                            ?.sort((before, after) =>
+                              moment(before.Time).diff(moment(after.Time))
+                            )
+                            .filter(
+                              (fil, index, self) =>
+                                moment(fil.Time).format("MMM-DD-YYYY, ddd") ==
+                                  moment(dates).format("MMM-DD-YYYY, ddd") &&
+                                fil.BioID ==
+                                  ObjFilter.employee_data.Employee_BioID &&
+                                index ==
+                                  self.findIndex(
+                                    (t) =>
+                                      moment(fil.Time).diff(
+                                        moment(t.Time),
+                                        "minutes"
+                                      ) <= 5 && fil.BioID == t.BioID
+                                  )
+                            )[0]?.Time
+                        ),
+                        "hours"
+                      )}
+                  </p> */}
+        {/* </> */}
+        {/* // ))} */}
+      </div>
+      {/* 
+          
+          *
+          *
+          * *
+          * *
+          * *
+          * *
+          * *
+          * 
+          * *
+          * *
+          * *
+          * *
+          * *
+          * *
+          * *
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          */}
+
+      {/* <span className="text-[15px] ml-1 arial-narrow-bold text-black">
             REGULAR
           </span>
 
@@ -436,16 +763,17 @@ const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff, cutList }) => {
                   </tr>
                 </tbody>
               ))}
-          </table>
-        </div>
-        {openModalEdit && (
-          <HrEditSummary
-            setOpenModalEdit={setOpenModalEdit}
-            ObjFilter={ObjFilter}
-            CutOff={CutOff}
-          />
-        )}
-      </div>
+          </table> */}
+      {/* </div> */}
+      {openModalEdit && (
+        <HrEditSummary
+          setOpenModalEdit={setOpenModalEdit}
+          ObjFilter={ObjFilter}
+          CutOff={CutOff}
+        />
+      )}
+      {/* </div> */}
+      {/* </div> */}
     </>
   );
 };
