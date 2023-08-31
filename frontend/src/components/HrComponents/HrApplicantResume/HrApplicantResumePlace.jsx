@@ -185,22 +185,33 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
   };
   const SuccessModal = () => {
     return (
-      <motion.div className="w-screen h-screen fixed flex items-center justify-center bg-black/50 top-0 left-0">
+      <motion.div className="bg-black/50 h-full w-full absolute flex justify-center items-center  z-999">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           exit={{ opacity: 0 }}
-          className="w-80 h-75  bg-white shadow-md rounded-sm"
+          className="absolute bg-white h-75 w-120 items-center shadow-md shadow-gray-900 z-999"
         >
-          <div className="items-center mt-5 justify-center flex flex-col">
-            <BsCheck2Circle className="text-green-600 w-30 h-30" />
-            <span className="arial-narrow-bold text-[30px] text-black item-center justify-center  flex text-center">
-              Employee
+          <div className="flex flex-col items-center justify-center">
+            <div className=" h-3 w-full bg-blue-600"></div>
+            <BsCheck2Circle className="text-blue-600 mt-5 w-25 mb-3 h-23" />
+            <span className="text-blue-600 text-[30px] arial-narrow-bold">
+              Applicant Hired!
             </span>
-            <span className="arial-narrow text-[20px] item-center text-black justify-center flex text-center">
-              Successfully Activated
+            <hr className="w-[45%] bg-blue-600 h-[5px] mt-2" />
+            <span className="bg-blue-600 w-50 "></span>
+
+            <span className="text-center arial-narrow-bold items-center justify-center flex text-[20px] mt-2">
+              This applicant has been hired successfully!
             </span>
+            <button
+              onClick={() => window.location.reload()}
+              className="rounded-full w-30 mt-5 mb-8 border-[2.5px] bg-white items-center border-blue-600 justify-center text-blue-600 h-8 arial-narrow-bold text-[18px] hover:(border-blue-700 border-[3.5px]) focus:(outline-none border-blue-700)"
+            >
+              OK
+            </button>
+            <span className=" h-3 w-full bg-blue-600"></span>
           </div>
         </motion.div>
       </motion.div>
@@ -209,7 +220,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
 
   return (
     <motion.div
-      className="w-full h-full absolute bg-black/50 items-center flex justify-center !top-0 !left-0"
+      className="w-full h-full absolute flex justify-center items-center bg-black/50 "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}

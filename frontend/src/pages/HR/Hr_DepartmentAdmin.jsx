@@ -366,7 +366,7 @@ const Hr_ViewValidate = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex-[0.9] bg-gray-100  ">
+          <div className="flex-[0.9]  bg-gray-100  ">
             {toggleState == 1 ? (
               <Forms
                 setReset={setReset}

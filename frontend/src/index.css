@@ -85,7 +85,7 @@
     color: #327379;
   }
   .textempmanages {
-    color: #327379;
+    color: #1e1d33;
     font-family: "Arial Narrow Bold";
     font-size: 16.5px;
     text-decoration: underline;
@@ -93,7 +93,7 @@
     text-decoration-skip-ink: none;
   }
   .textempmanage:hover {
-    color: #327379;
+    color: #1e1d33;
     font-family: "Arial Narrow Bold";
     font-size: 17px;
     text-decoration: underline;
@@ -140,7 +140,9 @@
     background-color: #1e1d33;
   }
   .prdc-border {
+    border-style: solid;
     border-color: #1e1d33;
+    background-color: #1e1d33;
   }
   .modal-pooling {
     background-color: #e53935;
@@ -232,6 +234,9 @@
     font-family: "Arial Narrow";
   }
   .arial-narrow-bold {
+    font-family: "Arial Narrow Bold";
+  }
+  .arial-narrow-bolder {
     font-family: "Arial Narrow Bold";
   }
   .arial-narrow-italic {

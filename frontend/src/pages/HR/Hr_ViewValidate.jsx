@@ -297,18 +297,18 @@ const Hr_ViewValidate = () => {
                 {allRequest
                   .filter(
                     (filter) =>
-                      (filter.Reference_number.toString().includes(
+                      filter.Reference_number.toString().includes(
                         searchValue
                       ) ||
-                        filter.Requestor.toString().includes(searchValue) ||
-                        filter.type_of_form.toString().includes(searchValue) ||
-                        filter.form_department.includes(searchValue)) &&
-                      moment(filter.createdAt).isBetween(
-                        moment(selectedDate.start),
-                        moment(selectedDate.end),
-                        "days",
-                        []
-                      )
+                      filter.Requestor.toString().includes(searchValue) ||
+                      filter.type_of_form.toString().includes(searchValue) ||
+                      (filter.form_department.includes(searchValue) &&
+                        moment(filter.createdAt).isBetween(
+                          moment(selectedDate.start),
+                          moment(selectedDate.end),
+                          "days",
+                          []
+                        ))
                   )
 
                   .map((data, index) => (

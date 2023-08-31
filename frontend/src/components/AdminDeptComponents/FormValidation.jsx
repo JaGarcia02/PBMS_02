@@ -1,35 +1,70 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Navbar from "../../components/Navbar";
 import { FaSearch } from "react-icons/fa";
-import { AiOutlineWarning } from "react-icons/ai";
+import {
+  AiFillCheckCircle,
+  AiFillCloseCircle,
+  AiOutlineWarning,
+} from "react-icons/ai";
 import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
+import { motion } from "framer-motion";
 import { API_URL_FORMS } from "../../utils/Url";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import jwt from "jwt-decode";
 import { Logs } from "../../utils/Logs";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { AnimatePresence, motion } from "framer-motion";
+import ReactPaginate from "react-paginate";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
+import moment from "moment";
+import { BsSearch } from "react-icons/bs";
 
-const FormValidation = () => {
+const Hr_ViewValidate = () => {
   const [validateModal, setValidateModal] = useState(false);
   const [cancelValidationModal, setCancelValidationModal] = useState(false);
   const [finishValidationModal, setFinishValidationModal] = useState(false);
   const [allRequest, setAllRequest] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [reset, setReset] = useState(false);
   const { user } = useSelector((state) => state.user);
 
-  const div = "prdc-colors  hover:text-white";
-  const div_active =
-    div + "w-full cursor-pointer pl-5 prdc-color text-white  hover:text-white";
-  const div_deactive = div + "w-full cursor-pointer pl-5 hover:text-white";
   const [paramId, setParamId] = useState(null);
 
   const decoded = user ? jwt(user) : "";
+  const [pageCount, setPageCount] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [paginatedItems, setPaginatedItems] = useState([]);
+  const [itemcount, setItemcount] = useState({ start: 0, end: 0 });
+  console.log(paginatedItems);
+  const dispatch = useDispatch();
+  const [selectedDate, setSelectedDate] = useState({
+    start: "01/01/2000",
+    end: moment(),
+  });
 
-  const [toggleState, setToggleState] = useState(1);
-  const [Defaults, setDefaults] = useState(false);
+  const inputRef = useRef();
 
+  const focusInput = (e) => {
+    e.preventDefault();
+    setValue(inputRef.current.value);
+  };
+  useEffect(() => {
+    const endOffset = parseInt(itemOffset) + parseInt(itemsPerPage);
+    setPaginatedItems(allRequest.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(allRequest.length / itemsPerPage));
+  }, [allRequest, itemsPerPage, itemOffset]);
+
+  useEffect(() => {
+    setItemcount({
+      start: itemOffset,
+      end: itemOffset + paginatedItems.length,
+    });
+  }, [paginatedItems]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % allRequest?.length;
+
+    setItemOffset(newOffset);
+  };
   //FUNCTION THAT GET THE DATA
   useEffect(() => {
     const getRequest = async () => {
@@ -54,7 +89,7 @@ const FormValidation = () => {
         .then((res) => window.location.reload())
         .catch((err) => console.log(err));
     };
-
+    console.log(sele);
     return (
       <motion.div className="fixed h-full w-full !top-0 !left-0 bg-black bg-opacity-80 flex items-center justify-center z-600 ">
         <motion.div
@@ -64,23 +99,23 @@ const FormValidation = () => {
           exit={{ scale: 0, opacity: 0 }}
           className="absolute h-50 flex w-80 z-50 rounded-md bg-white shadow-white shadow-sm flex-col items-center justify-center dark:(bg-slate-900 text-white)"
         >
-          <AiOutlineWarning className="text-yellow-500 text-[80px] mb-4" />
+          <AiOutlineWarning className="text-yellow-800 text-[80px] mb-4" />
           <span className="text-green-600 arial-narrow text-[18px] font-bold">
             Are you sure you want to Validate?
           </span>
-          <div className="flex justify-between items-center w-52 mt-2 arial-narrow">
+          <div className="flex mt-3  items-center justify-between">
             <button
               onClick={() => setValidateModal(false)}
-              className="flex justify-center items-center w-25 border-[2px] rounded-sm transition transform ease-in-out hover:(border-[2px] border-red-600)"
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-black   border border-black active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
             >
-              <MdOutlineCancel className="mr-2 text-[20px] text-red-600" />
+              <MdOutlineCancel className="mr-1 text-[18px]  cursor-pointer text-black hover:(text-black ) <md:(text-[50px])" />
               Close
             </button>
             <button
-              className="flex justify-center items-center w-25 border-[2px] rounded-sm transition transform ease-in-out hover:(border-[2px] border-green-600)"
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-black   border border-black active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
               onClick={() => validate_form()}
             >
-              <MdCheckCircleOutline className="mr-2 text-[20px] text-green-600" />
+              <MdCheckCircleOutline className="mr-1 text-[18px]  cursor-pointer text-black hover:(text-black ) <md:(text-[50px])" />
               Validate
             </button>
           </div>
@@ -113,23 +148,23 @@ const FormValidation = () => {
           exit={{ scale: 0, opacity: 0 }}
           className="absolute h-50 flex w-80 z-50 rounded-md bg-white shadow-white shadow-sm flex-col items-center justify-center dark:(bg-slate-900 text-white)"
         >
-          <AiOutlineWarning className="text-red-600 text-[80px] mb-4" />
+          <AiOutlineWarning className="text-red-800 text-[80px] mb-4" />
           <span className="text-red-600 arial-narrow text-[18px] font-bold">
             Are you sure you want to Cancel?
           </span>
-          <div className="flex justify-between items-center w-52 mt-2 arial-narrow">
+          <div className="flex mt-3  items-center justify-between">
             <button
               onClick={() => setCancelValidationModal(false)}
-              className="flex justify-center items-center w-25 rounded-sm transition transform ease-in-out hover:(border-[2px] border-red-600) "
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-black   border border-black active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
             >
-              <MdOutlineCancel className="mr-2 text-[20px] text-red-600" />
+              <MdOutlineCancel className="mr-1 text-[18px]  cursor-pointer text-black hover:(text-black ) <md:(text-[50px])" />
               Close
             </button>
             <button
               onClick={() => cancel_request()}
-              className="flex justify-center items-center w-25 border-[2px] rounded-sm transition transform ease-in-out hover:(border-[2px] border-red-600)"
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-red-700   border border-red-700 active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
             >
-              <MdCheckCircleOutline className="mr-2 text-[20px] text-red-600" />
+              <MdCheckCircleOutline className="mr-1 text-[18px]  cursor-pointer text-red-700 hover:(text-black ) <md:(text-[50px])" />
               Cancel
             </button>
           </div>
@@ -166,19 +201,19 @@ const FormValidation = () => {
           <span className="text-blue-700 arial-narrow text-[18px] font-bold">
             Are you this Request is Done ?
           </span>
-          <div className="flex justify-between items-center w-52 mt-2 arial-narrow">
+          <div className="flex mt-3  items-center justify-between">
             <button
-              onClick={() => setFinishValidationModal(false)}
-              className="flex justify-center items-center w-25 rounded-sm transition transform ease-in-out hover:(border-[2px] border-red-600)"
+              onClick={() => setCancelValidationModal(false)}
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-black   border border-black active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
             >
-              <MdOutlineCancel className="mr-2 text-[20px] text-red-600" />
+              <MdOutlineCancel className="mr-1 text-[18px]  cursor-pointer text-black hover:(text-black ) <md:(text-[50px])" />
               Close
             </button>
             <button
               onClick={() => Finished_Request()}
-              className="flex justify-center items-center w-25 border-[2px] rounded-sm transition transform ease-in-out hover:(border-[2px] border-blue-600)"
+              className="w-20 h-6  pr-2 flex items-center justify-center text-[13px]   mr-3 shadow-sm text-blue-700   border border-blue-700 active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm hover:rounded-sm hover:border-black "
             >
-              <MdCheckCircleOutline className="mr-2 text-[20px] text-blue-600" />
+              <MdCheckCircleOutline className="mr-1 text-[18px]  cursor-pointer text-blue-700 hover:(text-black ) <md:(text-[50px])" />
               Done
             </button>
           </div>
@@ -188,128 +223,225 @@ const FormValidation = () => {
   };
 
   return (
-    <>
-      <div className="w-full relative flex flex-col p-4">
-        <div className=" flex items-center justify-between   w-full">
-          <div className="flex w-full items-center justify-between ">
-            <span className="text-[18px] text-black arial-narrow">
-              Form Validation
-            </span>
+    <div className="h-full w-full flex flex-col backg-color-prdc">
+      <div className=" h-full flex items-center justify-center">
+        <div className="flex flex-col   w-full h-full max-h-[px] max-w-[1500px] ">
+          <div className=" flex items-center justify-between  f  w-full">
+            <div className="ml-2 h-10  w-[48vh] max-w-[1000px]  rounded-sm relative items-start justify-center border-black  flex flex-col">
+              <span className="arial-narrow-bold  text-[20px] text-black">
+                Form Validation
+              </span>
+            </div>
+            <div className="flex w-full  justify-end mr-3 items-center ">
+              <div>
+                <span className="mr-3 arial-narrow ">Filter Date:</span>
+                <input
+                  type="date"
+                  className="border w-30 border-black h-6"
+                  placeholder="filter-date"
+                  onChange={(e) =>
+                    setSelectedDate({ ...selectedDate, start: e.target.value })
+                  }
+                />{" "}
+                -{" "}
+                <input
+                  type="date"
+                  className="border w-30 border-black h-6"
+                  placeholder="filter-date"
+                  onChange={(e) =>
+                    setSelectedDate({ ...selectedDate, end: e.target.value })
+                  }
+                />
+              </div>
+            </div>
           </div>
-          <div className=" border-none flex h-8 w-[30%] border-black border relative text-black shadow-sm shadow-gray-600 bg-white dark:(bg-gray-600 text-light-50 shadow-none) <md:(w-[100%])">
-            <FaSearch className="px-2 h-full w-8 absolute right-0 prdc-color text-white" />
+          <div className="w-full  h-full items-center mt-3 justify-center flex ">
+            <div className="w-[99%] h-full flex flex-col rounded  relative">
+              <table className="flex w-full justify-start flex-col items-start ">
+                <tr className="w-full justify-evenly shadow-md shadow-gray-400 flex h-8  items-center prdc-color">
+                  <th className="text-[11px] text-white flex justify-center items-center pr-3 w-[50%]">
+                    No.
+                  </th>
+                  <th className="text-[11px] text-white flex items-center justify-center w-[100%]">
+                    FORM NAME
+                  </th>
+                  <th className="text-[11px] text-white flex items-center justify-center w-[100%]">
+                    REFERENCE NUMBER
+                  </th>
 
-            <input
-              className="border border-gray-400 outline-none w-full bg-transparent placeholder-gray-40 arial-narrow px-2"
-              placeholder="Search..."
-              onChange={(e) => setSearchValue(e.target.value)}
-            />
-          </div>
-        </div>
+                  <th className="text-[11px] text-white flex items-center justify-center w-[100%]">
+                    DEPARTMENT
+                  </th>
+                  <th className="text-[11px] text-white flex items-center justify-center w-[100%]">
+                    DATE REQUESTED
+                  </th>
+                  <th className="text-[11px] text-white flex items-center justify-center w-[100%]">
+                    ACTION
+                  </th>
+                  <th className="text-[11px] text-white flex items-end justify-end  w-[100%]">
+                    <div className=" flex h-7 w-[80%]   border-black border rounded-sm relative text-black shadow-sm shadow-gray-600 bg-white dark:(bg-gray-600 text-light-50 shadow-none) <md:(w-[100%])">
+                      <FaSearch className="px-2 h-full w-8  absolute right-0 prdc-color text-white" />
 
-        <div className="w-full h-[60vh] overflow-auto flex justify-center ">
-          <div className="w-full overflow-auto flex justify-center">
-            <table className="w-[100%] h-[10%] border-gray-100 overflow-hidden arial-narrow-bold text-[18px] justify-evenly border-separate border-spacing-4">
-              <thead>
-                <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center">
-                  <th className="w-[8%] text-white">No.</th>
-                  <th className="w-[30%] text-white">Requestor</th>
-                  <th className="w-[30%] text-white">Reference Number</th>
-                  <th className="w-[30%] text-white">Type of Form</th>
-                  <th></th>
+                      <input
+                        className="border-none  outline-none w-full bg-transparent placeholder-gray-40 "
+                        placeholder="  Search..."
+                        onChange={(e) => setSearchValue(e.target.value)}
+                      />
+                    </div>
+                  </th>
                 </tr>
-              </thead>
-              {/* {paginatedItems.map((data) => {
+                {/* {paginatedItems.map((data) => {
                 return ( */}
-              {allRequest
-                .filter(
-                  (filter) =>
-                    filter.Reference_number.toString().includes(searchValue) ||
-                    filter.Requestor.toString().includes(searchValue) ||
-                    filter.type_of_form.toString().includes(searchValue)
-                )
-                .map((data, index) => (
-                  <tr
-                    className={`border border-black  arial-narrow h-10  text-black ${
-                      data.canceled_by
-                        ? "bg-red-400"
-                        : data.finished_by
-                        ? "bg-blue-200"
-                        : data.validated_by
-                        ? "bg-green-400"
-                        : "bg-yellow-200"
-                    }`}
-                  >
-                    <td className="text-[12px] text-center border-b border-l border-t border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                      {index + 1}
-                    </td>
-                    <td className="text-[12px] text-center border-b border-t border-b-black border-t-black text-black">
-                      {data.Requestor}
-                    </td>
-                    <td className="text-[12px] text-center border-b border-t  border-b-black border-t-black text-black ">
-                      {data.Reference_number}
-                    </td>
-                    <td className="text-[12px] text-center border-b border-t  border-b-black border-t-black text-black ">
-                      {data.type_of_form}
-                    </td>
-                    <td className="text-center border-b border-t  border-b-black border-t-black border-r border-black ">
-                      <div className="flex justify-center">
+                {allRequest
+                  .filter(
+                    (filter) =>
+                      filter.Reference_number.toString().includes(
+                        searchValue
+                      ) ||
+                      filter.Requestor.toString().includes(searchValue) ||
+                      filter.type_of_form.toString().includes(searchValue) ||
+                      (filter.form_department.includes(searchValue) &&
+                        moment(filter.createdAt).isBetween(
+                          moment(selectedDate.start),
+                          moment(selectedDate.end),
+                          "days",
+                          []
+                        ))
+                  )
+
+                  .map((data, index) => (
+                    <tr
+                      className={`w-full justify-evenly border border-gray-500  rounded-sm   flex h-8  items-center ${
+                        data.canceled_by
+                          ? " mt-3    flex   items-center"
+                          : data.finished_by
+                          ? " mt-3 b   justify-evenly   flex "
+                          : data.validated_by
+                          ? " mt-3     justify-evenly   flex   "
+                          : " mt-3    justify-evenly   flex "
+                      }`}
+                    >
+                      <td className="text-[11px] flex text-black  arial-narrow items-center justify-center pr-3 w-[50%]">
+                        {index + 1}
+                      </td>
+                      <td className="text-[11px] items-center justify-center flex text-black arial-narrow w-[100%]">
+                        {data.type_of_form}
+                      </td>
+                      <td className="text-[11px] items-center justify-center flex text-black arial-narrow w-[100%]">
+                        {data.Reference_number}
+                      </td>
+
+                      <td className="text-[11px] items-center justify-center flex text-black arial-narrow w-[100%]">
+                        {data.form_department}
+                      </td>
+                      <td className="text-[11px] items-center justify-center flex text-black arial-narrow w-[100%]">
+                        {moment(data.createdAt).format("MMMM DD, YYYY")}
+                      </td>
+                      <td
+                        className={`text-[11px] arial-narrow-bold items-center justify-center flex text-black  w-[100%]${
+                          data.canceled_by
+                            ? "  text-red-900"
+                            : data.finished_by
+                            ? " text-blue-900"
+                            : data.validated_by
+                            ? " text-green-900"
+                            : " text-yellow-900"
+                        }`}
+                      >
+                        {data.canceled_by
+                          ? "CANCELLED"
+                          : data.finished_by
+                          ? "DONE"
+                          : data.validated_by
+                          ? "VALIDATED"
+                          : "PENDING"}
+                      </td>
+                      <td className="text-[11px] flex text-black items-center justify-center arial-narrow w-[100%]">
                         {data.finished_by ||
                         data.canceled_by ||
                         !data.validated_by ? (
                           ""
                         ) : (
-                          <button
+                          <AiFillCheckCircle
                             onClick={() => {
                               setFinishValidationModal(true);
                               setParamId(data.ID);
                             }}
-                            className="w-20 h-8 bg-white flex items-center focus:outline-none justify-center text-[14px] mr-3 arial-narrow shadow-sm text-black border-[2px] border-black active:scale-1 active:duration-75 py-1 rounded-sm hover:rounded-sm hover:(border-blue-600) "
-                          >
-                            Done
-                          </button>
+                            className="w-7 h-7  pr-2 flex items-center justify-center text-[13px] cursor-pointer hover:text-green-900   mr-3 shadow-sm text-black   active:scale-1 active:duration-75 transition-all hover:scale-120 ease-in-out  transform py-1 rounded-sm  border-0"
+                          />
                         )}
                         {data.canceled_by ||
                         data.finished_by ||
                         data.validated_by ? (
                           ""
                         ) : (
-                          <button
+                          <AiFillCheckCircle
                             name=""
                             onClick={() => {
                               setValidateModal(true);
                               setParamId(data.ID);
                             }}
-                            className="w-20 h-8 bg-white  pr-2 flex items-center focus:outline-none justify-center text-[14px] mr-3 arial-narrow shadow-sm text-black border-[2px] border-black active:scale-1 active:duration-75 py-1 rounded-sm hover:rounded-sm hover:(border-green-600) "
-                          >
-                            <MdCheckCircleOutline className="mr-1 text-[18px]  cursor-pointer text-green-600" />
-                            Validate
-                          </button>
+                            className="w-7 h-7  pr-2 flex items-center justify-center text-[13px] cursor-pointer  hover:text-green-900 mr-3 shadow-sm text-black   active:scale-1 active:duration-75 transition-all hover:scale-120 ease-in-out  transform py-1 rounded-sm  border-0"
+                          />
                         )}
 
                         {data.canceled_by || data.finished_by ? (
                           ""
                         ) : (
-                          <button
+                          <AiFillCloseCircle
                             onClick={() => {
                               setCancelValidationModal(true);
                               setParamId(data.ID);
                             }}
-                            className="w-20 h-8  pr-2 flex items-center focus:outline-none bg-white justify-center text-[14px] arial-narrow mr-3 shadow-sm text-black border-[2px] border-black active:scale-1 active:duration-75 py-1 rounded-sm hover:rounded-sm hover:(border-red-600)"
-                          >
-                            <MdOutlineCancel className="mr-1 text-[18px] cursor-pointer text-red-600" />
-                            Cancel
-                          </button>
+                            className="w-7 h-7  pr-2 flex items-center justify-center hover:text-red-900 text-black text-[13px] cursor-pointer   mr-3 shadow-sm text-black   active:scale-1 active:duration-75 transition-all hover:scale-108 ease-in-out  transform py-1 rounded-sm  "
+                          />
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            </table>
+                      </td>
+                    </tr>
+                  ))}
+              </table>
+              <div className="absolute bottom-0 w-full flex items-center justify-center">
+                <div className="absolute left-2">
+                  <span>Show</span>{" "}
+                  <select
+                    className="absolute ml-2 w-25 shadow-sm rounded-md shadow-gray-700 mr-2 dark:(bg-gray-600 shadow-none text-white)"
+                    onChange={(e) => {
+                      setItemsPerPage(e.target.value);
+                      const newOffset =
+                        (0 * parseInt(itemsPerPage)) % paginatedItems?.length;
+                      setItemOffset(newOffset);
+                    }}
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+                <div className="absolute right-2">
+                  <span className="text-gray-400">
+                    Result: {itemcount.start + 1} - {itemcount.end} of{" "}
+                    {allRequest.length}
+                  </span>
+                </div>
+                <ReactPaginate
+                  breakLabel="..."
+                  nextLabel={<HiArrowNarrowRight />}
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={pageCount}
+                  previousLabel={<HiArrowNarrowLeft />}
+                  renderOnZeroPageCount={null}
+                  containerClassName="list-none flex items-center gap-3 "
+                  pageLinkClassName="cursor-pointer shadow-2xl text-black p-2 overflow-hidden dark:(text-white) prdc-colors  hover:( text-white)"
+                  previousLinkClassName="p-2 cursor-pointer rounded-sm text-black overflow-hidden prdc-colors  hover:( text-white) dark:(text-white rounded-sm)"
+                  nextLinkClassName="p-2 cursor-pointer rounded-sm text-black prdc-colors  hover:( text-white) dark:(text-white)"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
       {validateModal && <Validate_Modal decoded={decoded} paramId={paramId} />}
       {cancelValidationModal && (
         <Cancel_Validate_Modal decoded={decoded} paramId={paramId} />
@@ -317,8 +449,8 @@ const FormValidation = () => {
       {finishValidationModal && (
         <Finished_Request_Modal decoded={decoded} paramId={paramId} />
       )}
-    </>
+    </div>
   );
 };
 
-export default FormValidation;
+export default Hr_ViewValidate;

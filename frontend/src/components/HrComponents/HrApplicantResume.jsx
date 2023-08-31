@@ -245,12 +245,28 @@ const HrApplicantResume = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           exit={{ opacity: 0 }}
-          className="w-85 h-70 rounded-md text-center bg-white items-center flex-col justify-center"
+          className="absolute bg-white h-75 w-120 items-center shadow-md shadow-gray-900 z-999"
         >
-          <BsCheck2Circle className="text-green-600 mt-5 w-30 mb-3 h-30" />
-          <span className="text-center arial-narrow-bold items-center justify-center flex text-[20px]">
-            This client has Passed successfully!
-          </span>
+          <div className="flex flex-col items-center justify-center">
+            <div className=" h-3 w-full bg-blue-600"></div>
+            <BsCheck2Circle className="text-blue-600 mt-5 w-25 mb-3 h-23" />
+            <span className="text-blue-600 text-[30px] arial-narrow-bold">
+              Applicant Hired!
+            </span>
+            <hr className="w-[45%] bg-blue-600 h-[5px] mt-2" />
+            <span className="bg-blue-600 w-50 "></span>
+
+            <span className="text-center arial-narrow-bold items-center justify-center flex text-[20px] mt-2">
+              This applicant has been hired successfully!
+            </span>
+            <button
+              onClick={() => window.location.reload()}
+              className="rounded-full w-30 mt-5 mb-8 border-[2.5px] bg-white items-center border-blue-600 justify-center text-blue-600 h-8 arial-narrow-bold text-[18px] hover:(border-blue-700 border-[3.5px]) focus:(outline-none border-blue-700)"
+            >
+              OK
+            </button>
+            <span className=" h-3 w-full bg-blue-600"></span>
+          </div>
         </motion.div>
       </motion.div>
     );
@@ -282,12 +298,7 @@ const HrApplicantResume = ({
         applicant_status,
         applicant_PoolReason: applicantReason,
       })
-      .then((res) => {
-        setTimeout(() => {
-          setPooledModal(false);
-          window.location.reload();
-        }, 3000);
-      })
+      .then((res) => {})
       .catch((err) => console.log(err));
   };
 
@@ -300,12 +311,7 @@ const HrApplicantResume = ({
         applicant_status,
         applicant_AppointmentDates: reqObjs.applicant_Appointment,
       })
-      .then((res) => {
-        setTimeout(() => {
-          setReturnApplicant(false);
-          window.location.reload();
-        }, 3000);
-      })
+      .then((res) => {})
       .catch((err) => console.log(err));
     setReturnStatus(applicant_status);
   };
@@ -325,12 +331,7 @@ const HrApplicantResume = ({
             applicant_status,
             applicant_AppointmentDates: reqObjs.applicant_Appointment,
           })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -348,12 +349,7 @@ const HrApplicantResume = ({
             applicant_status,
             applicant_AppointmentDates: reqObjs.applicant_Appointment,
           })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -371,12 +367,7 @@ const HrApplicantResume = ({
             applicant_status,
             applicant_AppointmentDates: reqObjs.applicant_Appointment,
           })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -394,12 +385,7 @@ const HrApplicantResume = ({
             applicant_status,
             applicant_AppointmentDates: reqObjs.applicant_Appointment,
           })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -410,12 +396,7 @@ const HrApplicantResume = ({
       setPassApplicant(true);
       axios
         .put(API_URL_HR + "update-applicant", { ID, applicant_status })
-        .then((res) => {
-          setTimeout(() => {
-            setPassApplicant(false);
-            window.location.reload();
-          }, 3000);
-        })
+        .then((res) => {})
         .catch((err) => console.log(err));
     }
 
@@ -428,12 +409,7 @@ const HrApplicantResume = ({
         setPassApplicant(true);
         axios
           .put(API_URL_HR + "update-applicant", { ID, applicant_status })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -447,12 +423,7 @@ const HrApplicantResume = ({
         setPassApplicant(true);
         axios
           .put(API_URL_HR + "update-applicant", { ID, applicant_status })
-          .then((res) => {
-            setTimeout(() => {
-              setPassApplicant(false);
-              window.location.reload();
-            }, 3000);
-          })
+          .then((res) => {})
           .catch((err) => console.log(err));
       }
     }
@@ -945,7 +916,6 @@ const HrApplicantResume = ({
             {placedModal && (
               <HrApplicantResumePlace
                 setPlacedModal={setPlacedModal}
-                placedModal={placedModal}
                 applicantInfo={applicantInfo}
               />
             )}

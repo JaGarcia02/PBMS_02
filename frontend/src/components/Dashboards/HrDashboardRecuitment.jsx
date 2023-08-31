@@ -357,15 +357,17 @@ const HrDashboardRecruitment = () => {
             New Applicants
           </span>
           <hr className="border-black mt-3" />
-          <div className="flex items-center  mt-3">
+          <div className="flex items-start flex-col w-full  justify-start mt-3">
             {dataRecruitment
               .filter((fil) => fil.applicant_status == 0)
               .map((data) => (
-                <>
-                  <img
-                    src={API_URL + data.applicant_Pictures}
-                    className="h-9 w-9 rounded-full"
-                  />
+                <div className="flex items-center mt-2 justify-center">
+                  <div className="flex">
+                    <img
+                      src={API_URL + data.applicant_Pictures}
+                      className="h-9 w-9 rounded-full"
+                    />
+                  </div>
                   <div className="flex flex-col ml-5 arial-narrow text-black">
                     <span className="text-[19px]">
                       {" "}
@@ -384,7 +386,7 @@ const HrDashboardRecruitment = () => {
                     </span>
                   </div>
                   <hr className="border-black mt-3" />
-                </>
+                </div>
               ))}
           </div>
         </div>

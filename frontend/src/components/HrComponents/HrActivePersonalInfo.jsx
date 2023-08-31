@@ -462,7 +462,7 @@ const HrActivePersonalInfo = ({
               <div className=" w-full mt-5 flex items-end justify-end">
                 <button
                   onClick={click_save}
-                  className="empmanage-border absolute bottom-5 right-5 text-white initial-pag-border arial-narrow-bold self-end active:scale-1  rounded-sm text-[14px] h-7 w-20  hover:(border-black rounded-sm) active:duration-75 transition-all hover:(scale-108 ease-in-out  transform py-1 rounded-sm) group  mb-2 flex items-center justify-center text-black    disabled:(bg-gray-500 border-gray-500 cursor-not-allowed)  focus:(outline-none) dark:(bg-transparent border-black border-[0.5px] hover:(arial-narrow-bold)"
+                  className="prdc-border absolute bottom-5 right-5 text-white initial-pag-border arial-narrow-bold self-end active:scale-1  rounded-sm text-[14px] h-7 w-20  hover:(border-black rounded-sm) active:duration-75 transition-all hover:(scale-108 ease-in-out  transform py-1 rounded-sm) group  mb-2 flex items-center justify-center text-black    disabled:(bg-gray-500 border-gray-500 cursor-not-allowed)  focus:(outline-none) dark:(bg-transparent border-black border-[0.5px] hover:(arial-narrow-bold)"
                 >
                   SAVE
                   {/* <AiOutlineArrowRight className="ml-2 text-initial group-hover:(text-[17px])" /> */}
@@ -494,8 +494,8 @@ const HrActivePersonalInfo = ({
         <div className="flex w-full h-full">
           <div className=" bg-gray-100 justify-center  flex flex-[0.2] p-3">
             <div className="relative backg-color-prdc relative w-full rounded-sm shadow-sm shadow-gray-600 flex flex-col items-center ">
-              <hr className="h-1 w-full empmanage-border absolute top-0 left-0" />
-              <hr className="h-1 absolute w-full empmanage-border bottom-0 left-0" />
+              <hr className="h-1 w-full prdc-border absolute top-0 left-0" />
+              <hr className="h-1 absolute w-full prdc-border bottom-0 left-0" />
               <AiOutlineCloseSquare
                 onClick={() => setViewDetails(false)}
                 className="cursor-pointer backbutton-text absolute top-2 right-3 h-10 text-[3vh]     text-[80%] flex items-center justify-center    border-0   active:scale-1 active:duration-75 transition-all hover:scale-150 ease-in-out transform  rounded-md  hover:rounded-md"
@@ -630,7 +630,7 @@ const HrActivePersonalInfo = ({
 
           <div className=" bg-gray-100 flex p-3 flex-[0.8] flex-col">
             <div className="px-3 pb-2  w-full relative shadow-sm shadow-gray-600 rounded-sm h-15 backg-color-prdc items-end justify-between flex">
-              <hr className="h-1 !top-0 !left-0  w-full absolute empmanage-border self-start" />
+              <hr className="h-1 !top-0 !left-0  w-full absolute prdc-border self-start" />
               <span
                 onClick={() => toggleTab(1)}
                 className={toggleState === 1 ? div_active : div_deactive}
@@ -672,6 +672,12 @@ const HrActivePersonalInfo = ({
                 className={toggleState === 7 ? div_active : div_deactive}
               >
                 Work Experience
+              </span>
+              <span
+                // onClick={() => toggleTab(7)}
+                className={toggleState === 8 ? div_active : div_deactive}
+              >
+                Employee History
               </span>
             </div>
             <div className="w-full relative h-full mt-5  rounded-sm shadow-sm shadow-gray-600  backg-color-prdc flex">
@@ -744,7 +750,7 @@ const HrActivePersonalInfo = ({
                 ""
               )}
 
-              <hr className="h-1 absolute w-full empmanage-border bottom-0 left-0" />
+              <hr className="h-1 absolute w-full prdc-border bottom-0 left-0" />
             </div>
           </div>
         </div>
