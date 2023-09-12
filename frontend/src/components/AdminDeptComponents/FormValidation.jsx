@@ -89,7 +89,7 @@ const Hr_ViewValidate = () => {
         .then((res) => window.location.reload())
         .catch((err) => console.log(err));
     };
-    console.log(sele);
+
     return (
       <motion.div className="fixed h-full w-full !top-0 !left-0 bg-black bg-opacity-80 flex items-center justify-center z-600 ">
         <motion.div

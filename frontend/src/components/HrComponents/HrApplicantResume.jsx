@@ -53,7 +53,6 @@ const HrApplicantResume = ({
   const [reqValidation, setReqValidation] = useState(false);
   const [requirements, setRequirements] = useState(false);
   const [updateAppointmentDate, setUpdateAppointmentDate] = useState(false); // update appointment date
-
   const [returnStatus, setReturnStatus] = useState(0);
 
   const [reqObjs, setReqObjs] = useState({

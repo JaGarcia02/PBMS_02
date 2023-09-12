@@ -82,7 +82,7 @@ const HrApplicantPoolReasonModal = ({
       transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
     >
-      <motion.div className="absolute bg-white h-105 w-150 items-center shadow-md shadow-gray-900  z-999">
+      <motion.div className="absolute bg-white h-95 w-150 items-center shadow-md shadow-gray-900  z-999">
         <div className="w-full h-full flex flex-col item-center text-center mb-5">
           <div className=" prdc-color w-full h-24">
             {/* Close Button ================================================================================================================================== close button */}
@@ -98,9 +98,12 @@ const HrApplicantPoolReasonModal = ({
                   className="h-20 w-25 rounded-sm object-contain"
                 />
               </div>
-              <div className="mt-10 ml-2">
-                <span className="text-white arial-narrow-bold text-[22px]">
-                  POOL APPLICANT
+              <div className="block mt-5">
+                <span className="my-1 font-Roboto text-[23px] text-white arial-narrow-bold w-full text-center flex">
+                  POOL
+                </span>
+                <span className="my-3 font-Roboto text-[23px] text-white arial-narrow-bold w-full text-center">
+                  APPLICANT
                 </span>
               </div>
             </div>
@@ -111,7 +114,8 @@ const HrApplicantPoolReasonModal = ({
               </span>
               <textarea
                 id="textArea"
-                className="border-2 h-40 border-gray-500 text-[15px] arial-narrow w-100 resize-none focus:(outline-none)"
+                placeholder="Enter reason for pooling. . . ."
+                className="border-2 px-2 py-2 h-40 border-gray-500 text-[14px] arial-narrow w-100 resize-none focus:(outline-none)"
                 onChange={(e) => setPoolReasonText(e.target.value)}
               />
             </div>
@@ -129,7 +133,7 @@ const HrApplicantPoolReasonModal = ({
           </div>
 
           {/* save button ================================================================ */}
-          <div className="absolute bottom-7 left-127">
+          <div className="absolute bottom-8 left-128">
             <button
               // onClick={() =>
               //   updateApplicantPool(
@@ -140,7 +144,7 @@ const HrApplicantPoolReasonModal = ({
               //   )
               // }
               onClick={validation}
-              className="flex items-center justify-center text-[18px] arial-narrow-bold rounded-sm w-22 h-8 shadow-sm border-[2.5px] text-red-500 border-red-500 hover:(border-red-500 border-[3.5px]) focus:(outline-none border-red-500)"
+              className="flex items-center justify-center text-[18px] arial-narrow-bold rounded-sm w-20 h-8 shadow-sm border-[2.5px] text-red-500 border-red-500 hover:(border-red-500 border-[3.5px]) focus:(outline-none border-red-500)"
             >
               <BsDiagram2Fill className="mr-1" />
               Pool

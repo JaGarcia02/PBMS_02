@@ -18,6 +18,7 @@ import ReactPaginate from "react-paginate";
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const Hr_ActiveEmployees = () => {
   const [viewDetails, setViewDetails] = useState(false);
@@ -36,6 +37,11 @@ const Hr_ActiveEmployees = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const [paginatedItems, setPaginatedItems] = useState([]);
   const [itemcount, setItemcount] = useState({ start: 0, end: 0 });
+
+  const [company, setCompany] = useState("");
+
+  const { branding } = useSelector((state) => state.branding);
+
   console.log(paginatedItems);
   useEffect(() => {
     setSearchEmployee("");
@@ -96,6 +102,7 @@ const Hr_ActiveEmployees = () => {
         ?.filter(
           (fil) =>
             fil.Employee_Designation == filter.outlet &&
+            fil.Employee_Company == company &&
             (fil.Employee_Status == "Absent without Leave"
               ? "Inactive" == filter.status
               : fil.Employee_Status == "End of Contract"
@@ -121,6 +128,7 @@ const Hr_ActiveEmployees = () => {
         employeeList?.filter(
           (fil) =>
             fil.Employee_Designation == filter.outlet &&
+            fil.Employee_Company == company &&
             (fil.Employee_Status == "Absent without Leave"
               ? "Inactive" == filter.status
               : fil.Employee_Status == "End of Contract"
@@ -141,7 +149,7 @@ const Hr_ActiveEmployees = () => {
         ).length / itemsPerPage
       )
     );
-  }, [employeeList, itemsPerPage, itemOffset, filter]);
+  }, [employeeList, itemsPerPage, itemOffset, filter, company]);
 
   useEffect(() => {
     setItemcount({
@@ -228,13 +236,21 @@ const Hr_ActiveEmployees = () => {
                     <option>External</option>
                   </select>
                 </div>
-                <div className=" w-55vh flex items-center justify-start ">
+                <div className=" w-60vh flex items-center justify-start ">
                   <span className="arial-narrow inline-block w-[5rem] text-[14px]">
                     COMPANY
                   </span>
-                  <select className="text-[14px] w-[5rem] arial-narrow">
-                    <option></option>
-                    <option></option>
+                  <select
+                    onChange={(e) => setCompany(e.target.value)}
+                    value={company}
+                    className="text-[14px] w-[5rem] arial-narrow"
+                  >
+                    <option value={branding ? branding[0]?.Business_Name : ""}>
+                      {" "}
+                      {/* NAKA DEFAULT MUNA TOH NEED NYU PALITAN SA KANBAN BOARD UNG NAME NG COMPANY */}
+                      {branding ? branding[0]?.Business_Name : ""}
+                    </option>
+                    <option value="None">None</option>
                   </select>
                 </div>
               </div>

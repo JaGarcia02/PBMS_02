@@ -29,21 +29,21 @@ const HrDashboard = () => {
       <Navbar />
       <div className="mt-15 flex flex-col p-5 h-screen bg-gray-200 justify-center items-center">
         <div className="flex  flex-col">
-          <div className="w-full mt-9 mb-3 flex w-[100%]">
-            {splitSection.includes("Employee-Management") ? (
-              <div className="flex justify-center items-center border-b-[2px] border-transparent duration-500 hover:(border-black) w-38 mr-5">
+          <div className="w-full mt-9 mb-3 flex ">
+            {splitSection.includes("Recruitment") ? (
+              <div className="flex  items-center  border-b-[2px] border-transparent duration-500 hover:(border-black) mr-5">
                 <span
                   className="cursor-pointer arial-narrow"
-                  onClick={() => toggleTab(4)}
+                  onClick={() => toggleTab(1)}
                 >
-                  Employee Management
+                  Recruitment
                 </span>
               </div>
             ) : (
               ""
             )}
             {splitSection.includes("Compensation-Benefits") ? (
-              <div className="flex justify-center items-center border-b-[2px] border-transparent duration-500 hover:(border-black) w-38 mr-5">
+              <div className="flex  items-center border-b-[2px] border-transparent duration-500 hover:(border-black)  mr-5">
                 <span
                   className=" cursor-pointer arial-narrow )"
                   onClick={() => toggleTab(1)}
@@ -55,36 +55,36 @@ const HrDashboard = () => {
               ""
             )}
             {splitSection.includes("hr-default") ? (
-              <div className="flex justify-center items-center border-b-[2px] border-transparent duration-500 hover:(border-black) w-30 mr-5">
+              <div className="flex items-center border-b-[2px] border-transparent duration-500 hover:(border-black)  mr-5">
                 <span
-                  className="cursor-pointer  arial-narrow"
+                  className="cursor-pointer w-full  arial-narrow"
                   onClick={() => toggleTab(1)}
                 >
-                  Department Admin
+                  Timekeeping
                 </span>
               </div>
             ) : (
               ""
             )}
-            {splitSection.includes("Timekeeping") ? (
-              <div className="flex justify-center items-center border-b-[2px] border-transparent duration-500 hover:(border-black) w-24 mr-5">
+            {splitSection.includes("Employee-Management") ? (
+              <div className="flex  items-center  border-b-[2px] border-transparent duration-500 hover:(border-black)  mr-5">
                 <span
-                  className=" cursor-pointer arial-narrow"
-                  onClick={() => toggleTab(1)}
+                  className=" cursor-pointer w-full arial-narrow"
+                  onClick={() => toggleTab(4)}
                 >
-                  TimeKeeping
+                  Employee Management
                 </span>
               </div>
             ) : (
               ""
             )}
-            {splitSection.includes("Recruitment") ? (
-              <div className="flex justify-center items-center border-b-[2px] border-transparent duration-500 hover:(border-black) w-20">
+            {splitSection.includes("hr-default") ? (
+              <div className="flex  items-center border-b-[2px] border-transparent duration-500 hover:(border-black) ">
                 <span
                   className="cursor-pointer arial-narrow"
                   onClick={() => toggleTab(1)}
                 >
-                  Placement
+                  Department Manager
                 </span>
               </div>
             ) : (

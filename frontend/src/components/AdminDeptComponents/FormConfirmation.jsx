@@ -7,7 +7,7 @@ import { saveAs } from "file-saver";
 import { useSelector } from "react-redux";
 import jwt from "jwt-decode";
 import moment from "moment";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlineCloseSquare } from "react-icons/ai";
 import uniqid from "uniqid";
 import { MdCheckCircleOutline } from "react-icons/md";
 import axios from "axios";
@@ -22,6 +22,7 @@ import SpinnerJson from "../../lottieFiles/spinner.json";
 import { Logs } from "../../utils/Logs";
 
 const FormConfirmation = ({ passingData, setShowConfirmation }) => {
+  const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
   const decoded = user ? jwt(user) : "";
   function loadFile(url, callback) {
@@ -134,14 +135,64 @@ const FormConfirmation = ({ passingData, setShowConfirmation }) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         exit={{ opacity: 0 }}
-        className="h-80 w-100 bg-gray-100 relative items-center justify-center shadow-md rounded-sm"
+        className="h-95 w-120 bg-gray-100 relative items-center justify-center shadow-md rounded-sm"
       >
-        <AiFillCloseCircle
-          className="absolute right-1 top-1 text-[25px] text-red-600 cursor-pointer"
-          onClick={() => setShowConfirmation(false)}
-        />
-        <div className="w-full h-full flex flex-col p-3">
-          <span className="mt-4 text-center arial-narrow-bold text-black text-[20px]">
+        <div className=" prdc-color w-full h-25">
+          {/* =========================================== */}
+          <div className="flex items-center">
+            <div className="mt-2 ml-2">
+              <img
+                src={
+                  branding
+                    ? API_URL + branding[0]?.Logo
+                    : "/imgs/deafult_logo.jpg"
+                }
+                alt=""
+                className="h-20 object-contain w-25 rounded-sm"
+              />
+            </div>
+            <div className="block mt-2">
+              <span className="my-1 font-Roboto text-[22px] text-white arial-narrow-bold w-full text-center flex">
+                FORM REQUEST
+              </span>
+              <span className="my-3 font-Roboto text-[22px] text-white arial-narrow-bold w-full text-center">
+                CONFIRMATION
+              </span>
+            </div>
+
+            <AiOutlineCloseSquare
+              onClick={() => setShowConfirmation(false)}
+              className="w-8 h-8 absolute top-1 right-1 cursor-pointer flex items-center justify-center mr-1 text-red-400 border-none active:scale-1 active:duration-75 transition-all ease-in-out hover:text-red-500 rounded-sm hover:rounded-sm"
+            />
+          </div>
+        </div>
+
+        <div className="w-full h-full flex flex-col p-3 mt-[10px]">
+          <div className="flex justify-between items-center w-[100%] px-10">
+            <span className="arial-narrow-bold text-[18px]">Reference #</span>
+            <span className="arial-narrow text-[16px] border-[1px] border-black w-50 h-6 flex justify-center items-center">
+              {UniqID2}
+            </span>
+          </div>
+          <div className="flex justify-between items-center w-[100%] px-10 mt-5">
+            <span className="arial-narrow-bold text-[18px]">Type of Form:</span>
+            <span className="arial-narrow text-[16px] border-[1px] border-black w-50 h-6 flex justify-center items-center">
+              {passingData.FormName}
+            </span>
+          </div>
+          <div className="flex justify-between items-center w-[100%] px-10 mt-5">
+            <span className="arial-narrow-bold text-[18px]">Requestor:</span>
+            <span className="arial-narrow text-[16px] border-[1px] border-black w-50 h-6 flex justify-center items-center">
+              {decoded.name}
+            </span>
+          </div>
+          <div className="flex justify-between items-center w-[100%] px-10 mt-5">
+            <span className="arial-narrow-bold text-[18px]">Request Date:</span>
+            <span className="arial-narrow text-[16px] border-[1px] border-black w-50 h-6 flex justify-center items-center">
+              {moment().format("MMMM DD, YYYY - hh:mm A")}
+            </span>
+          </div>
+          {/* <span className="mt-4 text-center arial-narrow-bold text-black text-[20px]">
             Request Confirmation
           </span>
           <div className="flex w-full items-center text-black mt-6 px-4 justify-between">
@@ -175,7 +226,7 @@ const FormConfirmation = ({ passingData, setShowConfirmation }) => {
             <span className=" border w-40 border-black rounded-sm arial-narrow">
               {moment().format("MMMM DD, YYYY - hh:mm A")}
             </span>
-          </div>
+          </div> */}
           {success ? (
             <span className=" rounded-sm w-[50%] self-center arial-narrow flex items-center justify-center mt-9 text-black">
               FORM HAS BEEN CREATED !
@@ -184,18 +235,19 @@ const FormConfirmation = ({ passingData, setShowConfirmation }) => {
             <button
               onClick={() => generateDocument(API_URL + passingData.FormUrl)}
               disabled={success || loading}
-              className="border border-black rounded-sm w-[50%] self-center arial-narrow flex items-center justify-center mt-9 hover:(border border-black)"
+              className="border-[2px] border-black rounded-sm w-[40%] h-7 self-center arial-narrow-bold flex items-center justify-center mt-10 hover:(border-black text-green-600)"
             >
               {loading ? (
                 <Lottie animationData={SpinnerJson} loop={true} />
               ) : (
                 <>
-                  <MdCheckCircleOutline className="mr-1 text-[18px]  cursor-pointer text-black hover:(text-black ) <md:(text-[50px])" />{" "}
+                  <MdCheckCircleOutline className="mr-1 text-[18px] cursor-pointer" />
                   Confirm
                 </>
               )}
             </button>
           )}
+          <hr className="prdc-color w-full absolute h-4 bottom-0 left-0" />
         </div>
       </motion.div>
     </motion.div>

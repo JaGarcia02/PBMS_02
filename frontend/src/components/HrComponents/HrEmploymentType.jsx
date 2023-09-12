@@ -82,7 +82,7 @@ const HrEmploymentType = () => {
                   <span>No.</span>
                 </th>
                 <th className="w-[40%] text-white">
-                  <span>Contract</span>
+                  <span>Employment Type</span>
                 </th>
                 <th className="w-[40%]">
                   <div className="flex justify-center text-white">

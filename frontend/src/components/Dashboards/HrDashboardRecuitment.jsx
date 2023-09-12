@@ -279,10 +279,10 @@ const HrDashboardRecruitment = () => {
           <table className="overflow-y-auto">
             <tr className="mt-1 h-12 text-black">
               <th>Full Name</th>
-              <th>Profession</th>
+              <th>Position Title</th>
               <th>Contact Number</th>
               <th>Schedule at</th>
-              <th>Status</th>
+              <th>Application Status</th>
             </tr>
             {dataRecruitment
               .filter((fil) =>

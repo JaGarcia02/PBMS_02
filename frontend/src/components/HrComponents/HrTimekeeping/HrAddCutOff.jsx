@@ -59,10 +59,11 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
     e.preventDefault();
     axios
       .post(API_URL_HR + "create-cutoff", {
+        cutOff_year: moment(Date.now()).format("YYYY"),
         cutOff:
-          moment(cutOff.start).format("MM-DD-YYYY") +
-          "_" +
-          moment(cutOff.end).format("MM-DD-YYYY"),
+          moment(cutOff.start).format("MMM. DD, YYYY") +
+          " - " +
+          moment(cutOff.end).format("MMM. DD, YYYY"),
       })
       .then((res) => {
         setCutOffData(res.data);
@@ -91,7 +92,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
       transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
     >
-      <motion.div className="absolute bg-white h-135 w-222 items-center shadow-md shadow-gray-900 z-999 ">
+      <motion.div className="absolute bg-white h-120 w-200 items-center shadow-md shadow-gray-900 z-999 ">
         <div className="w-full h-full flex flex-col item-center text-center mb-5">
           <div className=" prdc-color w-full h-25">
             {/* =========================================== */}
@@ -107,10 +108,17 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
                   className="h-20 object-contain w-25 rounded-sm"
                 />
               </div>
-              <div className="flex mt-3">
-                <span className="my-3 font-Roboto text-[25px] text-white arial-narrow-bold w-full text-center">
-                  Human Resources Timekeeping
-                </span>
+              <div className="flex-col w-[50%] mt-2">
+                <div className="w-[100%] flex">
+                  <span className="text-[25px] text-white arial-narrow-bold">
+                    Human Resources Timekeeping
+                  </span>
+                </div>
+                <div className="w-[100%] flex">
+                  <span className="text-[25px] text-white arial-narrow-bold">
+                    Create Cutoff
+                  </span>
+                </div>
               </div>
 
               <AiOutlineCloseSquare

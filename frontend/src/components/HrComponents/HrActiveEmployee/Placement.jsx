@@ -21,7 +21,7 @@ const HRPlacement = ({
         <div className="flex-1 flex-col w-full h-full flex">
           <div className="w-full mt-3 flex items-center text-black mt-2 px-4 justify-evenly <md:(w-full items-center text-black mt-2 px-4 justify-between)">
             <span className="arial-narrow emptext-color inline-block w-[8rem] text-[14px] <md:(inline-block w-[7rem])">
-              Employee ID no:
+              Employee ID:
             </span>
             <input
               className="w-40 pl-1 arial-narrow-bold border-t-0 border border-l-0 border-r-0 h-6 text-[14px] backg-color-prdc border-black  <md:(ml-0 w-40  h-6 text-[14px])"
@@ -30,7 +30,7 @@ const HRPlacement = ({
           </div>
           <div className="w-full mt-3 flex items-center text-black mt-2 px-4 justify-evenly <md:(w-full items-center text-black mt-2 px-4 justify-between)">
             <span className="arial-narrow emptext-color inline-block w-[8rem] text-[14px] <md:(inline-block w-[7rem])">
-              Employee Type:
+              Employment Type:
             </span>
 
             <select
@@ -49,7 +49,7 @@ const HRPlacement = ({
           </div>
           <div className="w-full mt-3 flex items-center text-black mt-2 px-4 justify-evenly <md:(w-full items-center text-black mt-2 px-4 justify-between)">
             <span className=" arial-narrow emptext-color inline-block w-[8rem] text-[14px] <md:(inline-block w-[7rem])">
-              Company Assigned:
+              Company:
             </span>
             <select className="w-40 arial-narrow-bold border-t-0 border border-l-0 border-r-0 h-6 text-[14px] backg-color-prdc border-black  <md:(ml-0 w-40  h-6 text-[14px])">
               <option> {employeeInfo.Employee_Company}</option>
@@ -143,7 +143,7 @@ const HRPlacement = ({
             </div>
             <div className="w-full mt-3 flex arial-narrow items-center text-black mt-2 px-4 justify-evenly <md:(w-full items-center text-black mt-2 px-4 justify-between)">
               <span className="   emptext-color inline-block w-[8rem] text-[14px] <md:(inline-block w-[7rem])">
-                Contract Type:
+                Employee Type:
               </span>
               <select
                 onChange={(e) => {

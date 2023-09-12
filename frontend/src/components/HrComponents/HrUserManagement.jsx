@@ -181,7 +181,7 @@ const HrUserManagement = ({
                 className=" text-white text-center arial-narrow-bold text-[14px] cursor-pointer hover:(bg-yellow-900)  <md:(hidden) dark:(border-white text-white)"
                 onClick={() => setSort("employee_id")}
               >
-                EMPLOYEE NO.
+                EMPLOYEE ID.
               </th>
 
               <th

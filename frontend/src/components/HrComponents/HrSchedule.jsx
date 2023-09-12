@@ -91,7 +91,7 @@ const HrSchedule = () => {
                 <span>NO.</span>
               </th>
               <th className="arial-narrow-bold w-[15%]">
-                <span>SCHEDULE TYPE</span>
+                <span>EMPLOYEE TYPE</span>
               </th>
               <th className="arial-narrow-bold w-[15%]">
                 <span>DAY</span>

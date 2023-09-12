@@ -852,8 +852,11 @@ const view_cutoff_category = async (req, res) => {
 
 const create_cutoff = async (req, res) => {
   try {
-    const { cutOff } = req.body;
-    await hr_cutoffCategory.create({ cutOff: cutOff });
+    const { cutOff, cutOff_year } = req.body;
+    await hr_cutoffCategory.create({
+      cutOff: cutOff,
+      cutOff_year: cutOff_year,
+    });
     const created_cutOff = await hr_cutoffCategory.findAll({});
     return res.status(200).json(created_cutOff);
   } catch (error) {

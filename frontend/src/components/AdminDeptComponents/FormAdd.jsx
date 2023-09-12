@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDropzone } from "react-dropzone";
 import { BiCloudUpload } from "react-icons/bi";
+import { AiOutlineSave } from "react-icons/ai";
 
 const FormAdd = ({ setShowAddForm }) => {
   const { user } = useSelector((state) => state.user);
@@ -84,7 +85,7 @@ const FormAdd = ({ setShowAddForm }) => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         exit={{ opacity: 0 }}
-        className="h-105 w-100 bg-gray-100 relative items-center justify-center shadow-md rounded-sm"
+        className="h-95 w-120 bg-gray-100 relative items-center justify-center shadow-md rounded-sm"
       >
         <AiOutlineCloseSquare
           onClick={() => setShowAddForm(false)}
@@ -117,14 +118,17 @@ const FormAdd = ({ setShowAddForm }) => {
             DEPARTMENT FORM
           </p>
         </div>
-        <form className="w-full h-full flex flex-col" onSubmit={submit_form}>
-          <div className="flex w-full items-center text-black mt-2 px-4 justify-between <md:(w-full text-black mt-2 px-4 justify-between)">
-            <span className=" border-black arial-narrow  inline-block w-[8rem]  text-[14px] <md:(inline-block w-[8rem])">
+        <form
+          className="w-full h-full flex flex-col mt-2"
+          onSubmit={submit_form}
+        >
+          <div className="flex w-full items-center text-black mt-2 px-8 justify-between">
+            <span className=" border-black arial-narrow-bold  inline-block w-[8rem] text-[18px]">
               Date Requested :
             </span>
             <input
               type="date"
-              className=" w-40 h-6 border border-black <md:(w-40) px-2 arial-narrow text-[16px] outline-none rounded-sm"
+              className=" w-40 h-6 border border-black arial-narrow px-2 text-[16px]"
               required
               onChange={(e) =>
                 setFieldForms({ ...fieldForms, dateRequest: e.target.value })
@@ -132,12 +136,13 @@ const FormAdd = ({ setShowAddForm }) => {
             />
           </div>
 
-          <div className="flex w-full items-center text-black mt-2 px-4 justify-between <md:(w-full text-black mt-2 px-4 justify-between)">
-            <span className=" border-black arial-narrow  inline-block w-[8rem]  text-[14px] <md:(inline-block w-[8rem])">
+          <div className="flex w-full items-center text-black mt-2 px-8 justify-between">
+            <span className=" border-black arial-narrow-bold  inline-block w-[8rem] text-[18px]">
               Form Name :
             </span>
             <input
-              className=" w-40 h-6 border border-black <md:(w-40) px-2 arial-narrow  text-[16px] outline-none rounded-sm"
+              className="w-40 h-6 border border-black arial-narrow px-2 text-[16px]"
+              placeholder="Form name"
               required
               onChange={(e) =>
                 setFieldForms({ ...fieldForms, formName: e.target.value })
@@ -145,19 +150,19 @@ const FormAdd = ({ setShowAddForm }) => {
             />
           </div>
 
-          <div className="flex w-full items-center text-black mt-2 px-4 justify-between <md:(w-full text-black mt-2 px-4 justify-between)">
-            <span className=" border-black arial-narrow  inline-block w-[8rem]  text-[14px] <md:(inline-block w-[8rem])">
+          <div className="flex w-full items-center text-black mt-2 px-8 justify-between">
+            <span className="border-black arial-narrow-bold  inline-block w-[8rem] text-[18px]">
               Department :
             </span>
             <input
-              className=" w-40 h-6 border border-black <md:(w-40) px-2 arial-narrow  text-[16px] outline-none rounded-sm"
+              className=" w-40 h-6 border border-black arail-narrow px-2 text-[16px]"
               required
               readOnly
               value={jwt(user)?.dept}
             />
           </div>
 
-          <div className="mt-10 flex flex-col self-center">
+          <div className="mt-6 flex flex-col self-center">
             <span className="text-center arial-narrow-bold text-black mb-2">
               Upload Document
             </span>
@@ -189,7 +194,8 @@ const FormAdd = ({ setShowAddForm }) => {
               <input type="file" accept=".docx" {...getInputProps()} />
             </div>
           </div>
-          <button className="mt-15 mr-2 w-15 self-end align-bottom prdc-color text-white rounded-none arial-narrow hover:(border-black)">
+          <button className="flex justify-center items-center mt-8 mr-2 w-25 h-7 self-end align-bottom border-[1px] border-[prdc-color] text-black rounded-none arial-narrow-bold hover:(border-[2px] border-black text-green-600)">
+            <AiOutlineSave className="mr-1" />
             SUBMIT
           </button>
         </form>

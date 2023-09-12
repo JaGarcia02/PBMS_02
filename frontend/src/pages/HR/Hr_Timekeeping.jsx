@@ -5,7 +5,7 @@ import { API_URL_HR } from "../../utils/Url";
 import { OutTable, ExcelRenderer } from "react-excel-renderer";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { MdAddCircle } from "react-icons/md";
+import { MdAddCircle, MdAccessTimeFilled, MdTimer } from "react-icons/md";
 import { BsSearch, BsSave2Fill, BsFillCalendarPlusFill } from "react-icons/bs";
 import { AiFillSave, AiFillFileExcel, AiFillFileAdd } from "react-icons/ai";
 import HrTimeRecord from "../../components/HrComponents/HrTimekeeping/HrTimeRecord";
@@ -15,17 +15,19 @@ import "react-toastify/dist/ReactToastify.css";
 import HrAddCutOff from "../../components/HrComponents/HrTimekeeping/HrAddCutOff";
 import HrAdjustment from "../../components/HrComponents/HrTimekeeping/HrAdjustment";
 import HrImportTimeRecord from "../../components/HrComponents/HrTimekeeping/HrImportTimeRecord";
-import HrImportSummary from "../../components/HrComponents/HrTimekeeping/HrImportSummary";
+import HrAddTimeRecord from "../../components/HrComponents/HrTimekeeping/HrAddTimeRecord";
 
 const Hr_Timekeeping = () => {
   const { branding } = useSelector((state) => state.branding);
   const [hrEmployee, setHrEmployee] = useState([]);
-  const [ExcelData, setExcelData] = useState([]);
+  // const [ExcelData, setExcelData] = useState([]);
   const [CutOff, setCutOff] = useState([]);
   const [cutList, setCutList] = useState([]);
   const [toggle, setToggle] = useState(1);
-  const [chosenDate, setChosenDate] = useState("");
+  const [chosenDate, setChosenDate] = useState([]);
+  const [chosenCutOffDate, setChosenCutOffDate] = useState("");
   const [searchData, setSearchData] = useState("");
+
   const [ObjFilter, setObjFilter] = useState({
     ID: "",
     Bio: "",
@@ -40,10 +42,7 @@ const Hr_Timekeeping = () => {
   // import time record
   const [openImportTR, setOpenImportTR] = useState(false);
   // import summary
-  const [openImportSummary, setOpenImportSummary] = useState(false);
-
-  console.log(hrEmployee);
-  console.log(searchData);
+  const [openInsertTimeRecord, setOpenInsertTimeRecord] = useState(false);
 
   useEffect(() => {
     axios
@@ -57,35 +56,44 @@ const Hr_Timekeeping = () => {
         setCutOff(res.data);
       })
       .catch((err) => console.log(err));
+
+    axios
+      .get(API_URL_HR + "view-cutoff-category")
+      .then((res) => {
+        setChosenDate(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  function getRange(startDate, endDate, type) {
-    let fromDate = moment(startDate);
-    let toDate = moment(endDate);
-    let diff = toDate.diff(fromDate, type);
-    let range = [];
-    for (let i = 0; i <= diff; i++) {
-      range.push(moment(startDate).add(i, type));
-    }
-    setCutList(range.map((item) => item._d));
-  }
+  // function getRange(startDate, endDate, type) {
+  //   let fromDate = moment(startDate);
+  //   let toDate = moment(endDate);
+  //   let diff = toDate.diff(fromDate, type);
+  //   let range = [];
+  //   for (let i = 0; i <= diff; i++) {
+  //     range.push(moment(startDate).add(i, type));
+  //   }
+  //   setCutList(range.map((item) => item._d));
+  // }
 
-  useEffect(() => {
-    const split = chosenDate.split("_");
-    getRange(split[0], split[1], "days");
-  }, [chosenDate]);
+  // useEffect(() => {
+  //   const split = chosenDate.split("_");
+  //   getRange(split[0], split[1], "days");
+  // }, [chosenDate]);
 
   // This is for the exel data to render
 
-  const handleChange = (event, objectname, ID) => {
-    let ObjIndex = ExcelData.findIndex((obj) => obj.Employee_ID == ID);
+  // const handleChange = (event, objectname, ID) => {
+  //   let ObjIndex = ExcelData.findIndex((obj) => obj.Employee_ID == ID);
 
-    let object = ExcelData[ObjIndex];
+  //   let object = ExcelData[ObjIndex];
 
-    object[objectname] = event;
+  //   object[objectname] = event;
 
-    setExcelData([...ExcelData]);
-  };
+  //   setExcelData([...ExcelData]);
+  // };
 
   return (
     <div className="flex flex-col h-screen w-screen">
@@ -144,15 +152,24 @@ const Hr_Timekeeping = () => {
                   // onClick={SaveButton}
                 /> */}
               </div>
-              <div className="flex items-center">
+              <div className="flex-col items-center">
                 <span className="arial-narrow-bold text-black text-[15px] inline-block mr-2">
-                  CUT-OFF:{" "}
+                  Cutoff dates:{" "}
                 </span>
                 <select
-                  onChange={(e) => setChosenDate(e.target.value)}
+                  onChange={(e) => setChosenCutOffDate(e.target.value)}
                   className="text-[14px] px-2 w-56 arial-narrow-bold h-6.5 rounded-sm border-[2px] border-gray-700 hover:cursor-pointer"
                 >
-                  {[
+                  <option value="">Select cutoff date</option>
+                  {chosenDate.map((data) => {
+                    return (
+                      <>
+                        <option value={data.cutOff}>{data.cutOff}</option>
+                      </>
+                    );
+                  })}
+
+                  {/* {[
                     ...new Set(CutOff.data?.dtr?.map((item) => item.cutOffID)),
                     <option selected hidden>
                       Choose Cut off
@@ -160,7 +177,25 @@ const Hr_Timekeeping = () => {
                   ].map((data) => (
                     <option>{data}</option>
                   ))}
+                  */}
                 </select>
+                <div className="mt-2">
+                  <span className="arial-narrow-bold text-black text-[15px] inline-block mr-3.5">
+                    Cutoff Year:
+                  </span>
+                  <select className="text-[14px] px-2 w-35 arial-narrow-bold h-6.5 rounded-sm border-[2px] border-gray-700 hover:cursor-pointer">
+                    <option value="">Select cutoff year</option>
+                    {chosenDate.map((data) => {
+                      return (
+                        <>
+                          <option value={data.cutOff_year}>
+                            {data.cutOff_year}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </select>
+                </div>
               </div>
             </div>
             <div className="flex-1 flex flex-col">
@@ -193,19 +228,26 @@ const Hr_Timekeeping = () => {
 
                 <div className="flex flex-col justify-center items-center mr-2 h-[100%]">
                   <button
-                    className="  arial-narrow-bold prdc-color mb-2 mt-2 text-white text-[14px] w-55 h-6.5 justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
+                    className="arial-narrow-bold prdc-color mb-2 mt-2 text-white text-[14px] w-55 h-6.5 justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
                     onClick={() => setAddCutOffModal(true)}
                   >
                     <BsFillCalendarPlusFill className="mr-2" />
                     Create Cut-off
                   </button>
                   <button
+                    className="arial-narrow-bold prdc-color mb-2 text-white text-[14px] w-55 h-6.5 justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
+                    onClick={() => setOpenInsertTimeRecord(true)}
+                  >
+                    <MdTimer className="mr-2" />
+                    Insert Time Record
+                  </button>
+                  {/* <button
                     className="prdc-color text-white arial-narrow-bold rounded-sm h-7 w-55 h-6.5 flex justify-center items-center mb-2 focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
                     onClick={() => setOpenImportTR(true)}
                   >
                     <AiFillFileAdd className="mr-2" />
                     Import Time Record
-                  </button>
+                  </button> */}
                   {/* <button
                     className="prdc-color text-white arial-narrow-bold h-7 w-50 flex justify-center items-center focus:outline-none transition ease-in-out duration-[0.5s] hover:( border-[2px] border-black bg-white text-black)"
                     onClick={() => setOpenImportSummary(true)}
@@ -370,7 +412,6 @@ const Hr_Timekeeping = () => {
                 setToggle={setToggle}
                 ExcelData={ExcelData}
                 ObjFilter={ObjFilter}
-                chosenDate={chosenDate}
                 CutOff={CutOff}
                 cutList={cutList}
               />
@@ -482,7 +523,10 @@ const Hr_Timekeeping = () => {
         </div>
       </div>
       {addCutOffModal && <HrAddCutOff setAddCutOffModal={setAddCutOffModal} />}
-      {openImportTR && (
+      {openInsertTimeRecord && (
+        <HrAddTimeRecord setOpenInsertTimeRecord={setOpenInsertTimeRecord} />
+      )}
+      {/* {openImportTR && (
         <HrImportTimeRecord
           setOpenImportTR={setOpenImportTR}
           hrEmployee={hrEmployee}
@@ -491,20 +535,10 @@ const Hr_Timekeeping = () => {
           setCutOff={setCutOff}
           setDtr={setDtr}
           dtr={dtr}
-          cutList={cutList}
+          // cutList={cutList}
           ObjFilter={ObjFilter}
         />
-      )}
-      {openImportSummary && (
-        <HrImportSummary
-          setOpenImportSummary={setOpenImportSummary}
-          setCutOff={setCutOff}
-          hrEmployee={hrEmployee}
-          setHrEmployee={setHrEmployee}
-          ExcelData={ExcelData}
-          setExcelData={setExcelData}
-        />
-      )}
+      )} */}
     </div>
   );
 };

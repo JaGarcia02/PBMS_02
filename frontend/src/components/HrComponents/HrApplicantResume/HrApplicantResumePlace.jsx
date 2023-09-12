@@ -81,7 +81,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
       dateStart == "" ||
       dateHired == "" ||
       applicantData.schedule == "" ||
-      applicantData.contract == "" ||
+      applicantData.contract.trim() == "" ||
       applicantData.companyDesignation == ""
     ) {
       setIsEmpty(true);
@@ -120,11 +120,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
         })
         .then((res) => {
           setShowModalSuccess(true);
-          setTimeout(() => {
-            setShowModalSuccess(false);
-            setActiveDataValue(res.data);
-            window.location.reload();
-          }, 1500);
+          setActiveDataValue(res.data);
         })
         .catch((err) => console.log(err));
     }
@@ -584,9 +580,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                             " | " +
                             data.schedule_timeFrom +
                             " - " +
-                            data.schedule_timeTo +
-                            " | " +
-                            data.schedule_restday
+                            data.schedule_timeTo
                           }
                         >
                           {data.schedule_type +
@@ -597,9 +591,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                             " | " +
                             data.schedule_timeFrom +
                             " - " +
-                            data.schedule_timeTo +
-                            " | " +
-                            data.schedule_restday}
+                            data.schedule_timeTo}
                         </option>
                       );
                     })}
@@ -638,7 +630,7 @@ const HrApplicantResumePlace = ({ setPlacedModal, applicantInfo }) => {
                     }`}
                   >
                     <option value="" hidden selected>
-                      Choose Employment Status
+                      Select Status
                     </option>
                     {empStatus.map((data) => {
                       return (

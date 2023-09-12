@@ -134,7 +134,7 @@ const HrRequest = () => {
                 className="text-white arial-narrow-bold w-[18%]"
                 // onClick={() => setSort("employee_id")}
               >
-                Position
+                Position Title
               </th>
               <th
                 className="text-white arial-narrow-bold w-[15%]"

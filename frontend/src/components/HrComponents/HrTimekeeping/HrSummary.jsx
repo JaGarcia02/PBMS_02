@@ -772,8 +772,6 @@ const HrSummary = ({ setToggle, ObjFilter, chosenDate, CutOff, cutList }) => {
           CutOff={CutOff}
         />
       )}
-      {/* </div> */}
-      {/* </div> */}
     </>
   );
 };

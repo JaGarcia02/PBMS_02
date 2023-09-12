@@ -83,7 +83,7 @@ const HrEmploymentStatus = () => {
                   <span>No.</span>
                 </th>
                 <th className="w-[50%] text-white">
-                  <span>Status</span>
+                  <span>Employment Status</span>
                 </th>
                 <th className="w-[30%]">
                   <div className="flex justify-center text-white">
