@@ -21,7 +21,7 @@ const Hr_Timekeeping = () => {
   const { branding } = useSelector((state) => state.branding);
   const [hrEmployee, setHrEmployee] = useState([]);
   // const [ExcelData, setExcelData] = useState([]);
-  const [CutOff, setCutOff] = useState([]);
+  const [timeRecordData, setTimeRecordData] = useState([]);
   const [cutList, setCutList] = useState([]);
   const [toggle, setToggle] = useState(1);
   const [chosenDate, setChosenDate] = useState([]);
@@ -53,7 +53,7 @@ const Hr_Timekeeping = () => {
     axios
       .get(API_URL_HR + "get-timekeepingrecord")
       .then((res) => {
-        setCutOff(res.data);
+        setTimeRecordData(res.data);
       })
       .catch((err) => console.log(err));
 
@@ -393,9 +393,8 @@ const Hr_Timekeeping = () => {
           <div className="border flex flex-col border-black border-b-4  overflow-auto border-b-gray-700 col-span-2 h-full max-h-[1000px]">
             {toggle == 1 ? (
               <HrTimeRecord
-                cutList={cutList}
-                dtr={dtr}
-                CutOff={CutOff}
+                timeRecordData={timeRecordData}
+                chosenCutOffDate={chosenCutOffDate}
                 ObjFilter={ObjFilter}
                 setToggle={setToggle}
               />
@@ -403,7 +402,7 @@ const Hr_Timekeeping = () => {
               <HrAdjustment
                 cutList={cutList}
                 dtr={dtr}
-                CutOff={CutOff}
+                timeRecordData={timeRecordData}
                 ObjFilter={ObjFilter}
                 setToggle={setToggle}
               />
@@ -412,7 +411,7 @@ const Hr_Timekeeping = () => {
                 setToggle={setToggle}
                 ExcelData={ExcelData}
                 ObjFilter={ObjFilter}
-                CutOff={CutOff}
+                timeRecordData={timeRecordData}
                 cutList={cutList}
               />
             ) : (
@@ -524,7 +523,11 @@ const Hr_Timekeeping = () => {
       </div>
       {addCutOffModal && <HrAddCutOff setAddCutOffModal={setAddCutOffModal} />}
       {openInsertTimeRecord && (
-        <HrAddTimeRecord setOpenInsertTimeRecord={setOpenInsertTimeRecord} />
+        <HrAddTimeRecord
+          setOpenInsertTimeRecord={setOpenInsertTimeRecord}
+          setTimeRecordData={setTimeRecordData}
+          timeRecordData={timeRecordData}
+        />
       )}
       {/* {openImportTR && (
         <HrImportTimeRecord

@@ -21,62 +21,156 @@ import { useSelector } from "react-redux";
 import decode from "jwt-decode";
 import moment from "moment";
 
-const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
+const HrAddTimeRecord = ({
+  setOpenInsertTimeRecord,
+  setTimeRecordData,
+  timeRecordData,
+}) => {
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
-  const [timeRecordData, setTimeRecordData] = useState({ dtr: [] });
+  const [timeRecordDataArray, setTimeRecordDataArray] = useState({ dtr: [] });
   const [chosenDate, setChosenDate] = useState([]);
   const [checkEmpty, setCheckEmpty] = useState(false);
   const [timeRecordInput, setTimeRecordInput] = useState({
     id: "",
     cutoff: "",
-    timeIn: "",
-    breakStart: "",
-    breakEnd: "",
-    timeOut: "",
+    date_day: "",
+    timeIn: 0,
+    breakStart: 0,
+    breakEnd: 0,
+    timeOut: 0,
     bioId: "",
+    empId: "",
   });
 
-  console.log(timeRecordData);
+  console.log(timeRecordDataArray.dtr);
+  // const result = milliseconds(24, 36, 0);
+
+  // const result =
+  //   timeRecordInput.timeIn.split(":")[0] * (60000 * 60) +
+  //   timeRecordInput.timeIn.split(":")[1] * 60000;
+  // console.log(moment(result).format("HH:mm"));
+
+  // convertedTime.split(":")[0] * 3600000;
+  // console.log(
+  //   convertedTime.split(":")[0] * 3600000 + convertedTime.split(":")[1] * 60000
+  // );
+
+  const notify_createCutoff = () => {
+    toast.success(" Time Record Submitted!", {
+      position: "bottom-right",
+      hideProgressBar: true,
+      autoClose: 5000,
+      pauseOnHover: false,
+      theme: "colored",
+    });
+  };
 
   const AddTimeRecord = () => {
     if (
       timeRecordInput.cutoff == "" ||
-      timeRecordInput.timeIn == "" ||
-      timeRecordInput.breakStart == "" ||
-      timeRecordInput.breakEnd == "" ||
-      timeRecordInput.timeOut == "" ||
-      timeRecordInput.bioId == ""
+      timeRecordInput.bioId == "" ||
+      timeRecordInput.empId == ""
     ) {
       //   alert("PBMS System:\nSome Input Fields are Empty!");
       setCheckEmpty(true);
     } else {
-      setTimeRecordData({
-        ...timeRecordData,
-        dtr: [...timeRecordData.dtr, timeRecordInput],
+      setTimeRecordDataArray({
+        ...timeRecordDataArray,
+        dtr: [...timeRecordDataArray.dtr, timeRecordInput],
       });
       document.getElementById("cutoff").value = "";
+      document.getElementById("dateDay").value = "";
       document.getElementById("timeIn").value = "";
       document.getElementById("breakStart").value = "";
       document.getElementById("breakEnd").value = "";
       document.getElementById("timeOut").value = "";
       document.getElementById("bioId").value = "";
+      document.getElementById("empId").value = "";
       setTimeRecordInput({
         ...timeRecordInput,
         id: "",
         cutoff: "",
-        timeIn: "",
-        breakStart: "",
-        breakEnd: "",
-        timeOut: "",
+        date_day: "",
+        timeIn: 0,
+        breakStart: 0,
+        breakEnd: 0,
+        timeOut: 0,
         bioId: "",
+        empId: "",
       });
     }
   };
 
   const RemoveInput = (id) => {
-    const newValue = timeRecordData.dtr.filter((fil) => fil.id != id);
-    setTimeRecordData({ ...timeRecordData, dtr: newValue });
+    const newValue = timeRecordDataArray.dtr.filter((fil) => fil.id != id);
+    setTimeRecordDataArray({ ...timeRecordDataArray, dtr: newValue });
+  };
+
+  // Converted time in
+
+  const SubmitTimeRecord = () => {
+    const timeKeeping_data = timeRecordDataArray.dtr.map((data) => {
+      // Time format
+      const initial_time_value = data.date_day.split("-");
+      if (initial_time_value[1] == 1) {
+        initial_time_value[1] = "January";
+      } else if (initial_time_value[1] == 2) {
+        initial_time_value[1] = "February";
+      } else if (initial_time_value[1] == 3) {
+        initial_time_value[1] = "March";
+      } else if (initial_time_value[1] == 4) {
+        initial_time_value[1] = "April";
+      } else if (initial_time_value[1] == 5) {
+        initial_time_value[1] = "May";
+      } else if (initial_time_value[1] == 6) {
+        initial_time_value[1] = "June";
+      } else if (initial_time_value[1] == 7) {
+        initial_time_value[1] = "July ";
+      } else if (initial_time_value[1] == 8) {
+        initial_time_value[1] = "August";
+      } else if (initial_time_value[1] == 9) {
+        initial_time_value[1] = "September";
+      } else if (initial_time_value[1] == 10) {
+        initial_time_value[1] = "October ";
+      } else if (initial_time_value[1] == 11) {
+        initial_time_value[1] = "November";
+      } else if (initial_time_value[1] == 12) {
+        initial_time_value[1] = "December";
+      }
+
+      const MM_d_YYYY =
+        initial_time_value[1] +
+        " " +
+        initial_time_value[2] +
+        "," +
+        initial_time_value[0];
+
+      return {
+        Cutoff: data.cutoff,
+        Date_day: MM_d_YYYY,
+        Time_in: data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn,
+        Time_break_start:
+          data.breakStart == 0 ? 0 : data.date_day + "T" + data.breakStart,
+        Time_break_end:
+          data.breakEnd == 0 ? 0 : data.date_day + "T" + data.breakEnd,
+        Time_out: data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut,
+        BioID: data.bioId,
+        EmpID: data.empId,
+      };
+    });
+    axios
+      .post(API_URL_HR + "create-timerecord", {
+        dtr: timeKeeping_data,
+      })
+      .then((res) => {
+        setTimeRecordData(res.data);
+        notify_createCutoff();
+        setOpenInsertTimeRecord(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -91,13 +185,13 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
   }, []);
   return (
     <motion.div
-      className="w-full h-full absolute bg-black/50 items-center flex justify-center !top-0 !left-0"
+      className="w-screen h-screen absolute bg-black/50 items-center flex justify-center !top-0 !left-0 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
     >
-      <motion.div className="absolute bg-white h-135 w-222 items-center shadow-md shadow-gray-900 z-999 ">
+      <motion.div className="relative bg-white h-130 w-290 items-center shadow-md shadow-gray-900 z-999 overflow-hidden">
         <div className="w-full h-full flex flex-col item-center text-center mb-5">
           <div className=" prdc-color w-full h-25">
             {/* =========================================== */}
@@ -134,7 +228,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
           </div>
 
           <div className="overflow-auto mb-10">
-            {timeRecordData.dtr.map((dataArray) => {
+            {timeRecordDataArray.dtr.map((dataArray) => {
               return (
                 <>
                   <div className="mt-[1rem] w-full flex justify-between px-5">
@@ -153,7 +247,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               })
                             }
                             defaultValue={dataArray.cutoff}
-                            className="border border-black rounded-sm px-1 arial-narrow text-[14px] w-45 h-7"
+                            className="border-[2px] border-black rounded-sm px-1 arial-narrow text-[14px] w-45 h-7"
                           >
                             <option value="">Select cutoff</option>
                             {chosenDate.map((data) => {
@@ -173,6 +267,27 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                     <div className="flex">
                       <div className="flex-col">
                         <div className="flex">
+                          <span className="arial-narrow-bold">Date</span>
+                        </div>
+                        <div className="flex">
+                          <input
+                            type="date"
+                            defaultValue={dataArray.date_day}
+                            onChange={(e) =>
+                              setTimeRecordInput({
+                                ...timeRecordInput,
+                                date_day: e.target.value,
+                              })
+                            }
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex">
+                      <div className="flex-col">
+                        <div className="flex">
                           <span className="arial-narrow-bold">Time in</span>
                         </div>
                         <div className="flex">
@@ -185,7 +300,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                                 timeIn: e.target.value,
                               })
                             }
-                            className="w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px]"
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px]"
                           />
                         </div>
                       </div>
@@ -206,7 +321,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                                 breakStart: e.target.value,
                               })
                             }
-                            className="w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px]"
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px]"
                           />
                         </div>
                       </div>
@@ -227,7 +342,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                                 breakEnd: e.target.value,
                               })
                             }
-                            className="w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px]"
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px]"
                           />
                         </div>
                       </div>
@@ -248,7 +363,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                                 timeOut: e.target.value,
                               })
                             }
-                            className="w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px]"
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px]"
                           />
                         </div>
                       </div>
@@ -269,11 +384,33 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                                 bioId: e.target.value,
                               })
                             }
-                            className="w-30 h-7 border-[1px] border-black px-2 rounded-sm  arial-narrow text-[14px]"
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm  arial-narrow text-[14px]"
                           />
                         </div>
                       </div>
                     </div>
+
+                    <div className="flex">
+                      <div className="flex-col">
+                        <div className="flex">
+                          <span className="arial-narrow-bold">Employee Id</span>
+                        </div>
+                        <div className="flex">
+                          <input
+                            type="text"
+                            defaultValue={dataArray.empId}
+                            onChange={(e) =>
+                              setTimeRecordInput({
+                                ...timeRecordInput,
+                                empId: e.target.value,
+                              })
+                            }
+                            className="w-30 h-7 border-[2px] border-black px-2 rounded-sm  arial-narrow text-[14px]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="flex justify-center items-center text-red-500 mt-6">
                       <button
                         className="focus:outline-none border-none"
@@ -287,7 +424,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
               );
             })}
 
-            {timeRecordData.dtr.length == 15 ? (
+            {timeRecordDataArray.dtr.length == 15 ? (
               ""
             ) : (
               <>
@@ -308,7 +445,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               cutoff: e.target.value,
                             })
                           }
-                          className={`border border-black rounded-sm px-1 arial-narrow text-[14px] w-45 h-7 ${
+                          className={`border-[2px] border-black rounded-sm px-1 arial-narrow text-[14px] w-45 h-7 ${
                             timeRecordInput.cutoff == "" && checkEmpty
                               ? "border-red-500"
                               : "border-gray-500"
@@ -332,6 +469,32 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                   <div className="flex">
                     <div className="flex-col">
                       <div className="flex">
+                        <span className="arial-narrow-bold">Date</span>
+                      </div>
+                      <div className="flex">
+                        <input
+                          type="date"
+                          id="dateDay"
+                          onChange={(e) =>
+                            setTimeRecordInput({
+                              ...timeRecordInput,
+                              id: uniqid(),
+                              date_day: e.target.value,
+                            })
+                          }
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px] ${
+                            timeRecordInput.date_day == "" && checkEmpty
+                              ? "border-red-500"
+                              : "border-gray-500"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex">
+                    <div className="flex-col">
+                      <div className="flex">
                         <span className="arial-narrow-bold">Time in</span>
                       </div>
                       <div className="flex">
@@ -341,15 +504,10 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                           onChange={(e) =>
                             setTimeRecordInput({
                               ...timeRecordInput,
-                              id: uniqid(),
                               timeIn: e.target.value,
                             })
                           }
-                          className={`w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px] ${
-                            timeRecordInput.timeIn == "" && checkEmpty
-                              ? "border-red-500"
-                              : "border-gray-500"
-                          }`}
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px] `}
                         />
                       </div>
                     </div>
@@ -370,11 +528,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               breakStart: e.target.value,
                             })
                           }
-                          className={`w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px] ${
-                            timeRecordInput.breakStart == "" && checkEmpty
-                              ? "border-red-500"
-                              : "border-gray-500"
-                          }`}
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px] `}
                         />
                       </div>
                     </div>
@@ -395,11 +549,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               breakEnd: e.target.value,
                             })
                           }
-                          className={`w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px] ${
-                            timeRecordInput.breakEnd == "" && checkEmpty
-                              ? "border-red-500"
-                              : "border-gray-500"
-                          }`}
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px] `}
                         />
                       </div>
                     </div>
@@ -420,11 +570,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               timeOut: e.target.value,
                             })
                           }
-                          className={`w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[16px] ${
-                            timeRecordInput.timeOut == "" && checkEmpty
-                              ? "border-red-500"
-                              : "border-gray-500"
-                          }`}
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[16px] `}
                         />
                       </div>
                     </div>
@@ -445,7 +591,7 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                               bioId: e.target.value,
                             })
                           }
-                          className={`w-30 h-7 border-[1px] border-black px-2 rounded-sm arial-narrow text-[14px] ${
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[14px] ${
                             timeRecordInput.bioId == "" && checkEmpty
                               ? "border-red-500"
                               : "border-gray-500"
@@ -454,6 +600,32 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
                       </div>
                     </div>
                   </div>
+
+                  <div className="flex">
+                    <div className="flex-col">
+                      <div className="flex">
+                        <span className="arial-narrow-bold">Employee Id</span>
+                      </div>
+                      <div className="flex">
+                        <input
+                          type="text"
+                          id="empId"
+                          onChange={(e) =>
+                            setTimeRecordInput({
+                              ...timeRecordInput,
+                              empId: e.target.value,
+                            })
+                          }
+                          className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[14px] ${
+                            timeRecordInput.empId == "" && checkEmpty
+                              ? "border-red-500"
+                              : "border-gray-500"
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="flex justify-center items-center text-green-500 mt-6">
                     <button
                       onClick={AddTimeRecord}
@@ -467,6 +639,20 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
             )}
           </div>
 
+          {timeRecordDataArray.dtr.length == 0 ? (
+            ""
+          ) : (
+            <div className="w-full flex justify-end items-center">
+              <button
+                id="submitDTR"
+                onClick={SubmitTimeRecord}
+                className="mr-10 border-[2px] border-black w-25 h-7 arial-narrow-bold rounded-sm flex justify-center items-center text-black hover:(bg-green-500 text-white border-green-500) disabled:(bg-gray-400 text-gray-300 border-gray-600 cursor-not-allowed)"
+              >
+                <BiSave className="mr-1" /> Save
+              </button>
+            </div>
+          )}
+
           <ToastContainer />
         </div>
       </motion.div>
@@ -475,3 +661,26 @@ const HrAddTimeRecord = ({ setOpenInsertTimeRecord }) => {
 };
 
 export default HrAddTimeRecord;
+
+/*
+to  format time
+
+ const hours = timeRecordInput.timeIn.split(":")[0];
+  const minutes = timeRecordInput.timeIn.split(":")[1];
+  const seconds = 0;
+  var convertedTime;
+  if (hours > 0 && hours <= 12) {
+    convertedTime = "" + hours;
+  } else if (hours > 12) {
+    convertedTime = "" + (hours - 12);
+  } else if (hours == 0) {
+    convertedTime = 12;
+  }
+  convertedTime += minutes < 10 ? ":" + 0 + minutes : ":" + minutes;
+  convertedTime += seconds < 10 ? ":" + 0 + seconds : ":" + seconds;
+  convertedTime += hours >= 12 ? "PM" : "AM";
+  const TimeIn_Formatted = convertedTime;
+
+
+
+*/

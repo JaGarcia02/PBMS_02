@@ -830,12 +830,8 @@ const save_timerecord = async (req, res) => {
 
 const getTimeKeepingrecord = async (req, res) => {
   try {
-    const dtr = await hr_dtr.findAll();
-    const summary = await hr_timekeeping.findAll();
-
-    const obj = { data: { summary: summary, dtr: dtr } };
-
-    return res.status(200).json(obj);
+    const dtr = await hr_dtr.findAll({});
+    return res.status(200).json(dtr);
   } catch (error) {
     return res.status(500).json(error);
   }
