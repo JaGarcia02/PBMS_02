@@ -10,7 +10,7 @@ const HrTimeRecord = ({
   const [chosenTimeRecordData, setChosenTimeRecordData] = useState({
     id: "",
   });
-  console.log(chosenCutOffDate === "");
+  console.log(timeRecordData);
 
   return (
     <>
@@ -41,8 +41,8 @@ const HrTimeRecord = ({
               <th className="w-[14%]">Time out</th>
               <th className="w-[14%]">Time in</th>
               <th className="w-[14%]">Time out</th>
-              <th className="w-[12%]">Bio Id</th>
-              <th className="w-[15%]">Emp Id</th>
+              <th className="w-[12%]">Total Hours</th>
+              <th className="w-[15%]">Lates</th>
             </tr>
           </thead>
           <tbody>
@@ -50,24 +50,97 @@ const HrTimeRecord = ({
               {chosenCutOffDate == "" ? (
                 <>
                   {timeRecordData.map((data) => {
+                    const Initial_Probationary = "2023-09-01T07:30";
+                    const Initial_Regular = "2023-09-01T08:30";
+
+                    const TimeIn = data.Time_in;
+                    const BreakTimeStart = data.Time_break_start;
+                    const BreakTimeEnd = data.Time_break_end;
+                    const TimeOut = data.Time_out;
+
+                    const Probationary =
+                      moment(Initial_Probationary).format("HH:mm");
+
+                    const Regular = moment(Initial_Regular).format("HH:mm");
+
+                    // Lates
+                    const TimeIn_split_value = moment(TimeIn)
+                      .format("HH:mm")
+                      .split(":");
+                    // Converted to minutes
+                    const timeIn_hour_converted_to_minutes =
+                      TimeIn_split_value[0] * 60 * (60 * 1000);
+                    const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+                    // Converted to minutes
+                    const Probi_split_value = Probationary.split(":");
+                    const probi_hours_converted_to_minutes =
+                      Probi_split_value[0] * 60 * (60 * 1000);
+                    const probi_mins = Probi_split_value[1] * 60 * 1000;
+
+                    // Converted to minutes
+                    const Reg_split_value = Regular.split(":");
+                    const reg_hours_converted_to_minutes =
+                      Reg_split_value[0] * 60 * (60 * 1000);
+                    const reg_mins = Reg_split_value[1] * 60 * 1000;
+
+                    // Equation for Lates
+                    const For_Regular_Lates_Rquation =
+                      timeIn_hour_converted_to_minutes -
+                      reg_hours_converted_to_minutes +
+                      (timeIn_mins - reg_mins);
+
+                    const For_Probationary_Lates_Rquation =
+                      timeIn_hour_converted_to_minutes -
+                      probi_hours_converted_to_minutes +
+                      (timeIn_mins - probi_mins);
+
                     return (
                       <>
                         <tr className="w-[100%] h-10 flex justify-center items-center cursor-pointer">
                           <td className="flex justify-center items-center text-[12px] w-[35%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                             {data.Date_day}
                           </td>
-                          <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                            {moment(data.Time_in).format("HH:mm")}
-                          </td>
-                          <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                            {moment(data.Time_break_start).format("HH:mm")}
-                          </td>
-                          <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                            {moment(data.Time_break_end).format("HH:mm")}
-                          </td>
-                          <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                            {moment(data.Time_out).format("HH:mm")}
-                          </td>
+
+                          {data.Time_in == 0 ? (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              N/A
+                            </td>
+                          ) : (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {moment(data.Time_in).format("HH:mm")}
+                            </td>
+                          )}
+
+                          {data.Time_break_start == 0 ? (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              N/A
+                            </td>
+                          ) : (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {moment(data.Time_break_start).format("HH:mm")}
+                            </td>
+                          )}
+
+                          {data.Time_break_end == 0 ? (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              N/A
+                            </td>
+                          ) : (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {moment(data.Time_break_end).format("HH:mm")}
+                            </td>
+                          )}
+
+                          {data.Time_out == 0 ? (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              N/A
+                            </td>
+                          ) : (
+                            <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {moment(data.Time_out).format("HH:mm")}
+                            </td>
+                          )}
                           <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                             {data.BioID}
                           </td>
@@ -86,26 +159,102 @@ const HrTimeRecord = ({
                       {timeRecordData
                         .filter((fil) => fil.Cutoff == chosenCutOffDate)
                         .map((data) => {
+                          const Initial_Probationary = "2023-09-01T07:30";
+                          const Initial_Regular = "2023-09-01T08:30";
+
+                          const TimeIn = data.Time_in;
+                          const BreakTimeStart = data.Time_break_start;
+                          const BreakTimeEnd = data.Time_break_end;
+                          const TimeOut = data.Time_out;
+
+                          const Probationary =
+                            moment(Initial_Probationary).format("HH:mm");
+
+                          const Regular =
+                            moment(Initial_Regular).format("HH:mm");
+
+                          // Lates
+                          const TimeIn_split_value = moment(TimeIn)
+                            .format("HH:mm")
+                            .split(":");
+                          // Converted to minutes
+                          const timeIn_hour_converted_to_minutes =
+                            TimeIn_split_value[0] * 60 * (60 * 1000);
+                          const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+                          // Converted to minutes
+                          const Probi_split_value = Probationary.split(":");
+                          const probi_hours_converted_to_minutes =
+                            Probi_split_value[0] * 60 * (60 * 1000);
+                          const probi_mins = Probi_split_value[1] * 60 * 1000;
+
+                          // Converted to minutes
+                          const Reg_split_value = Regular.split(":");
+                          const reg_hours_converted_to_minutes =
+                            Reg_split_value[0] * 60 * (60 * 1000);
+                          const reg_mins = Reg_split_value[1] * 60 * 1000;
+
+                          // Equation for Lates
+                          const For_Regular_Lates_Rquation =
+                            timeIn_hour_converted_to_minutes -
+                            reg_hours_converted_to_minutes +
+                            (timeIn_mins - reg_mins);
+
+                          const For_Probationary_Lates_Rquation =
+                            timeIn_hour_converted_to_minutes -
+                            probi_hours_converted_to_minutes +
+                            (timeIn_mins - probi_mins);
                           return (
                             <>
                               <tr className="w-[100%] h-10 flex justify-center items-center cursor-pointer">
                                 <td className="flex justify-center items-center text-[12px] w-[35%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                                   {data.Date_day}
                                 </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_in).format("HH:mm")}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_break_start).format(
-                                    "HH:mm"
-                                  )}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_break_end).format("HH:mm")}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_out).format("HH:mm")}
-                                </td>
+
+                                {data.Time_in == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_in).format("HH:mm")}
+                                  </td>
+                                )}
+
+                                {data.Time_break_start == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_break_start).format(
+                                      "HH:mm"
+                                    )}
+                                  </td>
+                                )}
+
+                                {data.Time_break_end == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_break_end).format(
+                                      "HH:mm"
+                                    )}
+                                  </td>
+                                )}
+
+                                {data.Time_out == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_out).format("HH:mm")}
+                                  </td>
+                                )}
+
                                 <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                                   {data.BioID}
                                 </td>
@@ -125,6 +274,65 @@ const HrTimeRecord = ({
                             fil.BioID == ObjFilter.employee_data.Employee_BioID
                         )
                         .map((data) => {
+                          const Initial_Probationary = "2023-09-01T07:30";
+                          const Initial_Regular = "2023-09-01T08:30";
+
+                          const TimeIn = data.Time_in;
+                          const BreakTimeStart = data.Time_break_start;
+                          const BreakTimeEnd = data.Time_break_end;
+                          const TimeOut = data.Time_out;
+
+                          // Regular hour
+                          const REG_InitialValue = moment(TimeOut).diff(
+                            moment(TimeIn) +
+                              moment(BreakTimeEnd).diff(
+                                moment(BreakTimeStart),
+                                "hours"
+                              ),
+                            "hours"
+                          );
+
+                          const Probationary =
+                            moment(Initial_Probationary).format("HH:mm");
+
+                          const Regular =
+                            moment(Initial_Regular).format("HH:mm");
+
+                          // Lates
+                          const TimeIn_split_value = moment(TimeIn)
+                            .format("HH:mm")
+                            .split(":");
+                          // Converted to minutes
+                          const timeIn_hour_converted_to_minutes =
+                            TimeIn_split_value[0] * 60 * (60 * 1000);
+                          const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+                          // Converted to minutes
+                          const Probi_split_value = Probationary.split(":");
+                          const probi_hours_converted_to_minutes =
+                            Probi_split_value[0] * 60 * (60 * 1000);
+                          const probi_mins = Probi_split_value[1] * 60 * 1000;
+
+                          // Converted to minutes
+                          const Reg_split_value = Regular.split(":");
+                          const reg_hours_converted_to_minutes =
+                            Reg_split_value[0] * 60 * (60 * 1000);
+                          const reg_mins = Reg_split_value[1] * 60 * 1000;
+
+                          // Equation for Lates
+                          const For_Regular_Lates_Rquation =
+                            timeIn_hour_converted_to_minutes -
+                            reg_hours_converted_to_minutes +
+                            (timeIn_mins - reg_mins);
+
+                          const For_Probationary_Lates_Rquation =
+                            timeIn_hour_converted_to_minutes -
+                            probi_hours_converted_to_minutes +
+                            (timeIn_mins - probi_mins);
+
+                          // Official Data
+                          const REG =
+                            REG_InitialValue > 8 ? 8 : REG_InitialValue;
                           return (
                             <>
                               <tr
@@ -134,26 +342,72 @@ const HrTimeRecord = ({
                                 <td className="flex justify-center items-center text-[12px] w-[35%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                                   {data.Date_day}
                                 </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_in).format("HH:mm")}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_break_start).format(
-                                    "HH:mm"
-                                  )}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_break_end).format("HH:mm")}
-                                </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {moment(data.Time_out).format("HH:mm")}
-                                </td>
+
+                                {data.Time_in == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_in).format("HH:mm")}
+                                  </td>
+                                )}
+
+                                {data.Time_break_start == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_break_start).format(
+                                      "HH:mm"
+                                    )}
+                                  </td>
+                                )}
+
+                                {data.Time_break_end == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_break_end).format(
+                                      "HH:mm"
+                                    )}
+                                  </td>
+                                )}
+
+                                {data.Time_out == 0 ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    N/A
+                                  </td>
+                                ) : (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {moment(data.Time_out).format("HH:mm")}
+                                  </td>
+                                )}
+
                                 <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {data.BioID}
+                                  {REG}
                                 </td>
-                                <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                                  {data.EmpID}
-                                </td>
+
+                                {ObjFilter.employee_data.Employee_Schedule ==
+                                "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
+                                    {"- " +
+                                      For_Probationary_Lates_Rquation / 60000}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
+                                {ObjFilter.employee_data.Employee_Schedule ==
+                                "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
+                                    {"- " + For_Regular_Lates_Rquation / 60000}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
                               </tr>
                             </>
                           );
@@ -185,22 +439,28 @@ const HrTimeRecord = ({
           <tbody>
             <div className="h-55 overflow-auto">
               {timeRecordData
-                .filter((fil) => fil.ID == chosenTimeRecordData)
+                .filter(
+                  (fil) =>
+                    fil.ID == chosenTimeRecordData &&
+                    fil.EmpID == ObjFilter.employee_data.Employee_ID
+                )
                 .map((data) => {
-                  const InitalTimeProbi = "2023-09-01T07:30";
-                  const InitalTimeRegular = "2023-09-01T08:30";
-
                   // Time Rules
-                  const Probationary = moment(InitalTimeProbi).format("HH:mm");
-                  const Regular = moment(InitalTimeRegular).format("HH:mm");
+                  const Initial_Probationary = "2023-09-01T07:30";
+                  const Initial_Regular = "2023-09-01T08:30";
 
                   const TimeIn = data.Time_in;
                   const BreakTimeStart = data.Time_break_start;
                   const BreakTimeEnd = data.Time_break_end;
                   const TimeOut = data.Time_out;
 
+                  const Probationary =
+                    moment(Initial_Probationary).format("HH:mm");
+
+                  const Regular = moment(Initial_Regular).format("HH:mm");
+
                   // Regular hour
-                  const REG_InitailValue = moment(TimeOut).diff(
+                  const REG_InitialValue = moment(TimeOut).diff(
                     moment(TimeIn) +
                       moment(BreakTimeEnd).diff(
                         moment(BreakTimeStart),
@@ -210,8 +470,40 @@ const HrTimeRecord = ({
                   );
 
                   // Lates
+                  const TimeIn_split_value = moment(TimeIn)
+                    .format("HH:mm")
+                    .split(":");
+                  // Converted to minutes
+                  const timeIn_hour_converted_to_minutes =
+                    TimeIn_split_value[0] * 60 * (60 * 1000);
+                  const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
 
-                  const REG = REG_InitailValue > 8 ? 8 : REG_InitailValue;
+                  // Converted to minutes
+                  const Probi_split_value = Probationary.split(":");
+                  const probi_hours_converted_to_minutes =
+                    Probi_split_value[0] * 60 * (60 * 1000);
+                  const probi_mins = Probi_split_value[1] * 60 * 1000;
+
+                  // Converted to minutes
+                  const Reg_split_value = Regular.split(":");
+                  const reg_hours_converted_to_minutes =
+                    Reg_split_value[0] * 60 * (60 * 1000);
+                  const reg_mins = Reg_split_value[1] * 60 * 1000;
+
+                  // Equation for Lates
+                  const For_Regular_Lates_Rquation =
+                    timeIn_hour_converted_to_minutes -
+                    reg_hours_converted_to_minutes +
+                    (timeIn_mins - reg_mins);
+
+                  const For_Probationary_Lates_Rquation =
+                    timeIn_hour_converted_to_minutes -
+                    probi_hours_converted_to_minutes +
+                    (timeIn_mins - probi_mins);
+
+                  // Official Data
+                  const REG = REG_InitialValue > 8 ? 8 : REG_InitialValue;
+
                   return (
                     <>
                       <tr className="w-[100%] h-10 flex justify-center items-center cursor-pointer text-center arial-narrow">
@@ -222,7 +514,25 @@ const HrTimeRecord = ({
                         <td className="w-[25%]"></td>
                         <td className="w-[25%]"></td>
                         <td className="w-[25%]"></td>
-                        <td className="w-[25%]"></td>
+
+                        {ObjFilter.employee_data.Employee_Schedule ==
+                        "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                          <td className="w-[25%]">
+                            {For_Probationary_Lates_Rquation / 60000}
+                          </td>
+                        ) : (
+                          ""
+                        )}
+
+                        {ObjFilter.employee_data.Employee_Schedule ==
+                        "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                          <td className="w-[25%]">
+                            {For_Regular_Lates_Rquation / 60000}
+                          </td>
+                        ) : (
+                          ""
+                        )}
+
                         <td className="w-[25%]"></td>
                       </tr>
                     </>
