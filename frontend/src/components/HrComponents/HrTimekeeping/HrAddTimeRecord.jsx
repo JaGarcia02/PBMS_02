@@ -25,6 +25,7 @@ const HrAddTimeRecord = ({
   setOpenInsertTimeRecord,
   setTimeRecordData,
   timeRecordData,
+  hrEmployee,
 }) => {
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
@@ -43,7 +44,9 @@ const HrAddTimeRecord = ({
     empId: "",
   });
 
-  console.log(timeRecordDataArray.dtr);
+  // console.log(timeRecordDataArray.dtr);
+  // console.log(hrEmployee);
+
   // const result = milliseconds(24, 36, 0);
 
   // const result =
@@ -110,55 +113,61 @@ const HrAddTimeRecord = ({
   // Converted time in
 
   const SubmitTimeRecord = () => {
-    const timeKeeping_data = timeRecordDataArray.dtr.map((data) => {
-      // Time format
-      const initial_time_value = data.date_day.split("-");
-      if (initial_time_value[1] == 1) {
-        initial_time_value[1] = "January";
-      } else if (initial_time_value[1] == 2) {
-        initial_time_value[1] = "February";
-      } else if (initial_time_value[1] == 3) {
-        initial_time_value[1] = "March";
-      } else if (initial_time_value[1] == 4) {
-        initial_time_value[1] = "April";
-      } else if (initial_time_value[1] == 5) {
-        initial_time_value[1] = "May";
-      } else if (initial_time_value[1] == 6) {
-        initial_time_value[1] = "June";
-      } else if (initial_time_value[1] == 7) {
-        initial_time_value[1] = "July ";
-      } else if (initial_time_value[1] == 8) {
-        initial_time_value[1] = "August";
-      } else if (initial_time_value[1] == 9) {
-        initial_time_value[1] = "September";
-      } else if (initial_time_value[1] == 10) {
-        initial_time_value[1] = "October ";
-      } else if (initial_time_value[1] == 11) {
-        initial_time_value[1] = "November";
-      } else if (initial_time_value[1] == 12) {
-        initial_time_value[1] = "December";
-      }
+    const timeKeeping_data = timeRecordDataArray.dtr
+      // .filter((fil) => fil.Employee_ID === timeRecordInput.empId)
+      .map((data) => {
+        // Time format
+        const initial_time_value = data.date_day.split("-");
+        if (initial_time_value[1] == 1) {
+          initial_time_value[1] = "January";
+        } else if (initial_time_value[1] == 2) {
+          initial_time_value[1] = "February";
+        } else if (initial_time_value[1] == 3) {
+          initial_time_value[1] = "March";
+        } else if (initial_time_value[1] == 4) {
+          initial_time_value[1] = "April";
+        } else if (initial_time_value[1] == 5) {
+          initial_time_value[1] = "May";
+        } else if (initial_time_value[1] == 6) {
+          initial_time_value[1] = "June";
+        } else if (initial_time_value[1] == 7) {
+          initial_time_value[1] = "July ";
+        } else if (initial_time_value[1] == 8) {
+          initial_time_value[1] = "August";
+        } else if (initial_time_value[1] == 9) {
+          initial_time_value[1] = "September";
+        } else if (initial_time_value[1] == 10) {
+          initial_time_value[1] = "October ";
+        } else if (initial_time_value[1] == 11) {
+          initial_time_value[1] = "November";
+        } else if (initial_time_value[1] == 12) {
+          initial_time_value[1] = "December";
+        }
 
-      const MM_d_YYYY =
-        initial_time_value[1] +
-        " " +
-        initial_time_value[2] +
-        "," +
-        initial_time_value[0];
+        const MM_d_YYYY =
+          initial_time_value[1] +
+          " " +
+          initial_time_value[2] +
+          "," +
+          initial_time_value[0];
 
-      return {
-        Cutoff: data.cutoff,
-        Date_day: MM_d_YYYY,
-        Time_in: data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn,
-        Time_break_start:
-          data.breakStart == 0 ? 0 : data.date_day + "T" + data.breakStart,
-        Time_break_end:
-          data.breakEnd == 0 ? 0 : data.date_day + "T" + data.breakEnd,
-        Time_out: data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut,
-        BioID: data.bioId,
-        EmpID: data.empId,
-      };
-    });
+        return {
+          Cutoff: data.cutoff,
+          Date_day: MM_d_YYYY,
+          Time_in: data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn,
+          Time_break_start:
+            data.breakStart == 0 ? 0 : data.date_day + "T" + data.breakStart,
+          Time_break_end:
+            data.breakEnd == 0 ? 0 : data.date_day + "T" + data.breakEnd,
+          Time_out: data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut,
+          BioID: data.bioId,
+          EmpID: data.empId,
+          Schedle_Type: hrEmployee
+            .filter((fil) => fil.Employee_ID === data.empId)
+            .map((this_data) => this_data.Employee_Schedule),
+        };
+      });
+
     axios
       .post(API_URL_HR + "create-timerecord", {
         dtr: timeKeeping_data,

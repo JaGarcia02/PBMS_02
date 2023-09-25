@@ -409,10 +409,9 @@ const Hr_Timekeeping = () => {
             ) : toggle == 3 ? (
               <HrSummary
                 setToggle={setToggle}
-                ExcelData={ExcelData}
                 ObjFilter={ObjFilter}
                 timeRecordData={timeRecordData}
-                cutList={cutList}
+                chosenCutOffDate={chosenCutOffDate}
               />
             ) : (
               ""
@@ -501,7 +500,7 @@ const Hr_Timekeeping = () => {
                   Employee Shcedule:
                 </span>
               </div>
-              <p className="text-[12px] arial-narrow mt-1">
+              <p className="text-[14px] arial-narrow mt-1">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_Schedule
                   : " "}
@@ -527,6 +526,7 @@ const Hr_Timekeeping = () => {
           setOpenInsertTimeRecord={setOpenInsertTimeRecord}
           setTimeRecordData={setTimeRecordData}
           timeRecordData={timeRecordData}
+          hrEmployee={hrEmployee}
         />
       )}
       {/* {openImportTR && (
