@@ -57,6 +57,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
 
   const Add_CutOff = (e) => {
     e.preventDefault();
+
     axios
       .post(API_URL_HR + "create-cutoff", {
         cutOff_year: moment(Date.now()).format("YYYY"),
@@ -64,6 +65,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
           moment(cutOff.start).format("MMM. DD, YYYY") +
           " - " +
           moment(cutOff.end).format("MMM. DD, YYYY"),
+        cutOff_month: moment(cutOff.start).format("MMMM"),
       })
       .then((res) => {
         setCutOffData(res.data);
@@ -134,7 +136,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
             </h1>
             <form
               action=""
-              className="flex justify-between items-center w-[100%] px-60 mt-5"
+              className="flex justify-between items-center w-[100%] px-60 mt-1"
               onSubmit={Add_CutOff}
             >
               <div className="arial-narrow-bold">
@@ -175,7 +177,7 @@ const HrAddCutOff = ({ setAddCutOffModal }) => {
               </button>
             </form>
 
-            <div className="w-[100%] flex justify-center items-center mt-5 ">
+            <div className="w-[100%] flex justify-center items-center mt-2 ">
               <table className="w-120 h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
                 <thead>
                   <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center">

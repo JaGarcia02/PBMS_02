@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       Time_out: { type: DataTypes.STRING, allowNull: false },
       BioID: { type: DataTypes.STRING, allowNull: false },
       EmpID: { type: DataTypes.STRING, allowNull: false },
-      Schedle_Type: { type: DataTypes.STRING, allowNull: false },
+      Sched_Type: { type: DataTypes.STRING, allowNull: false },
     },
     {
       paranoid: true,

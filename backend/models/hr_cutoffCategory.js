@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    cutOff_month: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     cutOff_year: {
       type: DataTypes.STRING,
       allowNull: false,

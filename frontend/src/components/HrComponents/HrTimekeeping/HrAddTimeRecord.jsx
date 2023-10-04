@@ -44,6 +44,10 @@ const HrAddTimeRecord = ({
     empId: "",
   });
 
+  var test1 = "in202300001";
+
+  console.log(timeRecordDataArray);
+
   // console.log(timeRecordDataArray.dtr);
   // console.log(hrEmployee);
 
@@ -151,6 +155,74 @@ const HrAddTimeRecord = ({
           "," +
           initial_time_value[0];
 
+        // Computation for Regular hours
+        // const Reg_Hours_Start =
+        //   data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn;
+
+        // const Reg_Minutes_End =
+        //   data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut;
+
+        // const Total_Hours = moment(
+        //   data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut
+        // ).diff(
+        //   moment(data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn),
+        //   "hours"
+        // );
+
+        // Computation for lates
+
+        // const Initial_Probationary = "2023-09-01T07:30";
+        // const Initial_Regular = "2023-09-01T08:30";
+
+        // const Probationary = moment(Initial_Probationary).format("HH:mm");
+        // const Regular = moment(Initial_Regular).format("HH:mm");
+
+        // const TimeIn = data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn;
+        // const BreakTimeStart =
+        //   data.breakStart == 0 ? 0 : data.date_day + "T" + data.breakStart;
+        // const BreakTimeEnd =
+        //   data.breakEnd == 0 ? 0 : data.date_day + "T" + data.breakEnd;
+        // const TimeOut =
+        //   data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut;
+
+        // // Regular hour
+        // const REG_InitialValue = moment(TimeOut).diff(
+        //   moment(TimeIn) +
+        //     moment(BreakTimeEnd).diff(moment(BreakTimeStart), "hours"),
+        //   "hours"
+        // );
+
+        // // Lates
+        // const TimeIn_split_value = moment(TimeIn).format("HH:mm").split(":");
+
+        // // Converted to minutes
+        // const timeIn_hour_converted_to_minutes =
+        //   TimeIn_split_value[0] * 60 * (60 * 1000);
+        // const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+        // // Converted to minutes
+        // const Probi_split_value = Probationary.split(":");
+        // const probi_hours_converted_to_minutes =
+        //   Probi_split_value[0] * 60 * (60 * 1000);
+        // const probi_mins = Probi_split_value[1] * 60 * 1000;
+
+        // // Converted to minutes
+        // const Reg_split_value = Regular.split(":");
+        // const reg_hours_converted_to_minutes =
+        //   Reg_split_value[0] * 60 * (60 * 1000);
+        // const reg_mins = Reg_split_value[1] * 60 * 1000;
+
+        // // Equation for Lates
+        // const For_Regular_Lates_Rquation =
+        //   timeIn_hour_converted_to_minutes -
+        //   reg_hours_converted_to_minutes +
+        //   (timeIn_mins - reg_mins);
+
+        // const For_Probationary_Lates_Rquation =
+        //   timeIn_hour_converted_to_minutes -
+        //   probi_hours_converted_to_minutes +
+        //   (timeIn_mins - probi_mins);
+
         return {
           Cutoff: data.cutoff,
           Date_day: MM_d_YYYY,
@@ -162,9 +234,42 @@ const HrAddTimeRecord = ({
           Time_out: data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut,
           BioID: data.bioId,
           EmpID: data.empId,
-          Schedle_Type: hrEmployee
+          Sched_Type: hrEmployee
             .filter((fil) => fil.Employee_ID === data.empId)
-            .map((this_data) => this_data.Employee_Schedule),
+            .map((this_data) => this_data.Employee_Schedule)
+            ? hrEmployee
+                .filter((fil) => fil.Employee_ID === data.empId)
+                .map((this_data) => this_data.Employee_Schedule)
+            : "N/A",
+
+          // Cutoff: data.cutoff,
+          // Date_day: MM_d_YYYY,
+          // Time_in: data.timeIn == 0 ? 0 : data.date_day + "T" + data.timeIn,
+          // Time_break_start:
+          //   data.breakStart == 0 ? 0 : data.date_day + "T" + data.breakStart,
+          // Time_break_end:
+          //   data.breakEnd == 0 ? 0 : data.date_day + "T" + data.breakEnd,
+          // Time_out: data.timeOut == 0 ? 0 : data.date_day + "T" + data.timeOut,
+          // BioID: data.bioId,
+          // EmpID: data.empId,
+          // Reg: Total_Hours ? Total_Hours : 0,
+
+          // Lates:
+          //   hrEmployee
+          //     .filter((fil) => fil.Employee_ID === data.empId)
+          //     .map((this_data) => this_data.Employee_Schedule) ==
+          //   "Compressed : Monday - Friday | 07:30:00 - 18:00:00"
+          //     ? For_Probationary_Lates_Rquation / 60000
+          //     : hrEmployee
+          //         .filter((fil) => fil.Employee_ID === data.empId)
+          //         .map((this_data) => this_data.Employee_Schedule) ==
+          //       "Regular : Monday - Friday | 08:30:00 - 17:30:00"
+          //     ? For_Regular_Lates_Rquation / 60000
+          //     : 0,
+
+          // Sched_Type: hrEmployee
+          //   .filter((fil) => fil.Employee_ID === data.empId)
+          //   .map((this_data) => this_data.Employee_Schedule),
         };
       });
 
@@ -200,7 +305,7 @@ const HrAddTimeRecord = ({
       transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
     >
-      <motion.div className="relative bg-white h-130 w-290 items-center shadow-md shadow-gray-900 z-999 overflow-hidden">
+      <motion.div className="relative bg-white h-150 w-290 items-center shadow-md shadow-gray-900 z-999 overflow-hidden">
         <div className="w-full h-full flex flex-col item-center text-center mb-5">
           <div className=" prdc-color w-full h-25">
             {/* =========================================== */}
@@ -236,7 +341,7 @@ const HrAddTimeRecord = ({
             </div>
           </div>
 
-          <div className="overflow-auto mb-10">
+          <div className="overflow-auto mb-5">
             {timeRecordDataArray.dtr.map((dataArray) => {
               return (
                 <>
@@ -622,7 +727,7 @@ const HrAddTimeRecord = ({
                           onChange={(e) =>
                             setTimeRecordInput({
                               ...timeRecordInput,
-                              empId: e.target.value,
+                              empId: e.target.value.toUpperCase(),
                             })
                           }
                           className={`w-30 h-7 border-[2px] border-black px-2 rounded-sm arial-narrow text-[14px] ${
@@ -655,7 +760,7 @@ const HrAddTimeRecord = ({
               <button
                 id="submitDTR"
                 onClick={SubmitTimeRecord}
-                className="mr-10 border-[2px] border-black w-25 h-7 arial-narrow-bold rounded-sm flex justify-center items-center text-black hover:(bg-green-500 text-white border-green-500) disabled:(bg-gray-400 text-gray-300 border-gray-600 cursor-not-allowed)"
+                className="mr-10 mb-2 border-[2px] border-black w-25 h-7 arial-narrow-bold rounded-sm flex justify-center items-center text-black hover:(bg-green-500 text-white border-green-500) disabled:(bg-gray-400 text-gray-300 border-gray-600 cursor-not-allowed)"
               >
                 <BiSave className="mr-1" /> Save
               </button>

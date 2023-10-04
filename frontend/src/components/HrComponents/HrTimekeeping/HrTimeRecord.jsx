@@ -76,6 +76,10 @@ const HrTimeRecord = ({
                       TimeIn_split_value[0] * 60 * (60 * 1000);
                     const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
 
+                    // Employee time in in milliseconds
+                    const EmployeeTimein_Milliseconds =
+                      timeIn_hour_converted_to_minutes + timeIn_mins;
+
                     // Converted to minutes
                     const Probi_split_value = Probationary.split(":");
                     const probi_hours_converted_to_minutes =
@@ -151,18 +155,35 @@ const HrTimeRecord = ({
                           <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                             {REG}
                           </td>
-                          {data.Schedle_Type ==
+                          {data.Sched_Type ===
                           "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
                             <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                              {"- " + For_Probationary_Lates_Rquation / 60000}
+                              {/* {For_Probationary_Lates_Rquation > 1
+                                ? (For_Probationary_Lates_Rquation / 60000) * -1
+                                : For_Probationary_Lates_Rquation / 60000} */}
+                              {/* {For_Probationary_Lates_Rquation / 60000} */}
+                              {EmployeeTimein_Milliseconds > 27000000
+                                ? For_Probationary_Lates_Rquation > 1
+                                  ? (For_Probationary_Lates_Rquation / 60000) *
+                                    -1
+                                  : For_Probationary_Lates_Rquation / 60000
+                                : 0}
                             </td>
                           ) : (
                             ""
                           )}
-                          {data.Schedle_Type ==
+                          {data.Sched_Type ===
                           "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
                             <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                              {"- " + For_Regular_Lates_Rquation / 60000}
+                              {/* {For_Regular_Lates_Rquation > 1
+                                ? (For_Regular_Lates_Rquation / 60000) * -1
+                                : For_Regular_Lates_Rquation / 60000} */}
+                              {/* {For_Regular_Lates_Rquation / 60000} */}
+                              {EmployeeTimein_Milliseconds > 30600000
+                                ? For_Regular_Lates_Rquation > 1
+                                  ? (For_Regular_Lates_Rquation / 60000) * -1
+                                  : For_Regular_Lates_Rquation / 60000
+                                : 0}
                             </td>
                           ) : (
                             ""
@@ -211,6 +232,10 @@ const HrTimeRecord = ({
                           const timeIn_hour_converted_to_minutes =
                             TimeIn_split_value[0] * 60 * (60 * 1000);
                           const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+                          // Employee time in in milliseconds
+                          const EmployeeTimein_Milliseconds =
+                            timeIn_hour_converted_to_minutes + timeIn_mins;
 
                           // Converted to minutes
                           const Probi_split_value = Probationary.split(":");
@@ -292,19 +317,30 @@ const HrTimeRecord = ({
                                 <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
                                   {REG}
                                 </td>
-                                {data.Schedle_Type ==
+                                {data.Sched_Type ==
                                 "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
                                   <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                                    {"- " +
-                                      For_Probationary_Lates_Rquation / 60000}
+                                    {EmployeeTimein_Milliseconds > 27000000
+                                      ? For_Probationary_Lates_Rquation > 1
+                                        ? (For_Probationary_Lates_Rquation /
+                                            60000) *
+                                          -1
+                                        : For_Probationary_Lates_Rquation /
+                                          60000
+                                      : 0}
                                   </td>
                                 ) : (
                                   ""
                                 )}
-                                {data.Schedle_Type ==
+                                {data.Sched_Type ==
                                 "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
                                   <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                                    {"- " + For_Regular_Lates_Rquation / 60000}
+                                    {EmployeeTimein_Milliseconds > 30600000
+                                      ? For_Regular_Lates_Rquation > 1
+                                        ? (For_Regular_Lates_Rquation / 60000) *
+                                          -1
+                                        : For_Regular_Lates_Rquation / 60000
+                                      : 0}
                                   </td>
                                 ) : (
                                   ""
@@ -354,6 +390,10 @@ const HrTimeRecord = ({
                           const timeIn_hour_converted_to_minutes =
                             TimeIn_split_value[0] * 60 * (60 * 1000);
                           const timeIn_mins = TimeIn_split_value[1] * 60 * 1000;
+
+                          // Employee time in in milliseconds
+                          const EmployeeTimein_Milliseconds =
+                            timeIn_hour_converted_to_minutes + timeIn_mins;
 
                           // Converted to minutes
                           const Probi_split_value = Probationary.split(":");
@@ -442,8 +482,14 @@ const HrTimeRecord = ({
                                 {ObjFilter.employee_data.Employee_Schedule ==
                                 "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
                                   <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                                    {"- " +
-                                      For_Probationary_Lates_Rquation / 60000}
+                                    {EmployeeTimein_Milliseconds > 27000000
+                                      ? For_Probationary_Lates_Rquation > 1
+                                        ? (For_Probationary_Lates_Rquation /
+                                            60000) *
+                                          -1
+                                        : For_Probationary_Lates_Rquation /
+                                          60000
+                                      : 0}
                                   </td>
                                 ) : (
                                   ""
@@ -451,7 +497,12 @@ const HrTimeRecord = ({
                                 {ObjFilter.employee_data.Employee_Schedule ==
                                 "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
                                   <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                                    {"- " + For_Regular_Lates_Rquation / 60000}
+                                    {EmployeeTimein_Milliseconds > 30600000
+                                      ? For_Regular_Lates_Rquation > 1
+                                        ? (For_Regular_Lates_Rquation / 60000) *
+                                          -1
+                                        : For_Regular_Lates_Rquation / 60000
+                                      : 0}
                                   </td>
                                 ) : (
                                   ""

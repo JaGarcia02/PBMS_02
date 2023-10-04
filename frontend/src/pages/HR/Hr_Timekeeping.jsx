@@ -479,9 +479,9 @@ const Hr_Timekeeping = () => {
               </div>
             </div>
 
-            <div className="flex justify-start items-center w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500">
-              {/* Schedule Type */}
-              <div className="w-[100%] flex items-center h-10">
+            {/* <div className="flex justify-start items-center w-[100%] mt-2 p-2 h-10 shadow shadow-gray-500"> */}
+            {/* Schedule Type */}
+            {/* <div className="w-[100%] flex items-center h-10">
                 <span className="text-[18px] arial-narrow-bold mr-1">
                   Shedule Type:
                 </span>
@@ -490,8 +490,8 @@ const Hr_Timekeeping = () => {
                     ? ObjFilter.employee_data.Employee_ScheduleType
                     : " "}
                 </p>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
 
             {/* Schedule */}
             <div className="items-center justify-start mt-2 p-2 h-14 shadow shadow-gray-500">
@@ -500,7 +500,7 @@ const Hr_Timekeeping = () => {
                   Employee Shcedule:
                 </span>
               </div>
-              <p className="text-[14px] arial-narrow mt-1">
+              <p className="text-[15px] arial-narrow mt-1">
                 {typeof ObjFilter.employee_data !== undefined
                   ? ObjFilter.employee_data.Employee_Schedule
                   : " "}
