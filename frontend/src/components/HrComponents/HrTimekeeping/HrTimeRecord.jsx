@@ -20,14 +20,14 @@ const HrTimeRecord = ({
             onChange={(e) => setToggle(e.target.value)}
             className="absolute right-2 w-40 h-6.5 outline-none appearance-none rounded-sm px-1 text-[14px] arial-narrow bg-icon2"
           >
-            <option value={1}>Employee Time Record</option>
-            <option value={2}>Adjustment</option>
-            <option value={3}>Summary</option>
+            <option value={1}>BIOMETRICS</option>
+            <option value={2}>ADJUSTMENT</option>
+            <option value={3}>SUMMARY</option>
           </select>
         </div>
       </div>
       <div className="w-full px-1 ">
-        <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
+        {/* <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">
           <thead className="">
             <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center text-white arial-narrow-bold text-[14px]">
               <th className="w-[25%]">Date</th>
@@ -52,22 +52,40 @@ const HrTimeRecord = ({
                     const BreakTimeEnd = data.Time_break_end;
                     const TimeOut = data.Time_out;
 
-                    // Regular hour
-                    const REG_InitialValue = moment(TimeOut).diff(
-                      moment(TimeIn) +
-                        moment(BreakTimeEnd).diff(
-                          moment(BreakTimeStart),
-                          "hours"
-                        ),
-                      "hours"
+                    // working hours in millisec
+                    const WorkingHours_InitialValue = moment(TimeOut).diff(
+                      moment(TimeIn),
+                      "milliseconds"
                     );
 
+                    // -------- For Probi -------- //
                     const Probationary =
                       moment(Initial_Probationary).format("HH:mm");
+                    // ---- split ---- //
+                    const Probationary_milisec = Probationary.split(":");
+                    const Probationary_milisec_Hours =
+                      Probationary_milisec[0] * 60 * (60 * 1000);
+                    const Probationary_milisec_Mins =
+                      Probationary_milisec[1] * 60 * 1000;
+                    // ---- split ---- //
+
+                    const Probationary_Sched_Time =
+                      Probationary_milisec_Hours + Probationary_milisec_Mins;
+                    // -------- For Probi -------- //
 
                     const Regular = moment(Initial_Regular).format("HH:mm");
+                    // ---- split ---- //
+                    const Regular_milisec = Regular.split(":");
+                    const Regular_millisec_Hour =
+                      Regular_milisec[0] * 60 * (60 * 1000);
+                    const Regular_millisec_Mins =
+                      Regular_milisec[1] * 60 * 1000;
+                    // ---- split ---- //
 
-                    // Lates
+                    const Regular_Time_Schedule =
+                      Regular_millisec_Hour + Regular_millisec_Mins;
+
+                    // Lates ------------------------------------------------------ //
                     const TimeIn_split_value = moment(TimeIn)
                       .format("HH:mm")
                       .split(":");
@@ -102,9 +120,7 @@ const HrTimeRecord = ({
                       timeIn_hour_converted_to_minutes -
                       probi_hours_converted_to_minutes +
                       (timeIn_mins - probi_mins);
-
-                    // Official Data
-                    const REG = REG_InitialValue > 8 ? 8 : REG_InitialValue;
+                    // Lates ------------------------------------------------------ //
 
                     return (
                       <>
@@ -152,16 +168,41 @@ const HrTimeRecord = ({
                               {moment(data.Time_out).format("HH:mm")}
                             </td>
                           )}
-                          <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                            {REG}
-                          </td>
+                          {data.Sched_Type ===
+                          "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                            <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {WorkingHours_InitialValue <
+                              Probationary_Sched_Time
+                                ? ((WorkingHours_InitialValue -
+                                    Probationary_Sched_Time) *
+                                    -1) /
+                                  3600000
+                                : WorkingHours_InitialValue >
+                                  Probationary_Sched_Time
+                                ? 28800000 / 3600000
+                                : ""}
+                            </td>
+                          ) : (
+                            ""
+                          )}
+                          {data.Sched_Type ===
+                          "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                            <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                              {WorkingHours_InitialValue < Regular_Time_Schedule
+                                ? (WorkingHours_InitialValue -
+                                    Regular_Time_Schedule * -1) /
+                                  3600000
+                                : WorkingHours_InitialValue >
+                                  Regular_Time_Schedule
+                                ? 28800000 / 3600000
+                                : ""}
+                            </td>
+                          ) : (
+                            ""
+                          )}
                           {data.Sched_Type ===
                           "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
                             <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                              {/* {For_Probationary_Lates_Rquation > 1
-                                ? (For_Probationary_Lates_Rquation / 60000) * -1
-                                : For_Probationary_Lates_Rquation / 60000} */}
-                              {/* {For_Probationary_Lates_Rquation / 60000} */}
                               {EmployeeTimein_Milliseconds > 27000000
                                 ? For_Probationary_Lates_Rquation > 1
                                   ? (For_Probationary_Lates_Rquation / 60000) *
@@ -175,10 +216,6 @@ const HrTimeRecord = ({
                           {data.Sched_Type ===
                           "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
                             <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
-                              {/* {For_Regular_Lates_Rquation > 1
-                                ? (For_Regular_Lates_Rquation / 60000) * -1
-                                : For_Regular_Lates_Rquation / 60000} */}
-                              {/* {For_Regular_Lates_Rquation / 60000} */}
                               {EmployeeTimein_Milliseconds > 30600000
                                 ? For_Regular_Lates_Rquation > 1
                                   ? (For_Regular_Lates_Rquation / 60000) * -1
@@ -208,23 +245,41 @@ const HrTimeRecord = ({
                           const BreakTimeEnd = data.Time_break_end;
                           const TimeOut = data.Time_out;
 
-                          // Regular hour
-                          const REG_InitialValue = moment(TimeOut).diff(
-                            moment(TimeIn) +
-                              moment(BreakTimeEnd).diff(
-                                moment(BreakTimeStart),
-                                "hours"
-                              ),
-                            "hours"
-                          );
+                          // working hours in millisec
+                          const WorkingHours_InitialValue = moment(
+                            TimeOut
+                          ).diff(moment(TimeIn), "milliseconds");
 
+                          // -------- For Probi -------- //
                           const Probationary =
                             moment(Initial_Probationary).format("HH:mm");
+                          // ---- split ---- //
+                          const Probationary_milisec = Probationary.split(":");
+                          const Probationary_milisec_Hours =
+                            Probationary_milisec[0] * 60 * (60 * 1000);
+                          const Probationary_milisec_Mins =
+                            Probationary_milisec[1] * 60 * 1000;
+                          // ---- split ---- //
+
+                          const Probationary_Sched_Time =
+                            Probationary_milisec_Hours +
+                            Probationary_milisec_Mins;
+                          // -------- For Probi -------- //
 
                           const Regular =
                             moment(Initial_Regular).format("HH:mm");
+                          // ---- split ---- //
+                          const Regular_milisec = Regular.split(":");
+                          const Regular_millisec_Hour =
+                            Regular_milisec[0] * 60 * (60 * 1000);
+                          const Regular_millisec_Mins =
+                            Regular_milisec[1] * 60 * 1000;
+                          // ---- split ---- //
 
-                          // Lates
+                          const Regular_Time_Schedule =
+                            Regular_millisec_Hour + Regular_millisec_Mins;
+
+                          // Lates ------------------------------------------------------ //
                           const TimeIn_split_value = moment(TimeIn)
                             .format("HH:mm")
                             .split(":");
@@ -259,10 +314,7 @@ const HrTimeRecord = ({
                             timeIn_hour_converted_to_minutes -
                             probi_hours_converted_to_minutes +
                             (timeIn_mins - probi_mins);
-
-                          // Official Data
-                          const REG =
-                            REG_InitialValue > 8 ? 8 : REG_InitialValue;
+                          // Lates ------------------------------------------------------ //
                           return (
                             <>
                               <tr className="w-[100%] h-10 flex justify-center items-center cursor-pointer">
@@ -314,9 +366,39 @@ const HrTimeRecord = ({
                                   </td>
                                 )}
 
-                                <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {REG}
-                                </td>
+                                {data.Sched_Type ===
+                                "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {WorkingHours_InitialValue <
+                                    Probationary_Sched_Time
+                                      ? ((WorkingHours_InitialValue -
+                                          Probationary_Sched_Time) *
+                                          -1) /
+                                        3600000
+                                      : WorkingHours_InitialValue >
+                                        Probationary_Sched_Time
+                                      ? 28800000 / 3600000
+                                      : ""}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
+                                {data.Sched_Type ===
+                                "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {WorkingHours_InitialValue <
+                                    Regular_Time_Schedule
+                                      ? (WorkingHours_InitialValue -
+                                          Regular_Time_Schedule * -1) /
+                                        3600000
+                                      : WorkingHours_InitialValue >
+                                        Regular_Time_Schedule
+                                      ? 28800000 / 3600000
+                                      : ""}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
                                 {data.Sched_Type ==
                                 "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
                                   <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black ">
@@ -355,7 +437,9 @@ const HrTimeRecord = ({
                       {timeRecordData
                         .filter(
                           (fil) =>
-                            fil.BioID == ObjFilter.employee_data.Employee_BioID
+                            fil.BioID ==
+                              ObjFilter.employee_data.Employee_BioID &&
+                            fil.Cutoff === chosenCutOffDate
                         )
                         .map((data) => {
                           const Initial_Probationary = "2023-09-01T07:30";
@@ -366,23 +450,41 @@ const HrTimeRecord = ({
                           const BreakTimeEnd = data.Time_break_end;
                           const TimeOut = data.Time_out;
 
-                          // Regular hour
-                          const REG_InitialValue = moment(TimeOut).diff(
-                            moment(TimeIn) +
-                              moment(BreakTimeEnd).diff(
-                                moment(BreakTimeStart),
-                                "hours"
-                              ),
-                            "hours"
-                          );
+                          // working hours in millisec
+                          const WorkingHours_InitialValue = moment(
+                            TimeOut
+                          ).diff(moment(TimeIn), "milliseconds");
 
+                          // -------- For Probi -------- //
                           const Probationary =
                             moment(Initial_Probationary).format("HH:mm");
+                          // ---- split ---- //
+                          const Probationary_milisec = Probationary.split(":");
+                          const Probationary_milisec_Hours =
+                            Probationary_milisec[0] * 60 * (60 * 1000);
+                          const Probationary_milisec_Mins =
+                            Probationary_milisec[1] * 60 * 1000;
+                          // ---- split ---- //
+
+                          const Probationary_Sched_Time =
+                            Probationary_milisec_Hours +
+                            Probationary_milisec_Mins;
+                          // -------- For Probi -------- //
 
                           const Regular =
                             moment(Initial_Regular).format("HH:mm");
+                          // ---- split ---- //
+                          const Regular_milisec = Regular.split(":");
+                          const Regular_millisec_Hour =
+                            Regular_milisec[0] * 60 * (60 * 1000);
+                          const Regular_millisec_Mins =
+                            Regular_milisec[1] * 60 * 1000;
+                          // ---- split ---- //
 
-                          // Lates
+                          const Regular_Time_Schedule =
+                            Regular_millisec_Hour + Regular_millisec_Mins;
+
+                          // Lates ------------------------------------------------------ //
                           const TimeIn_split_value = moment(TimeIn)
                             .format("HH:mm")
                             .split(":");
@@ -417,10 +519,8 @@ const HrTimeRecord = ({
                             timeIn_hour_converted_to_minutes -
                             probi_hours_converted_to_minutes +
                             (timeIn_mins - probi_mins);
+                          // Lates ------------------------------------------------------ //
 
-                          // Official Data
-                          const REG =
-                            REG_InitialValue > 8 ? 8 : REG_InitialValue;
                           return (
                             <>
                               <tr
@@ -474,10 +574,39 @@ const HrTimeRecord = ({
                                     {moment(data.Time_out).format("HH:mm")}
                                   </td>
                                 )}
-
-                                <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                                  {REG}
-                                </td>
+                                {ObjFilter.employee_data.Employee_Schedule ==
+                                "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {WorkingHours_InitialValue <
+                                    Probationary_Sched_Time
+                                      ? ((WorkingHours_InitialValue -
+                                          Probationary_Sched_Time) *
+                                          -1) /
+                                        3600000
+                                      : WorkingHours_InitialValue >
+                                        Probationary_Sched_Time
+                                      ? 28800000 / 3600000
+                                      : ""}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
+                                {ObjFilter.employee_data.Employee_Schedule ==
+                                "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                                  <td className="flex justify-center items-center text-[12px] w-[17%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                                    {WorkingHours_InitialValue <
+                                    Regular_Time_Schedule
+                                      ? (WorkingHours_InitialValue -
+                                          Regular_Time_Schedule * -1) /
+                                        3600000
+                                      : WorkingHours_InitialValue >
+                                        Regular_Time_Schedule
+                                      ? 28800000 / 3600000
+                                      : ""}
+                                  </td>
+                                ) : (
+                                  ""
+                                )}
 
                                 {ObjFilter.employee_data.Employee_Schedule ==
                                 "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
@@ -517,7 +646,7 @@ const HrTimeRecord = ({
               )}
             </div>
           </tbody>
-        </table>
+        </table> */}
       </div>
       {/* <div className="w-full mt-2 px-1">
         <table className="w-[100%] h-[10%] border-white overflow-hidden  justify-evenly border-separate border-spacing-4">

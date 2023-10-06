@@ -12,24 +12,69 @@ const HrSummary = ({
   chosenCutOffDate,
 }) => {
   const [cutOffData, setCutOffData] = useState([]);
+  const [Total_Reg, setTotal_Reg] = useState(0);
+  const [Total_Lates, setTotal_Lates] = useState(0);
 
-  // console.log(ObjFilter);
-
-  const test1 = timeRecordData
+  // =========================================== This is for total Reg hours based on chosen cutoff =========================================== //
+  let sum_of_hours_TimeIn = 0;
+  let sum_of_mins_TimeIn = 0;
+  let sum_of_hours_TimeOut = 0;
+  let sum_of_mins_TimeOut = 0;
+  const EmpTime_In = timeRecordData
     ?.filter(
       (fil) => fil.Cutoff == chosenCutOffDate && fil.EmpID == ObjFilter.ID
     )
-    ?.map((data) => data);
+    ?.map((data) => moment(data.Time_in).format("HH:mm"));
 
-  for (let i = 0; i < test1.length; i++) {
-    const T_in = moment(test1[i].Time_in).format("HH:mm");
-    const T_out = moment(test1[i].Time_out).format("HH:mm");
-
-    // const T_in_Hours = T_in.split(":")[0] * 60 * (60 * 1000);
-    // const T_in_Mins = T_out.split(":")[1] * 60 * 1000;
-
-    console.log(T_in);
+  for (let i = 0; i < EmpTime_In.length; i++) {
+    const T_in_Hours = EmpTime_In[i].split(":")[0] * 60 * (60 * 1000);
+    const T_in_Mins = EmpTime_In[i].split(":")[1] * 60 * 1000;
+    sum_of_hours_TimeIn += T_in_Hours;
+    sum_of_mins_TimeIn += T_in_Mins;
   }
+
+  const EmpTime_out = timeRecordData
+    ?.filter(
+      (fil) => fil.Cutoff == chosenCutOffDate && fil.EmpID == ObjFilter.ID
+    )
+    ?.map((data) => moment(data.Time_out).format("HH:mm"));
+
+  for (let i = 0; i < EmpTime_out.length; i++) {
+    const T_out_Hours = EmpTime_out[i].split(":")[0] * 60 * (60 * 1000);
+    const T_out_Mins = EmpTime_out[i].split(":")[1] * 60 * 1000;
+    sum_of_hours_TimeOut += T_out_Hours;
+    sum_of_mins_TimeOut += T_out_Mins;
+  }
+
+  // =========================================== This is for total Reg hours based on chosen cutoff =========================================== //
+
+  // =========================================== This is for Lates =========================================== //
+  const Emp_Probi_TimeIn = "7:30";
+  const Emp_Probi_TimeIn_Split = Emp_Probi_TimeIn.split(":");
+  const Emp_Probi_Hours = Emp_Probi_TimeIn_Split[0] * 60 * (60 * 1000);
+  const Emp_Probi_Mins = Emp_Probi_TimeIn_Split[1] * 60 * 1000;
+
+  const Emp_Probi_TimeIn_Sched = Emp_Probi_Hours + Emp_Probi_Mins;
+
+  const Emp_Regular_TimeOut = "8:30";
+  const Emp_Regular_TimeOut_Split = Emp_Regular_TimeOut.split(":");
+  const Emp_Hours_Reg = Emp_Regular_TimeOut_Split[0] * 60 * (60 * 1000);
+  const Emp_Mins_Reg = Emp_Regular_TimeOut_Split[1] * 60 * 1000;
+
+  const Emp_Reg_TimeIn_Sched = Emp_Hours_Reg + Emp_Mins_Reg;
+  // =========================================== This is for Lates =========================================== //
+
+  useEffect(() => {
+    const total_time_in = sum_of_hours_TimeIn + sum_of_mins_TimeIn;
+    const total_time_out = sum_of_hours_TimeOut + sum_of_mins_TimeOut;
+    const Total_Reg_Hours = total_time_in + total_time_out;
+    setTotal_Reg(Total_Reg_Hours);
+  }, [
+    sum_of_hours_TimeIn,
+    sum_of_mins_TimeIn,
+    sum_of_hours_TimeOut,
+    sum_of_mins_TimeOut,
+  ]);
 
   useEffect(() => {
     axios
@@ -113,14 +158,35 @@ const HrSummary = ({
                 <tbody>
                   <div className="h-10 overflow-auto">
                     <tr className="w-[100%] h-10 flex justify-center items-center cursor-pointer text-center arial-narrow">
-                      <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
+                      <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                        {Math.round((Total_Reg / 3600000) * 100) / 100}
+                      </td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
-                      <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black "></td>
+
+                      {ObjFilter.employee_data.Employee_Schedule ==
+                      "Compressed : Monday - Friday | 07:30:00 - 18:00:00" ? (
+                        <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                          {Emp_Probi_TimeIn_Sched - Total_Reg}
+                        </td>
+                      ) : (
+                        ""
+                      )}
+
+                      {ObjFilter.employee_data.Employee_Schedule ==
+                      "Regular : Monday - Friday | 08:30:00 - 17:30:00" ? (
+                        <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
+                          {" "}
+                          {Emp_Reg_TimeIn_Sched - Total_Reg}
+                        </td>
+                      ) : (
+                        ""
+                      )}
+
                       <td className="flex justify-center items-center text-[12px] w-[20%] h-8 text-center border-b border-t border-r bg-white border-b-black border-t-black border-l-black border-r-black text-left arial-narrow text-black "></td>
                     </tr>
                   </div>

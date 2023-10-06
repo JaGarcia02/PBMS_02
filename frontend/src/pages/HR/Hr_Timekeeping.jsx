@@ -20,14 +20,12 @@ import HrAddTimeRecord from "../../components/HrComponents/HrTimekeeping/HrAddTi
 const Hr_Timekeeping = () => {
   const { branding } = useSelector((state) => state.branding);
   const [hrEmployee, setHrEmployee] = useState([]);
-  // const [ExcelData, setExcelData] = useState([]);
   const [timeRecordData, setTimeRecordData] = useState([]);
   const [cutList, setCutList] = useState([]);
   const [toggle, setToggle] = useState(1);
   const [chosenDate, setChosenDate] = useState([]);
   const [chosenCutOffDate, setChosenCutOffDate] = useState("");
   const [searchData, setSearchData] = useState("");
-
   const [ObjFilter, setObjFilter] = useState({
     ID: "",
     Bio: "",
@@ -39,6 +37,7 @@ const Hr_Timekeeping = () => {
     dateStart: "",
     dateEnd: "",
   });
+
   // import time record
   const [openImportTR, setOpenImportTR] = useState(false);
   // import summary
@@ -236,7 +235,7 @@ const Hr_Timekeeping = () => {
                   </button>
                   <button
                     className="arial-narrow-bold prdc-color mb-2 text-white text-[14px] w-55 h-6.5 justify-center border-[2.5px] rounded-sm hover:(rounded-sm) p-1  flex items-center focus:(outline-none)  transition ease-in-out duration-[0.5s] rounded-sm  hover:(text-black border-black bg-white)"
-                    onClick={() => setOpenInsertTimeRecord(true)}
+                    onClick={() => setOpenImportTR(true)}
                   >
                     <MdTimer className="mr-2" />
                     Insert Time Record
@@ -521,27 +520,24 @@ const Hr_Timekeeping = () => {
         </div>
       </div>
       {addCutOffModal && <HrAddCutOff setAddCutOffModal={setAddCutOffModal} />}
-      {openInsertTimeRecord && (
+      {/* {openInsertTimeRecord && (
         <HrAddTimeRecord
           setOpenInsertTimeRecord={setOpenInsertTimeRecord}
           setTimeRecordData={setTimeRecordData}
           timeRecordData={timeRecordData}
           hrEmployee={hrEmployee}
         />
-      )}
-      {/* {openImportTR && (
+      )} */}
+      {openImportTR && (
         <HrImportTimeRecord
           setOpenImportTR={setOpenImportTR}
           hrEmployee={hrEmployee}
           setHrEmployee={setHrEmployee}
-          CutOff={CutOff}
-          setCutOff={setCutOff}
           setDtr={setDtr}
           dtr={dtr}
-          // cutList={cutList}
           ObjFilter={ObjFilter}
         />
-      )} */}
+      )}
     </div>
   );
 };

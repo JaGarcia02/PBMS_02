@@ -23,6 +23,8 @@ import moment from "moment";
 const HrImportTimeRecord = ({
   setOpenImportTR,
   setHrEmployee,
+  ExcelDataDTR,
+  setExcelDataDTR,
   setCutOff,
   setDtr,
   dtr,
@@ -32,7 +34,6 @@ const HrImportTimeRecord = ({
   ObjFilter,
 }) => {
   const [cutOffDate, setCutOffDate] = useState([]);
-  const [selectedCutOff, setSelectedCutOff] = useState([]);
   const [chosenDate, setChosenDate] = useState("");
   const { branding } = useSelector((state) => state.branding);
   const { user } = useSelector((state) => state.user);
@@ -43,12 +44,12 @@ const HrImportTimeRecord = ({
       .then((res) => setHrEmployee(res.data))
       .catch((err) => console.log(err));
 
-    axios
-      .get(API_URL_HR + "get-timekeepingrecord")
-      .then((res) => {
-        setCutOff(res.data);
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .get(API_URL_HR + "get-timekeepingrecord")
+    //   .then((res) => {
+    //     setCutOff(res.data);
+    //   })
+    //   .catch((err) => console.log(err));
 
     axios
       .get(API_URL_HR + "view-cutoff-category")
@@ -154,8 +155,10 @@ const HrImportTimeRecord = ({
         res.rows.slice(1).map((row, index) => {
           if (row && row !== "undefined!") {
             newRows.push({
-              Time: row[0],
-              BioID: row[1],
+              BioID: row[0],
+              Date: row[1],
+              Time: row[2],
+              TR: row[3],
             });
           }
         });
@@ -170,21 +173,26 @@ const HrImportTimeRecord = ({
     const dtr_data = dtr.map((data) => {
       return {
         cutOffID: chosenDate,
+        Date: data.Date,
         Time: data.Time,
         BioID: data.BioID,
+        TR: data.TR,
       };
     });
 
     axios
       .post(API_URL_HR + "create-timerecord", { dtr: dtr_data })
       .then((res) => {
+        setDtr(res.data);
+        setOpenImportTR(false);
+        notify_Success();
         axios
           .get(API_URL_HR + "get-timekeepingrecord")
           .then((res) => {
-            setCutOff(res.data);
+            setDtr(res.data);
           })
           .catch((err) => console.log(err));
-        notify_removeCutoff();
+
         document.getElementById("importTR").value = "";
       })
       .catch((err) => {
@@ -192,22 +200,22 @@ const HrImportTimeRecord = ({
       });
   };
 
-  function getRange(startDate, endDate, type) {
-    let fromDate = moment(startDate);
-    let toDate = moment(endDate);
-    let diff = toDate.diff(fromDate, type);
-    let range = [];
-    for (let i = 0; i <= diff; i++) {
-      range.push(moment(startDate).add(i, type));
-    }
-    setSelectedCutOff(range.map((item) => item._d));
-  }
-  useEffect(() => {
-    const split = chosenDate.split("_");
-    getRange(split[0], split[1], "days");
-  }, [chosenDate]);
+  // function getRange(startDate, endDate, type) {
+  //   let fromDate = moment(startDate);
+  //   let toDate = moment(endDate);
+  //   let diff = toDate.diff(fromDate, type);
+  //   let range = [];
+  //   for (let i = 0; i <= diff; i++) {
+  //     range.push(moment(startDate).add(i, type));
+  //   }
+  //   setSelectedCutOff(range.map((item) => item._d));
+  // }
+  // useEffect(() => {
+  //   const split = chosenDate.split("_");
+  //   getRange(split[0], split[1], "days");
+  // }, [chosenDate]);
 
-  const notify_removeCutoff = () => {
+  const notify_Success = () => {
     toast.success(" Time Record Submited!", {
       position: "bottom-right",
       hideProgressBar: true,
@@ -225,7 +233,7 @@ const HrImportTimeRecord = ({
       transition={{ duration: 0.3, ease: "easeInOut" }}
       exit={{ opacity: 0 }}
     >
-      <motion.div className="absolute bg-white h-135 w-222 items-center shadow-md shadow-gray-900 z-999 overflow-hidden">
+      <motion.div className="absolute bg-white h-145 w-250 items-center shadow-md shadow-gray-900 z-999 overflow-hidden">
         <div className="w-full h-full flex flex-col item-center text-center mb-5">
           <div className=" prdc-color w-full h-25">
             {/* =========================================== */}
@@ -302,25 +310,82 @@ const HrImportTimeRecord = ({
                 <thead>
                   <tr className="shadow-sm shadow-gray-800 prdc-color h-10  text-center w-[100%] flex justify-between items-center">
                     <th className="w-[50%] text-white">
+                      <span>Biometric Id</span>
+                    </th>
+                    <th className="w-[50%] text-white">
+                      <span>Date</span>
+                    </th>
+                    <th className="w-[50%] text-white">
                       <span>Time</span>
                     </th>
                     <th className="w-[50%] text-white">
-                      <span>Biometric Id</span>
+                      <span>TR</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <div className="h-45 w-[100%] overflow-auto">
+                  <div className="h-55 w-[100%] overflow-auto">
                     {dtr?.map((data) => {
+                      const date_data = data.Date.split("`");
+                      const time_data = data.Time.split("`");
+                      // let converted_date = new Date(
+                      //   Math.round((data.Time - 25569) * 864e5)
+                      // );
+                      // converted_date = String(converted_date).slice(4, 15);
+                      // data.Time = converted_date.split(" ");
+                      // let day = data.Time[1];
+                      // let month = data.Time[0];
+                      // month =
+                      //   "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(month) /
+                      //     3 +
+                      //   1;
+                      // if (month.toString().length <= 1) month = "0" + month;
+                      // let year = data.Time[2];
+                      // console.log(day + "-" + month + "-" + year);
+
+                      // let day_time = data.Time % 1;
+                      // let meridiem = "AMPM";
+                      // let hour = Math.floor(day_time * 24);
+                      // let minute = Math.floor(
+                      //   Math.abs(day_time * 24 * 60) % 60
+                      // );
+                      // let second = Math.floor(
+                      //   Math.abs(day_time * 24 * 60 * 60) % 60
+                      // );
+                      // hour >= 12
+                      //   ? (meridiem = meridiem.slice(2, 4))
+                      //   : (meridiem = meridiem.slice(0, 2));
+                      // hour > 12 ? (hour = hour - 12) : (hour = hour);
+                      // hour = hour < 10 ? "0" + hour : hour;
+                      // minute = minute < 10 ? "0" + minute : minute;
+                      // second = second < 10 ? "0" + second : second;
+                      // let daytime =
+                      //   "" +
+                      //   hour +
+                      //   ":" +
+                      //   minute +
+                      //   ":" +
+                      //   second +
+                      //   " " +
+                      //   meridiem;
+
+                      // console.log(daytime);
+
                       return (
                         <>
                           <tr className="w-[100%] h-10 flex justify-center items-center">
                             <td className="flex justify-center items-center text-[12px] w-[50%] h-7 text-center border-b border-l border-t bg-white border-b-black border-t-black border-l-black text-left arial-narrow text-black ">
-                              {data.Time}
+                              {data.BioID}
                             </td>
 
+                            <td className="flex justify-center items-center text-center text-[12px] w-[50%] h-7 border-b border-t bg-white border-b-black border-t-black  border-black ">
+                              {date_data}
+                            </td>
+                            <td className="flex justify-center items-center text-center text-[12px] w-[50%] h-7 border-b border-t bg-white border-b-black border-t-black  border-black ">
+                              {time_data}
+                            </td>
                             <td className="flex justify-center items-center text-center text-[12px] w-[50%] h-7 border-b border-t bg-white border-b-black border-t-black border-r border-black ">
-                              {data.BioID}
+                              {data.TR}
                             </td>
                           </tr>
                         </>
